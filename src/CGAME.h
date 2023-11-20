@@ -17,6 +17,7 @@ class CGAME {
     // CBIRD* ac;
     CPEOPLE cn;
 public:
+    CGAME ();
     CGAME(sf::RenderWindow& window);
     ~CGAME();
 

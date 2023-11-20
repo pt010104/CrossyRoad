@@ -1,8 +1,6 @@
 #include "App.h"
 
-App::App() : window(sf::VideoMode(1000, 800), "SFML Application") {
-    circle.setFillColor(sf::Color::Green);
-    circle.setPosition(375, 275); 
+App::App() : window(sf::VideoMode(1000, 800), "Crossy Road") {
     game.startGame(); 
 }
 
@@ -27,7 +25,6 @@ void App::processEvents() {
 }
 
 void App::update() {
-    game.updatePosPeople(/* direction */);
     game.updatePosVehicle();
     game.updatePosAnimal();
 }

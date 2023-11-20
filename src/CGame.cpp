@@ -33,16 +33,15 @@ void CGAME::startGame() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-            int pos;
             //  player move
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-                cn.Up();
+                this->updatePosPeople('W');
             } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-                cn.Left();
+                this->updatePosPeople('A');
             } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-                cn.Down();
+                this->updatePosPeople('S');
             } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-                cn.Right();
+                this->updatePosPeople('D');
             }
         }
     }
@@ -64,7 +63,14 @@ void CGAME::resumeGame(sf::Thread& thread) {
 }
 
 void CGAME::updatePosPeople(char direction) {
-    // Control the movement of CPEOPLE
+    if (direction == 'W')
+        cn.Up();
+    if (direction == 'A')
+        cn.Left();
+    if (direction == 'S')
+        cn.Down();
+    if (direction == 'D')
+        cn.Right();
 }
 
 void CGAME::updatePosVehicle() {

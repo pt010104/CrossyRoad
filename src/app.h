@@ -14,7 +14,7 @@ private:
     void processEvents();
     void update();
     void render();
-    CGame game;
+    CGAME game;
 };
 
-#endif /* APP_H */
+#endif 
