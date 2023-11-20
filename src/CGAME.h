@@ -7,7 +7,7 @@
 #include "CDINAUSOR.h"
 #include "CBIRD.h"
 #include "CPEOPLE.h"
-#include <SFML/System/Thread.hpp>
+#include <thread>
 #include <SFML/Graphics.hpp>
 
 class CGAME {
@@ -26,12 +26,12 @@ public:
     CVEHICLE* getVehicle();
     CANIMAL* getAnimal();
     void resetGame();
-    void exitGame(sf::Thread& thread);
+    void exitGame(std::thread& thread);
     void startGame();
     void loadGame(std::istream& is);
     void saveGame(std::ostream& os);
-    void pauseGame(sf::Thread& thread);
-    void resumeGame(sf::Thread& thread);
+    void pauseGame(std::thread& thread);
+    void resumeGame(std::thread& thread);
     void updatePosPeople(char direction);
     void updatePosVehicle();
     void updatePosAnimal();

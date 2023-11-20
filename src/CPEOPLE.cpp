@@ -8,7 +8,7 @@ CPEOPLE::CPEOPLE(int startX, int startY) : mX(startX), mY(startY), mState(true) 
 }
 
 void CPEOPLE::Up() {
-    mY--; 
+    mY--;
 }
 
 void CPEOPLE::Left() {

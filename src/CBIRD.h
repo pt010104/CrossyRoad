@@ -4,6 +4,9 @@
 #include "CANIMAL.h"
 
 class CBIRD : public CANIMAL {
+private:
+    int speed = 1;
+    int direction = 1;
 public:
     void Move() override; 
 };
