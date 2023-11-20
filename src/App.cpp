@@ -1,8 +1,9 @@
 #include "App.h"
 
-App::App() : window(sf::VideoMode(800, 600), "SFML Application"), circle(50.f) {
+App::App() : window(sf::VideoMode(1000, 800), "SFML Application") {
     circle.setFillColor(sf::Color::Green);
     circle.setPosition(375, 275); 
+    game.startGame(); 
 }
 
 App::~App() {
@@ -26,6 +27,9 @@ void App::processEvents() {
 }
 
 void App::update() {
+    game.updatePosPeople(/* direction */);
+    game.updatePosVehicle();
+    game.updatePosAnimal();
 }
 
 void App::render() {

@@ -2,7 +2,7 @@
 #define APP_H
 
 #include <SFML/Graphics.hpp>
-
+#include "CGAME.h"
 class App {
 public:
     App();
@@ -14,6 +14,7 @@ private:
     void processEvents();
     void update();
     void render();
+    CGame game;
 };
 
 #endif /* APP_H */
