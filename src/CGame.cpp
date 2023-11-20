@@ -33,6 +33,7 @@ void CGAME::startGame() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
+            int pos;
             //  player move
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
                 cn.Up();
