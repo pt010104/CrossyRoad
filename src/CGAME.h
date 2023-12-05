@@ -23,7 +23,7 @@ public:
 
     void drawGame();
     CPEOPLE getPeople();
-    CVEHICLE* getVehicle();
+    //CVEHICLE* getVehicle();
     CANIMAL* getAnimal();
     void resetGame();
     void exitGame(sf::Thread& thread);

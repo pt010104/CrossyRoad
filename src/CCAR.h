@@ -1,11 +1,7 @@
-#ifndef CCAR_H
-#define CCAR_H
+#pragma once
+#include "CItem.h"
 
-#include "CVEHICLE.h"
-
-class CCAR : public CVEHICLE {
+class CCAR : public CItem {
 public:
-    void Move(int, int) override; 
+    void Conmove(int, int) override; 
 };
-
-#endif

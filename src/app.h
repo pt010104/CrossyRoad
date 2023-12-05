@@ -1,7 +1,6 @@
 #ifndef APP_H
 #define APP_H
 
-#include <SFML/Graphics.hpp>
 #include "CGAME.h"
 class App {
 public:
