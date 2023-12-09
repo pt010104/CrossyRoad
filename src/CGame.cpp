@@ -1,82 +1,94 @@
 #include "CGAME.h"
-
-CGAME::CGAME(sf::RenderWindow& window) : window(window) {
+CGAME::CGAME() : window(nullptr), axh(nullptr), ac(nullptr) {
+}
+CGAME::CGAME(sf::RenderWindow& window) : window(&window), axh(new CCAR()), ac(new CBIRD()) {
 }
 
 CGAME::~CGAME() {
+     delete axh;
+    delete ac;
 }
 
 void CGAME::drawGame() {
-    // Draw the game after having the data
+    if (window) {
+            cn.draw(*window);
+    }
 }
-
 CPEOPLE CGAME::getPeople() {
+    return cn;
 }
 
 CVEHICLE* CGAME::getVehicle() {
+    return axh; 
 }
 
 CANIMAL* CGAME::getAnimal() {
+    return ac; 
 }
 
 void CGAME::resetGame() {
 }
-
-void CGAME::exitGame(sf::Thread& thread) {
-    // Exit thread
+void CGAME::exitGame(std::thread& thread) {
+        // Exit thread
 }
 
-void CGAME::startGame() {
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-            //  player move
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-                this->updatePosPeople('W');
-            } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-                this->updatePosPeople('A');
-            } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-                this->updatePosPeople('S');
-            } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-                this->updatePosPeople('D');
-            }
+void CGAME::startGame(sf::Event& event) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+            this->updatePosPeople('W');
         }
-    }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+            this->updatePosPeople('A');
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+            this->updatePosPeople('S');
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+            this->updatePosPeople('D');
+        }
+
 }
 
 void CGAME::loadGame(std::istream& is) {
-    // Load  saved game
 }
 
 void CGAME::saveGame(std::ostream& os) {
 }
 
-void CGAME::pauseGame(sf::Thread& thread) {
-    // Pause the thread
+void CGAME::pauseGame(std::thread& thread) {
+        // Pause the thread
 }
 
-void CGAME::resumeGame(sf::Thread& thread) {
-    // Resume the thread
+void CGAME::resumeGame(std::thread& thread) {
+        // Resume the thread
 }
 
 void CGAME::updatePosPeople(char direction) {
-    if (direction == 'W')
-        cn.Up();
-    if (direction == 'A')
-        cn.Left();
-    if (direction == 'S')
-        cn.Down();
-    if (direction == 'D')
-        cn.Right();
+    if(cn.getState())
+    {
+        switch (direction)
+        {
+            case 'W':
+                cn.Up();
+                break;
+            case 'A':
+                cn.Left();
+                break;
+            case 'S':
+                cn.Down();
+                break;
+            case 'D':
+                cn.Right();
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 void CGAME::updatePosVehicle() {
-    // Move CTRUCK and CCAR
+        // Move CTRUCK and CCAR
 }
 
 void CGAME::updatePosAnimal() {
-    // Move CDINAUSOR and CBIRD
+        // Move CDINAUSOR and CBIRD
 }

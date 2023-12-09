@@ -13,9 +13,10 @@
 class CGAME {
     CTRUCK* axt;
     CCAR* axh;
-    // CDINAUSOR* akl;
-    // CBIRD* ac;
+    CDINAUSOR* akl;
+    CBIRD* ac;
     CPEOPLE cn;
+    sf::RenderWindow* window;
 public:
     CGAME ();
     CGAME(sf::RenderWindow& window);
@@ -27,7 +28,7 @@ public:
     CANIMAL* getAnimal();
     void resetGame();
     void exitGame(std::thread& thread);
-    void startGame();
+    void startGame(sf::Event& event);
     void loadGame(std::istream& is);
     void saveGame(std::ostream& os);
     void pauseGame(std::thread& thread);
@@ -35,8 +36,6 @@ public:
     void updatePosPeople(char direction);
     void updatePosVehicle();
     void updatePosAnimal();
-private:
-    sf::RenderWindow& window;
 };
 
 

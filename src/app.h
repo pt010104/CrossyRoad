@@ -10,11 +10,11 @@ public:
     void run();
 private:
     sf::RenderWindow window;
-    sf::CircleShape circle;
+    std::thread gameThread;
+    CGAME game;
     void processEvents();
     void update();
     void render();
-    CGAME game;
 };
 
 #endif 
