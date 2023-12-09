@@ -5,7 +5,7 @@ CGAME::CGAME(sf::RenderWindow& window) : window(&window){
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(50, 950); 
-    std::uniform_real_distribution<> speedDis(0.2f, 0.5f); 
+    std::uniform_real_distribution<> speedDis(0.1f, 0.3f); 
     // random birds 
     int numBirds = dis(gen) % 10 + 5; // 5-14
     for (int i = 0; i < numBirds; ++i) {
