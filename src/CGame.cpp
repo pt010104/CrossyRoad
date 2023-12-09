@@ -1,31 +1,58 @@
 #include "CGAME.h"
-CGAME::CGAME() : window(nullptr), axh(nullptr), ac(nullptr) {
+CGAME::CGAME() : window(nullptr) {
 }
-CGAME::CGAME(sf::RenderWindow& window) : window(&window), axh(new CCAR()), ac(new CBIRD()) {
+CGAME::CGAME(sf::RenderWindow& window) : window(&window){
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(50, 950); 
+    std::uniform_real_distribution<> speedDis(0.2f, 0.5f); 
+    // random birds 
+    int numBirds = dis(gen) % 10 + 5; // 5-14
+    for (int i = 0; i < numBirds; ++i) {
+        int randomX = dis(gen);
+        int randomY = dis(gen) % static_cast<int>(window.getSize().y); 
+        float randomSpeed = speedDis(gen); 
+        birds.emplace_back(window.getSize().x, randomX, randomY, randomSpeed);
+    }
 }
+
 
 CGAME::~CGAME() {
-     delete axh;
-    delete ac;
+
 }
 
-void CGAME::drawGame() {
+void CGAME::drawGame() 
+{
     if (window) {
-            cn.draw(*window);
+        cn.draw(*window);
+        for (auto& bird : birds) 
+            bird.draw(*window);
     }
 }
 CPEOPLE CGAME::getPeople() {
     return cn;
 }
 
-CVEHICLE* CGAME::getVehicle() {
-    return axh; 
+std::vector<CVEHICLE*> CGAME::getVehicles() {
+    std::vector<CVEHICLE*> vehicles;
+    for (auto& truck : trucks) {
+        vehicles.push_back(&truck);
+    }
+    for (auto& car : cars) {
+        vehicles.push_back(&car);
+    }
+    return vehicles;
 }
-
-CANIMAL* CGAME::getAnimal() {
-    return ac; 
+std::vector<CANIMAL*> CGAME::getAnimals() {
+    std::vector<CANIMAL*> animals;
+    for (auto& dino : dinos) {
+        animals.push_back(&dino);
+    }
+    for (auto& bird : birds) {
+        animals.push_back(&bird);
+    }
+    return animals;
 }
-
 void CGAME::resetGame() {
 }
 void CGAME::exitGame(std::thread& thread) {
@@ -45,7 +72,7 @@ void CGAME::startGame(sf::Event& event) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
             this->updatePosPeople('D');
         }
-
+        updatePosAnimal();
 }
 
 void CGAME::loadGame(std::istream& is) {
@@ -90,5 +117,7 @@ void CGAME::updatePosVehicle() {
 }
 
 void CGAME::updatePosAnimal() {
-        // Move CDINAUSOR and CBIRD
+     for (auto& bird : birds) {
+        bird.Move();
+     }
 }

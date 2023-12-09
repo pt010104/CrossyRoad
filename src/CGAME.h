@@ -8,13 +8,15 @@
 #include "CBIRD.h"
 #include "CPEOPLE.h"
 #include <thread>
+#include <iostream>
+#include <random>
 #include <SFML/Graphics.hpp>
 
 class CGAME {
-    CTRUCK* axt;
-    CCAR* axh;
-    CDINAUSOR* akl;
-    CBIRD* ac;
+std::vector<CTRUCK> trucks; 
+    std::vector<CCAR> cars;    
+    std::vector<CDINAUSOR> dinos;
+    std::vector<CBIRD> birds;   
     CPEOPLE cn;
     sf::RenderWindow* window;
 public:
@@ -24,8 +26,8 @@ public:
 
     void drawGame();
     CPEOPLE getPeople();
-    CVEHICLE* getVehicle();
-    CANIMAL* getAnimal();
+    std::vector<CVEHICLE*> getVehicles();
+    std::vector<CANIMAL*> getAnimals();
     void resetGame();
     void exitGame(std::thread& thread);
     void startGame(sf::Event& event);

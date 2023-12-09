@@ -5,10 +5,13 @@
 
 class CBIRD : public CANIMAL {
 private:
-    int speed = 1;
-    int direction = 1;
+    float speed;
+    int direction;
+    sf::RectangleShape birdShape;
 public:
-    void Move() override; 
+    CBIRD(int width, float startX, float startY, float birdSpeed);
+    void Move() override;
+    void draw(sf::RenderWindow& window) override;
 };
 
 #endif

@@ -1,12 +1,16 @@
 #ifndef CANIMAL_H
 #define CANIMAL_H
+#include <SFML/Graphics.hpp>
 
 class CANIMAL {
 protected:
-    int windowWidth = 1000;
+    float mX, mY;
+    int windowWidth;
 public:
-    int mX, mY;
+    CANIMAL(int width) : windowWidth(width), mX(0), mY(0) {}
     virtual void Move() = 0;
+    virtual void draw(sf::RenderWindow& window) = 0;
+    virtual ~CANIMAL() = default; 
 };
 
 #endif
