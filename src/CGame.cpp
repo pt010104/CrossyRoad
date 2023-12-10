@@ -6,29 +6,27 @@ CGAME::CGAME(sf::RenderWindow& window) : window(&window){
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(50, 950); 
     std::uniform_real_distribution<> speedDis(0.1f, 0.3f); 
-     const int birdHeight = 20; // Assuming bird height is 20
+     const int birdHeight = 80; 
     const int numLanes = window.getSize().y / birdHeight;
     std::vector<bool> lanesOccupied(numLanes, false);
 
     // random birds
-    int numBirds = 55; // 5-14
+    int numBirds = numLanes; 
     for (int i = 0; i < numBirds; ++i) {
         float randomSpeed = speedDis(gen);
 
-        // Find a free lane
         int lane = -1;
         for (int j = 0; j < numLanes; ++j) {
             if (!lanesOccupied[j]) {
                 lane = j;
-                lanesOccupied[j] = true; // Mark the lane as occupied
+                lanesOccupied[j] = true; 
                 break;
             }
         }
 
-        // If a free lane was found, create a bird in that lane
         if (lane != -1) {
             int randomX = dis(gen);
-            int randomY = lane * birdHeight; // Y-coordinate based on the lane
+            int randomY = lane * birdHeight; /
             birds.emplace_back(window.getSize().x, randomX, randomY, randomSpeed);
         }
     }
