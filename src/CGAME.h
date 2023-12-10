@@ -19,6 +19,13 @@ std::vector<CTRUCK> trucks;
     std::vector<CBIRD> birds;   
     CPEOPLE cn;
     sf::RenderWindow* window;
+    int numLanes;
+    std::vector<bool> lanes_visited;
+    std::vector<float> speed_lane;
+    std::vector<float> time_bird2;
+    const int laneHeight = 200;
+    std::vector <int> BirdsInLane;
+    std::vector<bool> secondBirdCreated;
 public:
     CGAME ();
     CGAME(sf::RenderWindow& window);

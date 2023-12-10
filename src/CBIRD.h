@@ -12,6 +12,7 @@ public:
     CBIRD(int width, float startX, float startY, float birdSpeed);
     void Move() override;
     void draw(sf::RenderWindow& window) override;
+    float getX() {return mX;}
 };
 
 #endif

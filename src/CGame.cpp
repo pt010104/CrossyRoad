@@ -1,33 +1,37 @@
 #include "CGAME.h"
 CGAME::CGAME() : window(nullptr) {
 }
-CGAME::CGAME(sf::RenderWindow& window) : window(&window){
+CGAME::CGAME(sf::RenderWindow& window) : window(&window)
+{
+    numLanes = window.getSize().y / laneHeight;
+    lanes_visited.assign(numLanes, false);
+    speed_lane.assign(numLanes, 0.0f);
+    time_bird2.assign(numLanes, 0.0f);
+    BirdsInLane.assign(numLanes, 0);
+    secondBirdCreated.assign(numLanes, false);
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(50, 950); 
-    std::uniform_real_distribution<> speedDis(0.1f, 0.3f); 
-     const int birdHeight = 80; 
-    const int numLanes = window.getSize().y / birdHeight;
-    std::vector<bool> lanesOccupied(numLanes, false);
+    std::uniform_real_distribution<> dis_bird1(200, 670);
+    std::uniform_real_distribution<> speedDis(0.08f, 0.1); 
+    std::uniform_int_distribution<> numBirdsDis(1, 2); 
 
     // random birds
-    int numBirds = numLanes; 
-    for (int i = 0; i < numBirds; ++i) {
-        float randomSpeed = speedDis(gen);
-
+    for (int i = 0; i < numLanes; ++i) {
         int lane = -1;
         for (int j = 0; j < numLanes; ++j) {
-            if (!lanesOccupied[j]) {
+            if (!lanes_visited[j]) {
+                BirdsInLane[i] = numBirdsDis(gen);        
+                time_bird2[i] = dis_bird1(gen);
+                speed_lane[j] = speedDis(gen);
                 lane = j;
-                lanesOccupied[j] = true; 
+                lanes_visited[j] = true; 
                 break;
             }
         }
-
         if (lane != -1) {
-            int randomX = dis(gen);
-            int randomY = lane * birdHeight; /
-            birds.emplace_back(window.getSize().x, randomX, randomY, randomSpeed);
+            int randomX = 5;
+            int randomY = lane * laneHeight; 
+            birds.emplace_back(window.getSize().x, randomX, randomY, speed_lane[lane]);
         }
     }
 }
@@ -131,7 +135,16 @@ void CGAME::updatePosVehicle() {
 }
 
 void CGAME::updatePosAnimal() {
-     for (auto& bird : birds) {
+
+
+    for (auto& bird : birds) {
         bird.Move();
      }
+    for (int i = 0; i < numLanes; ++i) {
+        if (birds[i].getX() == time_bird2[i] && !secondBirdCreated[i] &&BirdsInLane[i] == 2) {
+            int randomY = i * laneHeight;
+            birds.emplace_back(1000, 5, randomY, speed_lane[i]);
+            secondBirdCreated[i] = true; 
+        }
+    }
 }

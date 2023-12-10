@@ -10,9 +10,9 @@ CBIRD::CBIRD(int width, float startX, float startY, float birdSpeed)
 }
 void CBIRD::Move() {
     if (mX >= windowWidth) {
-        direction = -1;
+        mX = 5;
     } else if (mX <= 0) {
-        direction = 1;
+        mX = 870;
     }
     mX += speed * direction;
 }
