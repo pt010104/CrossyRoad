@@ -11,6 +11,8 @@ public:
 private:
     sf::RenderWindow window;
     std::thread gameThread;
+    sf::Clock clock;
+    float deltaTime;
     CGAME game;
     void processEvents();
     void update();

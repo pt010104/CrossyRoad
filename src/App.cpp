@@ -22,11 +22,13 @@ void App::processEvents() {
         if (event.type == sf::Event::Closed) {
             window.close();
         }
-        game.startGame(event);
     }
+    game.startGame(event);
 }
 
 void App::update() {
+    deltaTime = clock.restart().asSeconds();
+    game.updateAnimation(deltaTime);
     game.updatePosAnimal();
     game.updatePosVehicle();
 }

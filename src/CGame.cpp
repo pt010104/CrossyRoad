@@ -78,17 +78,25 @@ void CGAME::exitGame(std::thread& thread) {
 }
 
 void CGAME::startGame(sf::Event& event) {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-            this->updatePosPeople('W');
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-            this->updatePosPeople('A');
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-            this->updatePosPeople('S');
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-            this->updatePosPeople('D');
+        moveCooldown -= deltaTime;
+        if (moveCooldown <= 0.0f) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+                this->updatePosPeople('W');
+                moveCooldown = 0.005f;
+
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+                this->updatePosPeople('A');
+                moveCooldown = 0.005f;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+                this->updatePosPeople('S');
+                moveCooldown = 0.005f;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+                this->updatePosPeople('D');
+                moveCooldown = 0.005f;
+            }
         }
         updatePosAnimal();
 }
@@ -129,7 +137,10 @@ void CGAME::updatePosPeople(char direction) {
         }
     }
 }
-
+void CGAME::updateAnimation(float dt) {
+    cn.UpdateFrame(deltaTime);
+    deltaTime = dt;
+}
 void CGAME::updatePosVehicle() {
         // Move CTRUCK and CCAR
 }

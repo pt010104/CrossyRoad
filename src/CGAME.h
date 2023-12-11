@@ -13,7 +13,10 @@
 #include <SFML/Graphics.hpp>
 
 class CGAME {
-std::vector<CTRUCK> trucks; 
+    float moveCooldown;
+    float deltaTime;
+
+    std::vector<CTRUCK> trucks; 
     std::vector<CCAR> cars;    
     std::vector<CDINAUSOR> dinos;
     std::vector<CBIRD> birds;   
@@ -43,6 +46,7 @@ public:
     void pauseGame(std::thread& thread);
     void resumeGame(std::thread& thread);
     void updatePosPeople(char direction);
+    void updateAnimation(float deltatime);
     void updatePosVehicle();
     void updatePosAnimal();
 };

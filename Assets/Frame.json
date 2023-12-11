@@ -1,0 +1,85 @@
+{
+    "frames": {
+    "right_1": {
+        "x": 0,
+        "y": 0,
+        "width": 15,
+        "height": 17
+    },
+    "right_2": {
+        "x": 16,
+        "y": 1,
+        "width": 15,
+        "height": 16
+    },
+    "right_3": {
+        "x": 32,
+        "y": 0,
+        "width": 15,
+        "height": 17
+    },
+      "left_1": {
+        "x": 0,
+        "y": 28,
+        "width": 15,
+        "height": 17
+      },
+      "left_2": {
+        "x": 16,
+        "y": 29,
+        "width": 15,
+        "height": 16
+      },
+      "left_3": {
+        "x": 32,
+        "y": 28,
+        "width": 15,
+        "height": 17
+      },
+      "down_1": {
+        "x": 0,
+        "y": 60,
+        "width": 12,
+        "height": 17
+      },
+      "down_2": {
+        "x": 16,
+        "y": 61,
+        "width": 12,
+        "height": 15
+      },
+      "down_3": {
+        "x": 32,
+        "y": 60,
+        "width": 12,
+        "height": 17
+      },
+      "up_1": {
+        "x": 0,
+        "y": 92,
+        "width": 12,
+        "height": 17
+      },
+      "up_2": {
+        "x": 16,
+        "y": 93,
+        "width": 12,
+        "height": 15
+      },
+      "up_3": {
+        "x": 32,
+        "y": 92,
+        "width": 12,
+        "height": 17
+      }
+  },
+    "meta": {
+      "image": "RedChicken.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 96,
+        "h": 109
+      },
+      "scale": "1"
+    }
+  }
