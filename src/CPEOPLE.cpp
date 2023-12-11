@@ -26,6 +26,21 @@ CPEOPLE::CPEOPLE() : mState(true), windowWidth(1000), windowHeight(800), current
 CPEOPLE::CPEOPLE(int startX, int startY) : CPEOPLE() {
     mX = startX;
     mY = startY;
+    SpriteLoader loader;
+    if (!loader.LoadTexture("Assets/RedChicken.png", texture)) {
+    }
+    if (!loader.LoadAnimations("Assets/Frame.json", frames, animations)) {
+    }
+    sprite.setTexture(texture);
+    sprite.setScale(4.0f, 4.0f);
+
+    rectSourceSprite = sf::IntRect(
+        frames["down_1"].x,
+        frames["down_1"].y,
+        frames["down_1"].width,
+        frames["down_1"].height
+    );
+    sprite.setTextureRect(rectSourceSprite);
 }
 
 void CPEOPLE::Up() {
