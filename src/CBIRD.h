@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <string>
 #include "SpriteLoader.h"
-
+#include "TextureManager.h"
 class CBIRD : public CANIMAL {
 private:
     float speed;

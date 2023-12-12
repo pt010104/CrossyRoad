@@ -11,7 +11,7 @@
         secondBirdCreated.assign(numLanes, false);
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_real_distribution<> dis_bird1(200, 670);
+        std::uniform_real_distribution<> dis_bird1(300, 870);
         std::uniform_real_distribution<> speedDis(0.08f, 0.1); 
         std::uniform_int_distribution<> numBirdsDis(1, 2); 
 
@@ -157,7 +157,7 @@
             bird.Move();
         }
         for (int i = 0; i < numLanes; ++i) {
-            if (birds[i].getX() == time_bird2[i] && !secondBirdCreated[i] &&BirdsInLane[i] == 2) {
+            if (birds[i].getX() >= time_bird2[i] && !secondBirdCreated[i] &&BirdsInLane[i] == 2) {
                 int randomY = i * laneHeight;
                 birds.emplace_back(1000, 5, randomY, speed_lane[i]);
                 secondBirdCreated[i] = true; 
