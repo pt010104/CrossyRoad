@@ -29,6 +29,7 @@ class CGAME {
     std::vector<float> time_bird2;
     const int laneHeight = 200;
     std::vector <int> BirdsInLane;
+    std::vector <char> direction;
     std::vector<bool> secondBirdCreated;
 public:
     CGAME ();

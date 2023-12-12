@@ -8,7 +8,7 @@ protected:
     int windowWidth;
 public:
     CANIMAL();
-    CANIMAL(int width) : windowWidth(width), mX(0), mY(0) {}
+    CANIMAL(int width) : windowWidth(1000), mX(0), mY(0) {}
     virtual void Move() = 0;
     virtual void draw(sf::RenderWindow& window) = 0;
     virtual ~CANIMAL() = default; 

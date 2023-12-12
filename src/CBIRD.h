@@ -24,7 +24,7 @@ private:
     int numFrames; 
 public:
     CBIRD();
-    CBIRD(int width, float startX, float startY, float birdSpeed);
+    CBIRD(int width, float startX, float startY, float birdSpeed, int direct);
     void Move() override;
     void draw(sf::RenderWindow& window) override;
     float getX() {return mX;}
