@@ -1,24 +1,23 @@
-// CPEOPLE.cpp
 #include "CPEOPLE.h"
 
-CPEOPLE::CPEOPLE() : mState(true), windowWidth(1000), windowHeight(800), currentAnimation("down"), animationSpeed(0.2f), 
+CPEOPLE::CPEOPLE() : mState(true), windowWidth(1000), windowHeight(800), currentAnimation("up"), animationSpeed(0.2f), 
     frameTime(0.f), currentFrameIndex(0)
 {
-    mX = windowWidth/2;
-    mY = windowHeight/2; 
+    numFrames = 3;
+    mX = windowWidth/2-50;
+    mY = windowHeight-sprite.getGlobalBounds().height-100; 
     SpriteLoader loader;
     if (!loader.LoadTexture("Assets/RedChicken.png", texture)) {
     }
-    if (!loader.LoadAnimations("Assets/Frame.json", frames, animations)) {
+    if (!loader.LoadAnimations("Assets/player_chicken.json", frames, animations, numFrames)) {
     }
     sprite.setTexture(texture);
     sprite.setScale(4.0f, 4.0f);
-
     rectSourceSprite = sf::IntRect(
-        frames["down_1"].x,
-        frames["down_1"].y,
-        frames["down_1"].width,
-        frames["down_1"].height
+        frames["up_1"].x,
+        frames["up_1"].y,
+        frames["up_1"].width,
+        frames["up_1"].height
     );
     sprite.setTextureRect(rectSourceSprite);
 }
@@ -29,7 +28,7 @@ CPEOPLE::CPEOPLE(int startX, int startY) : CPEOPLE() {
     SpriteLoader loader;
     if (!loader.LoadTexture("Assets/RedChicken.png", texture)) {
     }
-    if (!loader.LoadAnimations("Assets/Frame.json", frames, animations)) {
+    if (!loader.LoadAnimations("Assets/Frame.json", frames, animations,numFrames)) {
     }
     sprite.setTexture(texture);
     sprite.setScale(4.0f, 4.0f);

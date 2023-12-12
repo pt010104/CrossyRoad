@@ -1,0 +1,37 @@
+{
+    "frames": {
+        "right_1": {
+            "x": 2,
+            "y": 1,
+            "width": 12,
+            "height": 13
+        },
+        "right_2": {
+            "x": 19,
+            "y": 2,
+            "width": 12,
+            "height": 13
+        },
+        "right_3": {
+            "x": 34,
+            "y": 1,
+            "width": 13,
+            "height": 13
+        },
+        "right_4": {
+            "x": 50,
+            "y": 0,
+            "width": 13,
+            "height": 12
+        }
+    },
+    "meta": {
+      "image": "Bird.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 64,
+        "h": 16
+      },
+      "scale": "1"
+    }
+  }

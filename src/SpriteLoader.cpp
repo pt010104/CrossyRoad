@@ -12,7 +12,7 @@ bool SpriteLoader::LoadTexture(const std::string& texturePath, sf::Texture& text
     return true;
 }
 bool SpriteLoader::LoadAnimations(const std::string& jsonPath, std::unordered_map<std::string, Frame>& frames, 
-    std::unordered_map<std::string, Animation>& animations) 
+    std::unordered_map<std::string, Animation>& animations, int numFrames) 
 {
     std::ifstream file(jsonPath);
     if (!file.is_open()) {
@@ -37,7 +37,7 @@ bool SpriteLoader::LoadAnimations(const std::string& jsonPath, std::unordered_ma
         Animation anim;
         anim.frameDuration = 0.1f; 
 
-        for (int i = 1; i <= 3; ++i) {
+        for (int i = 1; i <= numFrames; ++i) {
             std::string frameKey = dir + "_" + std::to_string(i);
             anim.frames.push_back(frames[frameKey]);
         }

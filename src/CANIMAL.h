@@ -7,6 +7,7 @@ protected:
     float mX, mY;
     int windowWidth;
 public:
+    CANIMAL();
     CANIMAL(int width) : windowWidth(width), mX(0), mY(0) {}
     virtual void Move() = 0;
     virtual void draw(sf::RenderWindow& window) = 0;

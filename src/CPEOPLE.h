@@ -22,6 +22,7 @@ private:
     float animationSpeed; 
     float frameTime; 
     size_t currentFrameIndex; 
+    int numFrames; //num frames per row
 
 public:
     CPEOPLE();
