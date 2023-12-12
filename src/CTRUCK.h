@@ -5,7 +5,7 @@
 
 class CTRUCK: public CVEHICLE {
 public:
-    void Move(int, int) override;
+    void move(int, int) override;
 };
 
 #endif

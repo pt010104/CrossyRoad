@@ -1,7 +1,7 @@
 #pragma once
-#include "CItem.h"
+#include "CVEHICLE.h"
 
-class CCAR : public CItem {
+class CCAR : public CVEHICLE {
 public:
-    void Conmove(int, int) override; 
+    void move(int, int) override; 
 };

@@ -1,6 +1,6 @@
 #include "CCAR.h"
 
-void CCAR::Conmove(int, int) {
+void CCAR::move(int, int) {
     int curx = this->getMX();
     int cury = this->getMY();
 
