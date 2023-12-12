@@ -14,6 +14,7 @@
 
 class CGAME {
     float moveCooldown;
+    float moveCooldown_animal;
     float deltaTime;
 
     std::vector<CTRUCK> trucks; 

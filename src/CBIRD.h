@@ -28,6 +28,9 @@ public:
     void Move() override;
     void draw(sf::RenderWindow& window) override;
     float getX() {return mX;}
+    void UpdateFrame(float deltaTime);
+    void UpdateAnimation(const std::string& direction);
+
 };
 
 #endif

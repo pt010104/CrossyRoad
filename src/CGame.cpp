@@ -138,7 +138,14 @@
         }
     }
     void CGAME::updateAnimation(float dt) {
+        moveCooldown_animal -= deltaTime;
         cn.UpdateFrame(deltaTime);
+        if (moveCooldown_animal <= 0.0f) {
+            for (auto& bird : birds) {
+                bird.UpdateFrame(deltaTime);
+            }
+            moveCooldown_animal = 0.1f;
+        }
         deltaTime = dt;
     }
     void CGAME::updatePosVehicle() {
