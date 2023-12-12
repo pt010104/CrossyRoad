@@ -15,6 +15,8 @@ private:
     sf::Sprite sprite;
     sf::Texture texture;
     sf::IntRect rectSourceSprite;
+    int spriteWidth;
+    int spriteHeight;
 
     std::unordered_map<std::string, Frame> frames;
     std::unordered_map<std::string, Animation> animations;

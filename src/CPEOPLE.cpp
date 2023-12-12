@@ -1,11 +1,10 @@
 #include "CPEOPLE.h"
-
+#include <iostream>
 CPEOPLE::CPEOPLE() : mState(true), windowWidth(1000), windowHeight(800), currentAnimation("up"), animationSpeed(0.2f), 
     frameTime(0.f), currentFrameIndex(0)
 {
     numFrames = 3;
-    mX = windowWidth/2-50;
-    mY = windowHeight-sprite.getGlobalBounds().height-100; 
+
     SpriteLoader loader;
     if (!loader.LoadTexture("Assets/RedChicken.png", texture)) {
     }
@@ -20,6 +19,10 @@ CPEOPLE::CPEOPLE() : mState(true), windowWidth(1000), windowHeight(800), current
         frames["up_1"].height
     );
     sprite.setTextureRect(rectSourceSprite);
+    mX = windowWidth/2-50;
+    mY = windowHeight-sprite.getGlobalBounds().height-100; 
+    spriteWidth = sprite.getGlobalBounds().width;
+    spriteHeight = sprite.getGlobalBounds().height;
 }
 
 CPEOPLE::CPEOPLE(int startX, int startY) : CPEOPLE() {
@@ -43,22 +46,22 @@ CPEOPLE::CPEOPLE(int startX, int startY) : CPEOPLE() {
 }
 
 void CPEOPLE::Up() {
-    mY = std::max(0, mY - 1);
+    mY = std::max(0 + spriteHeight, mY - 1);
     UpdateAnimation("up");
 }
 
 void CPEOPLE::Left() {
-    mX = std::max(0, mX - 1);
+    mX = std::max(0 + spriteWidth, mX - 1);
     UpdateAnimation("left");
 }
 
 void CPEOPLE::Right() {
-    mX = std::min(windowWidth, mX + 1);
+    mX = std::min(windowWidth - spriteWidth, mX + 1);
     UpdateAnimation("right");
 }
 
 void CPEOPLE::Down() {
-    mY = std::min(windowHeight, mY + 1);
+    mY = std::min(windowHeight - spriteHeight, mY + 1);
     UpdateAnimation("down");
 }
 
