@@ -36,8 +36,10 @@ public:
     void draw(sf::RenderWindow& window); 
     void UpdateFrame(float deltaTime);
     void UpdateAnimation(const std::string& direction);
-
-
+    int getX(){return mX;};
+    sf::FloatRect getGlobalBounds() const {
+        return sprite.getGlobalBounds();
+    }
     bool getState() const { return mState; }
     void setState(bool state) { mState = state; }
 };

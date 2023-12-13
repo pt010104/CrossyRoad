@@ -7,6 +7,7 @@
 #include "CDINOSAUR.h"
 #include "CBIRD.h"
 #include "CPEOPLE.h"
+#include "CollisionManager.h"
 #include <thread>
 #include <iostream>
 #include <random>
@@ -19,11 +20,10 @@ class CGAME {
     float moveCooldown;
     float moveCooldown_animal;
     float deltaTime;
-
+    bool stopGame;
     std::vector<CTRUCK> trucks; 
     std::vector<CCAR> cars;    
     std::vector<CDINOSAUR> dinos;
-    std::vector<CBIRD> birds;   
     CPEOPLE cn;
     std::vector<std::string> object_rand = {"birds","dinosaurs","cars","trucks"};
 
@@ -41,7 +41,7 @@ class CGAME {
 public:
     CGAME ();
     CGAME(sf::RenderWindow& window);
-    ~CGAME(){delete window;};
+    ~CGAME();
 
     void drawGame();
     CPEOPLE getPeople();

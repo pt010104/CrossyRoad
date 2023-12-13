@@ -4,37 +4,39 @@ CGAME::CGAME() : window(nullptr) {
 
 CGAME::CGAME(sf::RenderWindow& window) : window(&window)
     {
+        stopGame = false;
         numLanes = window.getSize().y / laneHeight;
         lanes_visited.assign(numLanes, false);
         speed_lane.assign(numLanes, 0.0f);
         time_obj2.assign(numLanes, 0.0f);
-        ObjInLane.assign(numLanes, 0);
+        ObjInLane.assign(numLanes, 1);
         secondObjCreated.assign(numLanes, false);
 
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<> dis1(0,1); //obj1 appears at x=0 or 955
-        std::uniform_real_distribution<> dis_obj2(400, 900); //obj2 will appear if obj2 across it
-        std::uniform_real_distribution<> speedDis(0.05f, 0.08); 
+        std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj2 across it
+        std::uniform_real_distribution<> speedDis(0.08f, 0.1); 
         std::uniform_int_distribution<> numBirdsDis(1, 2); 
         std::uniform_int_distribution<> randObj(0, 1); 
 
         // random obj
-        for (int j = 0; j < numLanes; ++j) {
+        for (int j = 0; j < numLanes-1; ++j) {
             if (!lanes_visited[j]) {
                 ObjInLane[j] = numBirdsDis(gen);        
-                time_obj2[j] = dis_obj2(gen); 
                 speed_lane[j] = speedDis(gen);
                 lanes_visited[j] = true; 
                 std::string type_obj = object_rand[randObj(gen)]; 
                 int randomX = (dis1(gen) == 0 ? 0 : 995);
                 direction.push_back(randomX == 0 ? 1 : -1);
+                time_obj2[j] = dis_obj2(gen) + direction[direction.size()-1]*200; 
+
                 int randomY = j * laneHeight; 
                 if (type_obj == "birds")
-                    objects.push_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[j],direction[j]));
+                    objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[j],direction[j]));
                 else
                 if (type_obj == "dinosaurs")
-                    objects.push_back(std::make_shared<CDINOSAUR>(window.getSize().x, randomX, randomY, speed_lane[j],direction[j]));            
+                    objects.emplace_back(std::make_shared<CDINOSAUR>(window.getSize().x, randomX, randomY, speed_lane[j],direction[j]));            
             }
         }
 }
@@ -43,36 +45,33 @@ CGAME::~CGAME() {
     }
 
 void CGAME::drawGame() 
-    {
+{
         if (window) {
             cn.draw(*window);
             for (auto& obj : objects) 
                 obj->draw(*window);
         }
-    }
+}
 CPEOPLE CGAME::getPeople() {
         return cn;
     }
 
 std::vector<CVEHICLE*> CGAME::getVehicles() {
-        std::vector<CVEHICLE*> vehicles;
-        for (auto& truck : trucks) {
-            vehicles.push_back(&truck);
-        }
-        for (auto& car : cars) {
-            vehicles.push_back(&car);
-        }
-        return vehicles;
+        // std::vector<CVEHICLE*> vehicles;
+        // for (auto& truck : trucks) {
+        //     vehicles.push_back(&truck);
+        // }
+        // for (auto& car : cars) {
+        //     vehicles.push_back(&car);
+        // }
+        // return vehicles;
     }
 std::vector<CANIMAL*> CGAME::getAnimals() {
-        std::vector<CANIMAL*> animals;
-        for (auto& dino : dinos) {
-            animals.push_back(&dino);
-        }
-        for (auto& bird : birds) {
-            animals.push_back(&bird);
-        }
-        return animals;
+        // std::vector<CANIMAL*> animals;
+        // for (auto& dino : dinos) {
+        //     animals.push_back(&dino);
+        // }
+        // return animals;
     }
 void CGAME::resetGame() {
     }
@@ -141,6 +140,8 @@ void CGAME::updatePosPeople(char direction) {
         }
     }
 void CGAME::updateAnimation(float dt) {
+    if(!stopGame)
+    {
         deltaTime = dt;
         moveCooldown_animal -= deltaTime;
         cn.UpdateFrame(deltaTime);
@@ -149,20 +150,34 @@ void CGAME::updateAnimation(float dt) {
             moveCooldown_animal = 0.1f;
         }
     }
+}
     void CGAME::updatePosVehicle() {
             // Move CTRUCK and CCAR
-    }
+}
 
 void CGAME::updatePosAnimal() {
         for (auto& obj : objects) {
-            obj->Move();
+            if(!stopGame)
+            {
+                if (CollisionManager::checkCollision(cn, *obj))
+                {
+                    cn.setState(false);
+                    stopGame = true;
+                }
+                else 
+                    obj->Move();
+            }
         }
-        for (int i = 0; i < numLanes; ++i) {
-            if (objects[i]->getX() >= time_obj2[i] && !secondObjCreated[i] &&ObjInLane[i] == 2) {
-                int randomY = i * laneHeight;
-                int x2 = direction[i] == 1 ? 0: 995;
-                objects.push_back(std::make_shared<CDINOSAUR>(1000, x2 , randomY, speed_lane[i],direction[i]));
-                secondObjCreated[i] = true; 
+        if(!stopGame)
+        {
+            for (int i = 0; i < numLanes; ++i) {
+                if ((direction[i] == 1 && objects[i]->getX() >= time_obj2[i]) || (direction[i] == -1 && objects[i]->getX() <= time_obj2[i]))
+                    if (!secondObjCreated[i] &&ObjInLane[i] == 2) {
+                        int randomY = i * laneHeight;
+                        int x2 = direction[i] == 1 ? 0: 995;
+                        objects.emplace_back(std::make_shared<CDINOSAUR>(1000, x2 , randomY, speed_lane[i],direction[i]));
+                        secondObjCreated[i] = true; 
+                    }
             }
         }
     }

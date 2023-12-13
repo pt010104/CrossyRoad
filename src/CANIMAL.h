@@ -30,6 +30,9 @@ public:
     void UpdateAnimation(const std::string& direction);
     virtual void draw(sf::RenderWindow& window) = 0;
     float getX() { return this->mX; }
+    sf::FloatRect getGlobalBounds() const {
+        return sprite.getGlobalBounds();
+    }
     virtual ~CANIMAL() = default; 
 };
 

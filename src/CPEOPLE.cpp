@@ -11,7 +11,7 @@ CPEOPLE::CPEOPLE() : mState(true), windowWidth(1000), windowHeight(800), current
     if (!loader.LoadAnimations("Assets/Player/Player_Chicken.json", frames, animations, numFrames)) {
     }
     sprite.setTexture(texture);
-    sprite.setScale(5.0f, 5.0f);
+    sprite.setScale(4.5f, 4.5f);
     rectSourceSprite = sf::IntRect(
         frames["up_1"].x,
         frames["up_1"].y,
@@ -23,6 +23,8 @@ CPEOPLE::CPEOPLE() : mState(true), windowWidth(1000), windowHeight(800), current
     mY = windowHeight-sprite.getGlobalBounds().height-100; 
     spriteWidth = sprite.getGlobalBounds().width;
     spriteHeight = sprite.getGlobalBounds().height;
+    sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
+
 }
 
 CPEOPLE::CPEOPLE(int startX, int startY) : CPEOPLE() {

@@ -4,7 +4,7 @@
 
 CANIMAL::CANIMAL() : windowWidth(1000), mX(0), mY(0) {}
 CANIMAL::CANIMAL(int width, float startX, float startY)
-    : windowWidth(width), mX(startX), mY(startY), currentFrameIndex(0), frameTime(0.0f),animationSpeed(0.1f)
+    : windowWidth(width), mX(startX), mY(startY), currentFrameIndex(0), frameTime(0.0f),animationSpeed(0.15f)
 {}
 void CANIMAL::UpdateFrame(float deltaTime) {
     //std::cout<<"Update frame test";

@@ -10,9 +10,9 @@ App::~App() {
 
 void App::run() {
     while (window.isOpen()) {
-        processEvents(); // Process window events
-        update(); // Update game state if necessary
-        render(); // Render the game state
+        processEvents(); 
+        update(); 
+        render(); 
     }
 }
 
