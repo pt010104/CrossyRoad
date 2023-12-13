@@ -12,7 +12,7 @@
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<> dis1(0,1);
-        std::uniform_real_distribution<> dis_bird1(300, 850); //bird2 will appear if bird1 across it
+        std::uniform_real_distribution<> dis_bird1(400, 900); //bird2 will appear if bird1 across it
         std::uniform_real_distribution<> speedDis(0.05f, 0.08); 
         std::uniform_int_distribution<> numBirdsDis(1, 2); 
 
@@ -23,8 +23,8 @@
                 time_bird2[j] = dis_bird1(gen); 
                 speed_lane[j] = speedDis(gen);
                 lanes_visited[j] = true; 
-                int randomX = (dis1(gen) == 0 ? 5 : 995);
-                direction.push_back(randomX == 5 ? 1 : -1);
+                int randomX = (dis1(gen) == 0 ? 0 : 995);
+                direction.push_back(randomX == 0 ? 1 : -1);
                 int randomY = j * laneHeight; 
                 birds.emplace_back(window.getSize().x, randomX, randomY, speed_lane[j],direction[j]);
         }
@@ -133,15 +133,13 @@
         }
     }
     void CGAME::updateAnimation(float dt) {
+        deltaTime = dt;
         moveCooldown_animal -= deltaTime;
         cn.UpdateFrame(deltaTime);
-        if (moveCooldown_animal <= 0.0f) {
             for (auto& bird : birds) {
                 bird.UpdateFrame(deltaTime);
-            }
             moveCooldown_animal = 0.1f;
         }
-        deltaTime = dt;
     }
     void CGAME::updatePosVehicle() {
             // Move CTRUCK and CCAR
@@ -154,7 +152,7 @@
         for (int i = 0; i < numLanes; ++i) {
             if (birds[i].getX() >= time_bird2[i] && !secondBirdCreated[i] &&BirdsInLane[i] == 2) {
                 int randomY = i * laneHeight;
-                int x2 = direction[i] == 1 ? 5: 995;
+                int x2 = direction[i] == 1 ? 0: 995;
                 birds.emplace_back(1000, x2, randomY, speed_lane[i],direction[i]);
                 secondBirdCreated[i] = true; 
             }

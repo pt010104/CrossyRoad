@@ -11,7 +11,7 @@ CPEOPLE::CPEOPLE() : mState(true), windowWidth(1000), windowHeight(800), current
     if (!loader.LoadAnimations("Assets/player_chicken.json", frames, animations, numFrames)) {
     }
     sprite.setTexture(texture);
-    sprite.setScale(4.0f, 4.0f);
+    sprite.setScale(5.0f, 5.0f);
     rectSourceSprite = sf::IntRect(
         frames["up_1"].x,
         frames["up_1"].y,
