@@ -6,6 +6,7 @@
 #include "CCAR.h"
 #include "CDINOSAUR.h"
 #include "CBIRD.h"
+#include "CBIRD2.h"
 #include "CPEOPLE.h"
 #include "CollisionManager.h"
 #include <thread>
@@ -25,7 +26,7 @@ class CGAME {
     std::vector<CCAR> cars;    
     std::vector<CDINOSAUR> dinos;
     CPEOPLE cn;
-    std::vector<std::string> object_rand = {"birds","dinosaurs","cars","trucks"};
+    std::vector<std::string> object_rand = {"birds","dinosaurs","bird2","cars","trucks"};
 
     sf::RenderWindow* window;
     int numLanes;

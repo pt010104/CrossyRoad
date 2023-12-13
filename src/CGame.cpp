@@ -18,10 +18,10 @@ CGAME::CGAME(sf::RenderWindow& window) : window(&window)
         std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj2 across it
         std::uniform_real_distribution<> speedDis(0.08f, 0.1); 
         std::uniform_int_distribution<> numBirdsDis(1, 2); 
-        std::uniform_int_distribution<> randObj(0, 1); 
+        std::uniform_int_distribution<> randObj(0, 2); 
 
         // random obj
-        for (int j = 0; j < numLanes-1; ++j) {
+        for (int j = 0; j < numLanes; ++j) {
             if (!lanes_visited[j]) {
                 ObjInLane[j] = numBirdsDis(gen);        
                 speed_lane[j] = speedDis(gen);
@@ -29,14 +29,17 @@ CGAME::CGAME(sf::RenderWindow& window) : window(&window)
                 std::string type_obj = object_rand[randObj(gen)]; 
                 int randomX = (dis1(gen) == 0 ? 0 : 995);
                 direction.push_back(randomX == 0 ? 1 : -1);
-                time_obj2[j] = dis_obj2(gen) + direction[direction.size()-1]*200; 
+                time_obj2[j] = dis_obj2(gen) + direction[j]*200; 
 
                 int randomY = j * laneHeight; 
                 if (type_obj == "birds")
                     objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[j],direction[j]));
                 else
                 if (type_obj == "dinosaurs")
-                    objects.emplace_back(std::make_shared<CDINOSAUR>(window.getSize().x, randomX, randomY, speed_lane[j],direction[j]));            
+                    objects.emplace_back(std::make_shared<CDINOSAUR>(window.getSize().x, randomX, randomY, speed_lane[j],direction[j]));       
+ else
+                if (type_obj == "birds2")
+                    objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY, speed_lane[j],direction[j]));                
             }
         }
 }
@@ -175,7 +178,7 @@ void CGAME::updatePosAnimal() {
                     if (!secondObjCreated[i] &&ObjInLane[i] == 2) {
                         int randomY = i * laneHeight;
                         int x2 = direction[i] == 1 ? 0: 995;
-                        objects.emplace_back(std::make_shared<CDINOSAUR>(1000, x2 , randomY, speed_lane[i],direction[i]));
+                        objects.emplace_back(std::make_shared<CBIRD2>(1000, x2 , randomY, speed_lane[i],direction[i]));
                         secondObjCreated[i] = true; 
                     }
             }
