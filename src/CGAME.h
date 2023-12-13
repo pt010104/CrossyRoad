@@ -11,6 +11,9 @@
 #include <iostream>
 #include <random>
 #include <SFML/Graphics.hpp>
+#include <memory>
+#include <vector>
+
 
 class CGAME {
     float moveCooldown;
@@ -22,6 +25,7 @@ class CGAME {
     std::vector<CDINOSAUR> dinos;
     std::vector<CBIRD> birds;   
     CPEOPLE cn;
+    std::vector<std::string> object_rand = {"birds","dinosaurs","cars","trucks"};
 
     sf::RenderWindow* window;
     int numLanes;
@@ -32,10 +36,12 @@ class CGAME {
     std::vector <int> ObjInLane;
     std::vector <char> direction;
     std::vector<bool> secondObjCreated;
+    std::vector<std::shared_ptr<CANIMAL>> objects;
+
 public:
     CGAME ();
     CGAME(sf::RenderWindow& window);
-    ~CGAME();
+    ~CGAME(){delete window;};
 
     void drawGame();
     CPEOPLE getPeople();

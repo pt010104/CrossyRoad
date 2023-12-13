@@ -16,7 +16,7 @@ CDINOSAUR::CDINOSAUR(int width, float startX, float startY, float birdSpeed, int
             std::cerr<<"Failed to load Json Bird";
         }
         sprite.setTexture(TextureManager::GetTexture("Assets/Animal/Dinausor.png"));
-        sprite.setScale(7.0f,7.0f);
+        sprite.setScale(6.0f,6.0f);
         rectSourceSprite = sf::IntRect(
             frames["right_1"].x,
             frames["right_1"].y,
@@ -25,7 +25,7 @@ CDINOSAUR::CDINOSAUR(int width, float startX, float startY, float birdSpeed, int
         );
             
 }
-void CDINOSAUR::Move() {
+void CDINOSAUR::Move()  {
     if (mX >= windowWidth) {
         mX = 0;
     } else if (mX+sprite.getGlobalBounds().width <= 0) {

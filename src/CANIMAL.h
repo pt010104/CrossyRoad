@@ -25,11 +25,11 @@ protected:
 public:
     CANIMAL();
     CANIMAL(int width, float startX, float startY);
-    virtual void Move() = 0;
+    virtual void Move()  = 0;
     void UpdateFrame(float deltaTime);
     void UpdateAnimation(const std::string& direction);
     virtual void draw(sf::RenderWindow& window) = 0;
-    float getX() { return mX; }
+    float getX() { return this->mX; }
     virtual ~CANIMAL() = default; 
 };
 
