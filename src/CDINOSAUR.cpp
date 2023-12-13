@@ -1,21 +1,21 @@
-#include "CBIRD.h"
+#include "CDINOSAUR.h"
 #include <iostream>
-CBIRD::CBIRD()
+CDINOSAUR::CDINOSAUR()
 {}
-CBIRD::CBIRD(int width, float startX, float startY, float birdSpeed, int direct)
+CDINOSAUR::CDINOSAUR(int width, float startX, float startY, float birdSpeed, int direct)
     : CANIMAL(width, startX, startY), speed(birdSpeed), direction(direct)
 {
         mX = startX;
         mY = startY;
         numFrames = 4;
         SpriteLoader loader;
-        if (!loader.LoadTexture("Assets/Animal/Bird.png", texture)) {
+        if (!loader.LoadTexture("Assets/Animal/Dinausor.png", texture)) {
             std::cerr<<"Failed to load texture";
         }
-        if (!loader.LoadAnimations("Assets/Animal/Bird.json", frames, animations, numFrames)) {
+        if (!loader.LoadAnimations("Assets/Animal/Dinausor.json", frames, animations, numFrames)) {
             std::cerr<<"Failed to load Json Bird";
         }
-        sprite.setTexture(TextureManager::GetTexture("Assets/Animal/Bird.png"));
+        sprite.setTexture(TextureManager::GetTexture("Assets/Animal/Dinausor.png"));
         sprite.setScale(7.0f,7.0f);
         rectSourceSprite = sf::IntRect(
             frames["right_1"].x,
@@ -25,7 +25,7 @@ CBIRD::CBIRD(int width, float startX, float startY, float birdSpeed, int direct)
         );
             
 }
-void CBIRD::Move() {
+void CDINOSAUR::Move() {
     if (mX >= windowWidth) {
         mX = 0;
     } else if (mX+sprite.getGlobalBounds().width <= 0) {
@@ -35,7 +35,7 @@ void CBIRD::Move() {
     UpdateAnimation("right");
 }
 
-void CBIRD::draw(sf::RenderWindow& window) {
+void CDINOSAUR::draw(sf::RenderWindow& window) {
     sprite.setPosition(mX,mY);
     window.draw(sprite);
 }

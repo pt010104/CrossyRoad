@@ -6,9 +6,9 @@
         numLanes = window.getSize().y / laneHeight;
         lanes_visited.assign(numLanes, false);
         speed_lane.assign(numLanes, 0.0f);
-        time_bird2.assign(numLanes, 0.0f);
-        BirdsInLane.assign(numLanes, 0);
-        secondBirdCreated.assign(numLanes, false);
+        time_obj2.assign(numLanes, 0.0f);
+        ObjInLane.assign(numLanes, 0);
+        secondObjCreated.assign(numLanes, false);
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<> dis1(0,1);
@@ -19,8 +19,8 @@
         // random birds
         for (int j = 0; j < numLanes; ++j) {
             if (!lanes_visited[j]) {
-                BirdsInLane[j] = numBirdsDis(gen);        
-                time_bird2[j] = dis_bird1(gen); 
+                ObjInLane[j] = numBirdsDis(gen);        
+                time_obj2[j] = dis_bird1(gen); 
                 speed_lane[j] = speedDis(gen);
                 lanes_visited[j] = true; 
                 int randomX = (dis1(gen) == 0 ? 0 : 995);
@@ -150,11 +150,11 @@
             bird.Move();
         }
         for (int i = 0; i < numLanes; ++i) {
-            if (birds[i].getX() >= time_bird2[i] && !secondBirdCreated[i] &&BirdsInLane[i] == 2) {
+            if (birds[i].getX() >= time_obj2[i] && !secondObjCreated[i] &&ObjInLane[i] == 2) {
                 int randomY = i * laneHeight;
                 int x2 = direction[i] == 1 ? 0: 995;
                 birds.emplace_back(1000, x2, randomY, speed_lane[i],direction[i]);
-                secondBirdCreated[i] = true; 
+                secondObjCreated[i] = true; 
             }
         }
     }

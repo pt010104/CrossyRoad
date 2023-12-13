@@ -4,7 +4,7 @@
 #include <fstream>
 #include "CTRUCK.h"
 #include "CCAR.h"
-#include "CDINAUSOR.h"
+#include "CDINOSAUR.h"
 #include "CBIRD.h"
 #include "CPEOPLE.h"
 #include <thread>
@@ -19,18 +19,19 @@ class CGAME {
 
     std::vector<CTRUCK> trucks; 
     std::vector<CCAR> cars;    
-    std::vector<CDINAUSOR> dinos;
+    std::vector<CDINOSAUR> dinos;
     std::vector<CBIRD> birds;   
     CPEOPLE cn;
+
     sf::RenderWindow* window;
     int numLanes;
     std::vector<bool> lanes_visited;
     std::vector<float> speed_lane;
-    std::vector<float> time_bird2;
+    std::vector<float> time_obj2;
     const int laneHeight = 200;
-    std::vector <int> BirdsInLane;
+    std::vector <int> ObjInLane;
     std::vector <char> direction;
-    std::vector<bool> secondBirdCreated;
+    std::vector<bool> secondObjCreated;
 public:
     CGAME ();
     CGAME(sf::RenderWindow& window);

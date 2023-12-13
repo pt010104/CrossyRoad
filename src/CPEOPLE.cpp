@@ -6,9 +6,9 @@ CPEOPLE::CPEOPLE() : mState(true), windowWidth(1000), windowHeight(800), current
     numFrames = 3;
 
     SpriteLoader loader;
-    if (!loader.LoadTexture("Assets/RedChicken.png", texture)) {
+    if (!loader.LoadTexture("Assets/Player/Player_Chicken.png", texture)) {
     }
-    if (!loader.LoadAnimations("Assets/player_chicken.json", frames, animations, numFrames)) {
+    if (!loader.LoadAnimations("Assets/Player/Player_Chicken.json", frames, animations, numFrames)) {
     }
     sprite.setTexture(texture);
     sprite.setScale(5.0f, 5.0f);
