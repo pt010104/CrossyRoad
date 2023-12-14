@@ -23,21 +23,18 @@ CDINOSAUR::CDINOSAUR(int width, float startX, float startY, float birdSpeed, int
             frames["right_1"].width,
             frames["right_1"].height
         );
+        sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
+        radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
             
 }
 void CDINOSAUR::Move()  {
     if (direction==-1)
         sprite.setScale(-6.0f, 6.0f);
     if (mX >= windowWidth) {
-        mX = 0;
+        mX = 2;
     } else if (mX+sprite.getGlobalBounds().width <= 0) {
-        mX =1000;
+        mX =955;
     }
     mX += speed * direction;
     UpdateAnimation("right");
-}
-
-void CDINOSAUR::draw(sf::RenderWindow& window) {
-    sprite.setPosition(mX,mY);
-    window.draw(sprite);
 }

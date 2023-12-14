@@ -24,6 +24,7 @@ CPEOPLE::CPEOPLE() : mState(true), windowWidth(1000), windowHeight(800), current
     spriteWidth = sprite.getGlobalBounds().width;
     spriteHeight = sprite.getGlobalBounds().height;
     sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
+    radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
 
 }
 
@@ -90,6 +91,13 @@ void CPEOPLE::UpdateAnimation(const std::string& direction) {
 }
 
 void CPEOPLE::draw(sf::RenderWindow& window) {
-    sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
+    sprite.setPosition(mX,mY);
+    sf::RectangleShape boundingBox;
+    boundingBox.setPosition(sprite.getPosition());
+    boundingBox.setSize(sf::Vector2f(sprite.getGlobalBounds().width-5,sprite.getGlobalBounds().height));
+    boundingBox.setFillColor((sf::Color::Transparent));
+    boundingBox.setOutlineColor(sf::Color::Red);
+    boundingBox.setOutlineThickness(1.f);
     window.draw(sprite);
+    window.draw(boundingBox);
 }

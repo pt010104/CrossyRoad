@@ -11,6 +11,7 @@ private:
     bool mState;
     int windowWidth = 1000;
     int windowHeight = 800;
+    float radius;
     
     sf::Sprite sprite;
     sf::Texture texture;
@@ -37,8 +38,14 @@ public:
     void UpdateFrame(float deltaTime);
     void UpdateAnimation(const std::string& direction);
     int getX(){return mX;};
-    sf::FloatRect getGlobalBounds() const {
+    sf::FloatRect get_GlobalBounds() const {
         return sprite.getGlobalBounds();
+    }
+    sf::Vector2f get_Position() const{
+        return sprite.getPosition();
+    }
+    float getRadius() const {
+        return radius;
     }
     bool getState() const { return mState; }
     void setState(bool state) { mState = state; }

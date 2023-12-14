@@ -30,3 +30,15 @@ void CANIMAL::UpdateAnimation(const std::string& direction) {
         this->sprite.setTextureRect(rectSourceSprite);
     }
 }
+void CANIMAL::draw(sf::RenderWindow& window) {
+    sprite.setPosition(mX,mY);
+    sf::RectangleShape boundingBox;
+    boundingBox.setPosition(sprite.getPosition());
+    boundingBox.setSize(sf::Vector2f(sprite.getGlobalBounds().width-15,sprite.getGlobalBounds().height));
+    boundingBox.setFillColor((sf::Color::Transparent));
+    boundingBox.setOutlineColor(sf::Color::Red);
+    boundingBox.setOutlineThickness(1.f);
+    window.draw(sprite);
+    window.draw(boundingBox);
+
+}

@@ -24,6 +24,8 @@ CBIRD2::CBIRD2(int width, float startX, float startY, float birdSpeed, int direc
             frames["right_1"].height
         );
         sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
+        radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
+
 
             
 }
@@ -31,15 +33,10 @@ void CBIRD2::Move()   {
     if (direction==-1)
         sprite.setScale(-4.0f, 4.0f);
     if (mX >= windowWidth) {
-        mX = 0;
+        mX = 2;
     } else if (mX+sprite.getGlobalBounds().width <= 0) {
-        mX =1000;
+        mX =955;
     }
     mX += speed * direction;
     UpdateAnimation("right");
-}
-
-void CBIRD2::draw(sf::RenderWindow& window) {
-    sprite.setPosition(mX,mY);
-    window.draw(sprite);
 }

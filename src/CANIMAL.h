@@ -11,6 +11,7 @@ class CANIMAL {
 protected:
 
     float mX, mY;
+    float radius;
     int windowWidth;
     sf::Texture texture;
     sf::Sprite sprite;
@@ -28,10 +29,16 @@ public:
     virtual void Move()  = 0;
     void UpdateFrame(float deltaTime);
     void UpdateAnimation(const std::string& direction);
-    virtual void draw(sf::RenderWindow& window) = 0;
+    virtual void draw(sf::RenderWindow& window);
     float getX() { return this->mX; }
-    sf::FloatRect getGlobalBounds() const {
+    sf::FloatRect get_GlobalBounds() const {
         return sprite.getGlobalBounds();
+    }
+    sf::Vector2f get_Position() const{
+            return sf::Vector2f(this->sprite.getGlobalBounds().width,this->sprite.getGlobalBounds().height);
+    }
+    float getRadius() const {
+        return radius;
     }
     virtual ~CANIMAL() = default; 
 };
