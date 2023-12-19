@@ -30,16 +30,10 @@ public:
     void UpdateFrame(float deltaTime);
     void UpdateAnimation(const std::string& direction);
     virtual void draw(sf::RenderWindow& window);
-    float getX() { return this->mX; }
-    sf::FloatRect get_GlobalBounds() const {
-        return this->sprite.getGlobalBounds();
-    }
-    sf::Vector2f get_Position() const{
-            return sf::Vector2f(this->sprite.getGlobalBounds().width,this->sprite.getGlobalBounds().height);
-    }
-    float getRadius() const {
-        return this->radius;
-    }
+    float getX();
+    sf::FloatRect get_GlobalBounds() const;
+    sf::Vector2f get_Position();
+    float getRadius() const;
     virtual ~CANIMAL() = default; 
 };
 

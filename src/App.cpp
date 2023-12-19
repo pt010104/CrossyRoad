@@ -19,8 +19,8 @@ void App::run() {
                 }
             }
             game.startGame();
-            update(); 
             render(); 
+            update(); 
         }
         catch(const std::exception& e){
             std::cerr << "Exception: " << e.what() << std::endl;

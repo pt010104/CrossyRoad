@@ -42,3 +42,18 @@ void CANIMAL::draw(sf::RenderWindow& window) {
     window.draw(sprite);
 
 }
+float CANIMAL::getX() {
+    return this->mX;
+}
+
+sf::FloatRect CANIMAL::get_GlobalBounds() const {
+    return this->sprite.getGlobalBounds();
+}
+
+sf::Vector2f CANIMAL::get_Position() {
+    return this->sprite.getPosition();
+}
+
+float CANIMAL::getRadius() const {
+    return this->radius;
+}

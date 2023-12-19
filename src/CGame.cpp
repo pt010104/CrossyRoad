@@ -104,8 +104,7 @@ void CGAME::startGame() {
                     moveCooldown = 0.007f;
                 }
             }
-            updatePosAnimal();
-    }
+}
 
 void CGAME::loadGame(std::istream& is) {
     }

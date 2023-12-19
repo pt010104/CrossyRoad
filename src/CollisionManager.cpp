@@ -1,7 +1,7 @@
 #include "CollisionManager.h"
 #include <cmath>
 
-bool CollisionManager::checkCollision(const CPEOPLE& people, const CANIMAL& animal) {
+bool CollisionManager::checkCollision(CPEOPLE& people, CANIMAL& animal) {
     sf::Vector2f pos1 = people.get_Position();
     sf::Vector2f pos2 = animal.get_Position();
     float dx = (pos1.x - pos2.x);

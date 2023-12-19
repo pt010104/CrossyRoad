@@ -6,7 +6,7 @@
 
 class CollisionManager {
 public:
-    static bool checkCollision(const CPEOPLE& people, const CANIMAL& animal);
+    static bool checkCollision( CPEOPLE& people, CANIMAL& animal);
 };
 
 #endif 
