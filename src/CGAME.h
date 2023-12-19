@@ -26,7 +26,7 @@ class CGAME {
     std::vector<CCAR> cars;    
     std::vector<CDINOSAUR> dinos;
     CPEOPLE cn;
-    std::vector<std::string> object_rand = {"birds","dinosaurs","bird2","cars","trucks"};
+    std::vector<std::string> object_rand = {"birds","dinosaurs","birds2","cars","trucks"};
 
     sf::RenderWindow* window;
     int numLanes;
@@ -50,7 +50,7 @@ public:
     std::vector<CANIMAL*> getAnimals();
     void resetGame();
     void exitGame(std::thread& thread);
-    void startGame(sf::Event& event);
+    void startGame();
     void loadGame(std::istream& is);
     void saveGame(std::ostream& os);
     void pauseGame(std::thread& thread);

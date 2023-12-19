@@ -1,5 +1,6 @@
 #include "App.h"
-
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
 App::App() : window(sf::VideoMode(1000, 800), "Crossy Road"), game(window) {
 }
 App::~App() {
@@ -7,23 +8,28 @@ App::~App() {
         gameThread.join();
     }
 }
-
+    
 void App::run() {
     while (window.isOpen()) {
-        processEvents(); 
-        update(); 
-        render(); 
+        try{
+            sf::Event event;
+            while (window.pollEvent(event)) {
+                if (event.type == sf::Event::Closed) {
+                    window.close();
+                }
+            }
+            game.startGame();
+            update(); 
+            render(); 
+        }
+        catch(const std::exception& e){
+            std::cerr << "Exception: " << e.what() << std::endl;
+        }
     }
 }
 
 void App::processEvents() {
-    sf::Event event;
-    while (window.pollEvent(event)) {
-        if (event.type == sf::Event::Closed) {
-            window.close();
-        }
-    }
-    game.startGame(event);
+    
 }
 
 void App::update() {

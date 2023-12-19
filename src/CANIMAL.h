@@ -32,13 +32,13 @@ public:
     virtual void draw(sf::RenderWindow& window);
     float getX() { return this->mX; }
     sf::FloatRect get_GlobalBounds() const {
-        return sprite.getGlobalBounds();
+        return this->sprite.getGlobalBounds();
     }
     sf::Vector2f get_Position() const{
             return sf::Vector2f(this->sprite.getGlobalBounds().width,this->sprite.getGlobalBounds().height);
     }
     float getRadius() const {
-        return radius;
+        return this->radius;
     }
     virtual ~CANIMAL() = default; 
 };

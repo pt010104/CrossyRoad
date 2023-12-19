@@ -1,7 +1,8 @@
 #include "src/App.h"
 #include <iostream>
 int main() {
-    App app; // Create the App object on the stack
-    app.run(); // Start the game loop
+    App* app = new App; 
+    app->run(); 
+    delete app;
     return 0;
 }

@@ -37,15 +37,16 @@ CGAME::CGAME(sf::RenderWindow& window) : window(&window)
                 else
                 if (type_obj == "dinosaurs")
                     objects.emplace_back(std::make_shared<CDINOSAUR>(window.getSize().x, randomX, randomY, speed_lane[j],direction[j]));       
- else
+                else
                 if (type_obj == "birds2")
                     objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY, speed_lane[j],direction[j]));                
             }
         }
 }
 CGAME::~CGAME() {
+    delete window;
 
-    }
+}
 
 void CGAME::drawGame() 
 {
@@ -82,7 +83,7 @@ void CGAME::exitGame(std::thread& thread) {
             // Exit thread
     }
 
-void CGAME::startGame(sf::Event& event) {
+void CGAME::startGame() {
             moveCooldown -= deltaTime;
             if (moveCooldown <= 0.0f) {
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {

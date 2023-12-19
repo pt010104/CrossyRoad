@@ -46,6 +46,10 @@ CPEOPLE::CPEOPLE(int startX, int startY) : CPEOPLE() {
         frames["down_1"].height
     );
     sprite.setTextureRect(rectSourceSprite);
+    spriteWidth = sprite.getGlobalBounds().width;
+    spriteHeight = sprite.getGlobalBounds().height;
+    sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
+    radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
 }
 
 void CPEOPLE::Up() {
