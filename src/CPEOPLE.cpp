@@ -3,7 +3,7 @@
 CPEOPLE::CPEOPLE() : mState(true), windowWidth(1000), windowHeight(800), currentAnimation("up"), animationSpeed(0.2f), 
     frameTime(0.f), currentFrameIndex(0)
 {
-    numFrames = 3;
+    numFrames = 5;
 
     SpriteLoader loader;
     if (!loader.LoadTexture("Assets/Player/Player_Chicken.png", texture)) {
@@ -32,9 +32,9 @@ CPEOPLE::CPEOPLE(int startX, int startY) : CPEOPLE() {
     mX = startX;
     mY = startY;
     SpriteLoader loader;
-    if (!loader.LoadTexture("Assets/RedChicken.png", texture)) {
+    if (!loader.LoadTexture("Assets/Player/Player_Chicken.png", texture)) {
     }
-    if (!loader.LoadAnimations("Assets/Frame.json", frames, animations,numFrames)) {
+    if (!loader.LoadAnimations("Assets/Player/Player_Chicken.json", frames, animations,numFrames)) {
     }
     sprite.setTexture(texture);
     sprite.setScale(4.0f, 4.0f);
@@ -71,15 +71,22 @@ void CPEOPLE::Down() {
     mY = std::min(windowHeight - spriteHeight, mY + 1);
     UpdateAnimation("down");
 }
-
+void CPEOPLE::Died(){
+    UpdateAnimation("die");
+}
 void CPEOPLE::UpdateFrame(float deltaTime) {
         frameTime += deltaTime;
+
         if (frameTime >= animationSpeed) {
             frameTime = 0.f; 
             currentFrameIndex = (currentFrameIndex + 1) % animations[currentAnimation].frames.size();
             Frame& newFrame = animations[currentAnimation].frames[currentFrameIndex];
             rectSourceSprite = sf::IntRect(newFrame.x, newFrame.y, newFrame.width, newFrame.height);
             sprite.setTextureRect(rectSourceSprite);
+        }
+        if (currentAnimation == "die"&&currentFrameIndex == 4)
+        {
+                    mState=false;
         }
 }
 

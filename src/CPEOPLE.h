@@ -48,7 +48,7 @@ public:
         return radius;
     }
     bool getState() const { return mState; }
-    void setState(bool state) { mState = state; }
+    void Died();
 };
 
 #endif

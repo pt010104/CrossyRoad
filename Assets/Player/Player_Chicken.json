@@ -71,14 +71,44 @@
         "y": 92,
         "width": 12,
         "height": 17
+      },
+      "die_1": {
+        "x": 0,
+        "y": 111,
+        "width": 7,
+        "height": 7
+      },
+      "die_2": {
+          "x": 16,
+          "y": 111,
+          "width": 7,
+          "height": 7
+      },
+      "die_3": {
+          "x": 28,
+          "y": 109,
+          "width": 14,
+          "height": 13
+      },
+      "die_4": {
+          "x": 61,
+          "y": 109,
+          "width": 11,
+          "height": 13
+      },
+      "die_5": {
+          "x": 77,
+          "y": 109,
+          "width": 13,
+          "height": 13
       }
   },
     "meta": {
       "image": "RedChicken.png",
       "format": "RGBA8888",
       "size": {
-        "w": 96,
-        "h": 109
+        "w": 90,
+        "h": 121
       },
       "scale": "1"
     }

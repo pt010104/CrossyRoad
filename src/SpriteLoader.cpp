@@ -32,17 +32,17 @@ bool SpriteLoader::LoadAnimations(const std::string& jsonPath, std::unordered_ma
         };
         frames[el.key()] = frame;
     }
-    std::string directions[] = {"right", "left", "down", "up"};
+    std::string directions[] = {"right", "left", "down", "up","die"};
     for (const auto& dir : directions) {
         Animation anim;
         anim.frameDuration = 0.1f; 
 
         for (int i = 1; i <= numFrames; ++i) {
             std::string frameKey = dir + "_" + std::to_string(i);
-            anim.frames.push_back(frames[frameKey]);
+            if (frames.find(frameKey) != frames.end()) 
+                anim.frames.push_back(frames[frameKey]);
         }
         animations[dir] = anim;
     }
-
     return true;
 }
