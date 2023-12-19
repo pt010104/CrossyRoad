@@ -68,7 +68,7 @@ void CPEOPLE::Right() {
 }
 
 void CPEOPLE::Down() {
-    mY = mY + 1;
+    mY = std::min(windowHeight - spriteHeight, mY + 1);
     UpdateAnimation("down");
 }
 void CPEOPLE::Died(){
