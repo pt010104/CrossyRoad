@@ -53,7 +53,7 @@ CPEOPLE::CPEOPLE(int startX, int startY) : CPEOPLE() {
 }
 
 void CPEOPLE::Up() {
-    mY = std::max(0 + spriteHeight, mY - 1);
+    mY = mY - 1;
     UpdateAnimation("up");
 }
 
@@ -68,7 +68,7 @@ void CPEOPLE::Right() {
 }
 
 void CPEOPLE::Down() {
-    mY = std::min(windowHeight - spriteHeight, mY + 1);
+    mY = mY + 1;
     UpdateAnimation("down");
 }
 void CPEOPLE::Died(){

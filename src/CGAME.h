@@ -50,7 +50,7 @@ public:
     std::vector<CANIMAL*> getAnimals();
     void resetGame();
     void exitGame(std::thread& thread);
-    void startGame();
+    void startGame(sf::RenderWindow& window);
     void loadGame(std::istream& is);
     void saveGame(std::ostream& os);
     void pauseGame(std::thread& thread);

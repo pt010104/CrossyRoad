@@ -84,7 +84,8 @@ void CGAME::exitGame(std::thread& thread) {
             // Exit thread
     }
 
-void CGAME::startGame() {
+void CGAME::startGame(sf::RenderWindow& window) {   
+            sf::View view(window.getDefaultView());
             moveCooldown -= deltaTime;
             if (moveCooldown <= 0.0f) {
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
@@ -105,6 +106,15 @@ void CGAME::startGame() {
                     moveCooldown = 0.007f;
                 }
             }
+            //move camera
+            sf::Vector2f playerPosition = cn.get_Position();
+            int threshold = 100;            
+            float bias = 0.05f;
+            if (playerPosition.y < view.getCenter().y - threshold) {
+                view.setCenter(view.getCenter().x, playerPosition.y - threshold);
+            }
+            window.setView(view);
+
 }
 
 void CGAME::loadGame(std::istream& is) {
@@ -166,7 +176,7 @@ void CGAME::updatePosAnimal() {
             {
                 if (CollisionManager::checkCollision(cn, *obj))
                 {
-                    cn.Died();
+                //    cn.Died();
                 }
             }
             obj->Move();

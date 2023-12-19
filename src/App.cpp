@@ -18,7 +18,7 @@ void App::run() {
                     window.close();
                 }
             }
-            game.startGame();
+            game.startGame(window);
             render(); 
             update(); 
         }
