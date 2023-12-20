@@ -57,8 +57,8 @@
         "mons_4": {
             "x": 24,
             "y": 8,
-            "width": 16,
-            "height": 15
+            "width": 8,
+            "height": 8
         },
         "mons_5": {
             "x": 32,

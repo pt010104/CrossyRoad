@@ -7,13 +7,13 @@ void CGAME::GenObj(sf::RenderWindow& window)
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis1(0,1); //obj1 appears at x=0 or 955
     std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj1 across it
-    std::uniform_real_distribution<> speedDis(0.2f, 0.3f); 
+    std::uniform_real_distribution<> speedDis(2.0f, 3.0f); 
     std::uniform_int_distribution<> numBirdsDis(1, 2); 
     std::uniform_int_distribution<> randObj(0, 2); 
     int indexObj=0;
     // random obj
     for (int j = -50; j < numLanes; j++) {
-        if (!lanes_visited[indexObj] && j%2==0) {
+        if (!lanes_visited[indexObj] && abs(j)%2==0) {
             ObjInLane[indexObj] = numBirdsDis(gen);        
             speed_lane[indexObj] = speedDis(gen);
             lanes_visited[indexObj] = true; 
@@ -21,7 +21,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
             int randomX = (dis1(gen) == 0 ? 0 : 995);
             direction.push_back(randomX == 0 ? 1 : -1);
             time_obj2[indexObj] = dis_obj2(gen) + direction[indexObj]*300; 
-
+            lanes_visited[indexObj] = true;
             int randomY = j * laneHeight; 
             if (type_obj == "birds")
                 objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
@@ -31,13 +31,12 @@ void CGAME::GenObj(sf::RenderWindow& window)
             else
             if (type_obj == "birds2")
                 objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
+            indexObj++;        
         }
-        if(j%2==0)
+        if(abs(j)%2==0)
             maps.emplace_back(window.getSize().x,j*laneHeight,"mons");                
-        if (j%2 == 1)
+        if (abs(j)%2 == 1)
             maps.emplace_back(window.getSize().x,j*laneHeight,"people");                
-        indexObj++;
-        lanes_visited[indexObj] = true;
     }    
 }
 CGAME::CGAME(sf::RenderWindow& window) : window(&window)
@@ -118,26 +117,26 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && isPress==false) {
                     isPress = true;
                     this->updatePosPeople('W');
-                    moveCooldown = 0.007f;
+                    moveCooldown = 0.004f;
 
                 }
                 else
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)&& isPress==false) {
                     isPress = true;
                     this->updatePosPeople('A');
-                    moveCooldown = 0.007f;
+                    moveCooldown = 0.004f;
                 }
                 else
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)&& isPress==false) {
                     isPress = true;
                     this->updatePosPeople('S');
-                    moveCooldown = 0.007f;
+                    moveCooldown = 0.004f;
                 }
                 else
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)&& isPress==false) {
                     isPress = true;
                     this->updatePosPeople('D');
-                    moveCooldown = 0.007f;
+                    moveCooldown = 0.004f;
                 }
                 isPress = false;
             }

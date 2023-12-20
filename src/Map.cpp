@@ -31,12 +31,9 @@ void Map::draw(sf::RenderWindow& window) {
         for (size_t x = 0; x < orderFrame.size(); ++x) {
             int frameIndex = orderFrame[x];
             Frame& newFrame = this->animations[typeTile].frames[frameIndex];
-            // Cài đặt texture rectangle cho sprite
             this->rectSourceSprite = sf::IntRect(newFrame.x, newFrame.y, newFrame.width, newFrame.height);
             this->sprite.setTextureRect(rectSourceSprite);
-            sprite.setPosition(x * (rectSourceSprite.width * sprite.getScale().x),mY);
-
-            // Vẽ sprite lên cửa sổ
+            sprite.setPosition(x * 133,mY);
             window.draw(sprite);
         }
 }
