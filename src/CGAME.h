@@ -18,10 +18,13 @@
 
 
 class CGAME {
+private:
     float moveCooldown;
     float moveCooldown_animal;
     float deltaTime;
     bool stopGame;
+    int threshold;
+
     std::vector<CTRUCK> trucks; 
     std::vector<CCAR> cars;    
     std::vector<CDINOSAUR> dinos;
@@ -30,15 +33,15 @@ class CGAME {
 
     sf::RenderWindow* window;
     int numLanes;
-    std::vector<bool> lanes_visited;
+    std::vector<int> lanes_visited;
     std::vector<float> speed_lane;
     std::vector<float> time_obj2;
     const int laneHeight = 230;
     std::vector <int> ObjInLane;
     std::vector <char> direction;
-    std::vector<bool> secondObjCreated;
+    std::vector<int> secondObjCreated;
     std::vector<std::shared_ptr<CANIMAL>> objects;
-
+    sf::View view;
 public:
     CGAME ();
     void GenObj(sf::RenderWindow& window);
