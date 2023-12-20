@@ -56,7 +56,6 @@ CGAME::~CGAME() {
 
 void CGAME::drawGame() 
 {
-        sf::View view(window->getDefaultView());
         if (window) {
             if (cn.getState())
                 cn.draw(*window);
@@ -128,7 +127,12 @@ void CGAME::startGame(sf::RenderWindow& window) {
             sf::Vector2f playerPosition = cn.get_Position();
             if (playerPosition.y < view.getCenter().y - threshold) {
                 int oldCenter =  view.getCenter().y;
-                view.setCenter(view.getCenter().x, view.getCenter().y-threshold - 400);
+                view.setCenter(view.getCenter().x, playerPosition.y-threshold);
+                threshold = threshold + 100;
+            }
+            else if (playerPosition.y > view.getCenter().y + threshold+250 && view.getCenter().y!= window.getSize().y/2) {
+                view.setCenter(view.getCenter().x, playerPosition.y + threshold+250);
+                threshold = threshold - 100;
             }
             window.setView(view);
 }
