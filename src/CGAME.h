@@ -8,6 +8,7 @@
 #include "CBIRD.h"
 #include "CBIRD2.h"
 #include "CPEOPLE.h"
+#include "Map.h"
 #include "CollisionManager.h"
 #include <thread>
 #include <iostream>
@@ -39,6 +40,7 @@ protected:
     std::vector <char> direction;
     std::vector<int> secondObjCreated;
     std::vector<std::shared_ptr<CANIMAL>> objects;
+    std::vector<Map> maps;
     sf::View view;
 public:
     CGAME ();

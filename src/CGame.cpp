@@ -12,8 +12,8 @@ void CGAME::GenObj(sf::RenderWindow& window)
     std::uniform_int_distribution<> randObj(0, 2); 
     int indexObj=0;
     // random obj
-    for (int j = -50; j < numLanes; j+=2) {
-        if (!lanes_visited[indexObj]) {
+    for (int j = -50; j < numLanes; j++) {
+        if (!lanes_visited[indexObj] && j%2==0) {
             ObjInLane[indexObj] = numBirdsDis(gen);        
             speed_lane[indexObj] = speedDis(gen);
             lanes_visited[indexObj] = true; 
@@ -32,7 +32,12 @@ void CGAME::GenObj(sf::RenderWindow& window)
             if (type_obj == "birds2")
                 objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
         }
+        if(j%2==0)
+            maps.emplace_back(window.getSize().x,j*laneHeight,"mons");                
+        if (j%2 == 1)
+            maps.emplace_back(window.getSize().x,j*laneHeight,"people");                
         indexObj++;
+        lanes_visited[indexObj] = true;
     }    
 }
 CGAME::CGAME(sf::RenderWindow& window) : window(&window)
@@ -58,10 +63,15 @@ CGAME::~CGAME() {
 void CGAME::drawGame() 
 {
         if (window) {
+            for (auto tile:maps)
+                tile.draw(*window);
             if (cn.getState())
                 cn.draw(*window);
             for (auto& obj : objects) 
+            {
                 obj->draw(*window);
+            }
+
             float lineY = view.getCenter().y - threshold;
 
             //draw line
