@@ -1,5 +1,4 @@
 #include "App.h"
-#define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 App::App() : window(sf::VideoMode(1000, 800), "Crossy Road"), game(window) {
 }

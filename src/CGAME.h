@@ -18,20 +18,18 @@
 
 
 class CGAME {
-private:
+protected:
+    sf::RenderWindow* window;
     float moveCooldown;
     float moveCooldown_animal;
     float deltaTime;
     bool stopGame;
     int threshold;
     bool isPress;
-    std::vector<CTRUCK> trucks; 
-    std::vector<CCAR> cars;    
-    std::vector<CDINOSAUR> dinos;
+
     CPEOPLE cn;
     std::vector<std::string> object_rand = {"birds","dinosaurs","birds2","cars","trucks"};
 
-    sf::RenderWindow* window;
     int numLanes;
     std::vector<int> lanes_visited;
     std::vector<float> speed_lane;
@@ -44,8 +42,8 @@ private:
     sf::View view;
 public:
     CGAME ();
-    void GenObj(sf::RenderWindow& window);
     CGAME(sf::RenderWindow& window);
+    void GenObj(sf::RenderWindow& window);
     ~CGAME();
 
     void drawGame();

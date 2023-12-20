@@ -39,7 +39,7 @@ CGAME::CGAME(sf::RenderWindow& window) : window(&window)
 {
         isPress = false;
         view = window.getDefaultView();
-        threshold = 180;
+        threshold = 200;
         stopGame = false;
         numLanes = window.getSize().y / laneHeight;
         int totalLanes = numLanes+10;
@@ -135,13 +135,7 @@ void CGAME::startGame(sf::RenderWindow& window) {
             //move camera
             sf::Vector2f playerPosition = cn.get_Position();
             if (playerPosition.y < view.getCenter().y - threshold) {
-                int oldCenter =  view.getCenter().y;
-                view.setCenter(view.getCenter().x, playerPosition.y-threshold);
-                threshold = threshold + 100;
-            }
-            else if (playerPosition.y > view.getCenter().y + threshold+250 && view.getCenter().y!= window.getSize().y/2) {
-                view.setCenter(view.getCenter().x, playerPosition.y + threshold+250);
-                threshold = threshold - 100;
+                view.setCenter(view.getCenter().x, playerPosition.y-threshold-100);
             }
             window.setView(view);
 }
