@@ -24,7 +24,7 @@ private:
     float deltaTime;
     bool stopGame;
     int threshold;
-
+    bool isPress;
     std::vector<CTRUCK> trucks; 
     std::vector<CCAR> cars;    
     std::vector<CDINOSAUR> dinos;

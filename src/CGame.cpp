@@ -37,6 +37,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
 }
 CGAME::CGAME(sf::RenderWindow& window) : window(&window)
 {
+        isPress = false;
         view = window.getDefaultView();
         threshold = 180;
         stopGame = false;
@@ -105,23 +106,31 @@ void CGAME::startGame(sf::RenderWindow& window) {
           
             moveCooldown -= deltaTime;
             if (moveCooldown <= 0.0f && !stopGame) {
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && isPress==false) {
+                    isPress = true;
                     this->updatePosPeople('W');
                     moveCooldown = 0.007f;
 
                 }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+                else
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)&& isPress==false) {
+                    isPress = true;
                     this->updatePosPeople('A');
                     moveCooldown = 0.007f;
                 }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+                else
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)&& isPress==false) {
+                    isPress = true;
                     this->updatePosPeople('S');
                     moveCooldown = 0.007f;
                 }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+                else
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)&& isPress==false) {
+                    isPress = true;
                     this->updatePosPeople('D');
                     moveCooldown = 0.007f;
                 }
+                isPress = false;
             }
             //move camera
             sf::Vector2f playerPosition = cn.get_Position();
