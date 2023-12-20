@@ -33,7 +33,7 @@ class CGAME {
     std::vector<bool> lanes_visited;
     std::vector<float> speed_lane;
     std::vector<float> time_obj2;
-    const int laneHeight = 200;
+    const int laneHeight = 230;
     std::vector <int> ObjInLane;
     std::vector <char> direction;
     std::vector<bool> secondObjCreated;
@@ -41,6 +41,7 @@ class CGAME {
 
 public:
     CGAME ();
+    void GenObj(sf::RenderWindow& window);
     CGAME(sf::RenderWindow& window);
     ~CGAME();
 

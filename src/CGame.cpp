@@ -1,7 +1,39 @@
 #include "CGAME.h"
 CGAME::CGAME() : window(nullptr) {
 }
+void CGAME::GenObj(sf::RenderWindow& window)
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis1(0,1); //obj1 appears at x=0 or 955
+    std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj2 across it
+    std::uniform_real_distribution<> speedDis(0.08f, 0.2); 
+    std::uniform_int_distribution<> numBirdsDis(1, 2); 
+    std::uniform_int_distribution<> randObj(0, 2); 
 
+    // random obj
+    for (int j = 0; j < numLanes; ++j) {
+        if (!lanes_visited[j]) {
+            ObjInLane[j] = numBirdsDis(gen);        
+            speed_lane[j] = speedDis(gen);
+            lanes_visited[j] = true; 
+            std::string type_obj = object_rand[randObj(gen)]; 
+            int randomX = (dis1(gen) == 0 ? 0 : 995);
+            direction.push_back(randomX == 0 ? 1 : -1);
+            time_obj2[j] = dis_obj2(gen) + direction[j]*200; 
+
+            int randomY = j * laneHeight; 
+            if (type_obj == "birds")
+                objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[j],direction[j]));
+            else
+            if (type_obj == "dinosaurs")
+                objects.emplace_back(std::make_shared<CDINOSAUR>(window.getSize().x, randomX, randomY, speed_lane[j],direction[j]));       
+            else
+            if (type_obj == "birds2")
+                objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY, speed_lane[j],direction[j]));                
+        }
+    }    
+}
 CGAME::CGAME(sf::RenderWindow& window) : window(&window)
     {
         stopGame = false;
@@ -11,37 +43,7 @@ CGAME::CGAME(sf::RenderWindow& window) : window(&window)
         time_obj2.assign(numLanes, 0.0f);
         ObjInLane.assign(numLanes, 1);
         secondObjCreated.assign(numLanes, false);
-
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dis1(0,1); //obj1 appears at x=0 or 955
-        std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj2 across it
-        std::uniform_real_distribution<> speedDis(0.08f, 0.2); 
-        std::uniform_int_distribution<> numBirdsDis(1, 2); 
-        std::uniform_int_distribution<> randObj(0, 2); 
-
-        // random obj
-        for (int j = 0; j < numLanes; ++j) {
-            if (!lanes_visited[j]) {
-                ObjInLane[j] = numBirdsDis(gen);        
-                speed_lane[j] = speedDis(gen);
-                lanes_visited[j] = true; 
-                std::string type_obj = object_rand[randObj(gen)]; 
-                int randomX = (dis1(gen) == 0 ? 0 : 995);
-                direction.push_back(randomX == 0 ? 1 : -1);
-                time_obj2[j] = dis_obj2(gen) + direction[j]*200; 
-
-                int randomY = j * laneHeight; 
-                if (type_obj == "birds")
-                    objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[j],direction[j]));
-                else
-                if (type_obj == "dinosaurs")
-                    objects.emplace_back(std::make_shared<CDINOSAUR>(window.getSize().x, randomX, randomY, speed_lane[j],direction[j]));       
-                else
-                if (type_obj == "birds2")
-                    objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY, speed_lane[j],direction[j]));                
-            }
-        }
+        GenObj(window);
 }
 CGAME::~CGAME() {
     delete window;
