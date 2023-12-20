@@ -7,12 +7,12 @@ void CGAME::GenObj(sf::RenderWindow& window)
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis1(0,1); //obj1 appears at x=0 or 955
     std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj1 across it
-    std::uniform_real_distribution<> speedDis(0.1f, 0.2f); 
+    std::uniform_real_distribution<> speedDis(0.2f, 0.3f); 
     std::uniform_int_distribution<> numBirdsDis(1, 2); 
     std::uniform_int_distribution<> randObj(0, 2); 
     int indexObj=0;
     // random obj
-    for (int j = -10; j < numLanes; ++j) {
+    for (int j = -50; j < numLanes; j+=2) {
         if (!lanes_visited[indexObj]) {
             ObjInLane[indexObj] = numBirdsDis(gen);        
             speed_lane[indexObj] = speedDis(gen);
@@ -20,7 +20,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
             std::string type_obj = object_rand[randObj(gen)]; 
             int randomX = (dis1(gen) == 0 ? 0 : 995);
             direction.push_back(randomX == 0 ? 1 : -1);
-            time_obj2[indexObj] = dis_obj2(gen) + direction[indexObj]*200; 
+            time_obj2[indexObj] = dis_obj2(gen) + direction[indexObj]*300; 
 
             int randomY = j * laneHeight; 
             if (type_obj == "birds")
@@ -39,10 +39,10 @@ CGAME::CGAME(sf::RenderWindow& window) : window(&window)
 {
         isPress = false;
         view = window.getDefaultView();
-        threshold = 200;
+        threshold = 200; 
         stopGame = false;
         numLanes = window.getSize().y / laneHeight;
-        int totalLanes = numLanes+10;
+        int totalLanes = numLanes+50;
         lanes_visited.assign(totalLanes,0);
         secondObjCreated.assign(totalLanes,0);
         speed_lane.assign(totalLanes, 0.0f);
@@ -64,14 +64,13 @@ void CGAME::drawGame()
                 obj->draw(*window);
             float lineY = view.getCenter().y - threshold;
 
-            // Tạo đường thẳng
+            //draw line
             sf::Vertex line[] =
             {
                 sf::Vertex(sf::Vector2f(0, lineY), sf::Color::White),
                 sf::Vertex(sf::Vector2f(window->getSize().x, lineY), sf::Color::White)
             };
 
-            // Vẽ đường thẳng
             window->draw(line, 2, sf::Lines);       
         }
 }
@@ -135,7 +134,7 @@ void CGAME::startGame(sf::RenderWindow& window) {
             //move camera
             sf::Vector2f playerPosition = cn.get_Position();
             if (playerPosition.y < view.getCenter().y - threshold) {
-                view.setCenter(view.getCenter().x, playerPosition.y-threshold-100);
+                view.setCenter(view.getCenter().x, playerPosition.y-200);
             }
             window.setView(view);
 }
@@ -199,14 +198,14 @@ void CGAME::updatePosAnimal() {
             {
                 if (CollisionManager::checkCollision(cn, *obj))
                 {
-                   //  stopGame=true;
-                  //  cn.Died();
+                stopGame=true;
+                   cn.Died();
                 }
             }
             obj->Move();
         }
         int indexObj = 0;
-        for (int i = -10; i < numLanes; ++i) {
+        for (int i = -50; i < numLanes; i+=2) {
             if ((direction[indexObj] == 1 && objects[indexObj]->getX() >= time_obj2[indexObj]) || (direction[indexObj] == -1 && objects[indexObj]->getX() <= time_obj2[indexObj]))
                 if (!secondObjCreated[indexObj] &&ObjInLane[indexObj] == 2) {
                     int randomY = i * laneHeight;

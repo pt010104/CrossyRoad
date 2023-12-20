@@ -2,7 +2,7 @@
 #include <cmath>
 
 bool CollisionManager::checkCollision(CPEOPLE& people, CANIMAL& animal) {
-    int bias = 5; //expand radius
+    int bias = 0; //expand radius
     sf::Vector2f pos1 = people.get_Position();
     sf::Vector2f pos2 = animal.get_Position();
     float dx = (pos1.x - pos2.x);

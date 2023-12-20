@@ -1,0 +1,85 @@
+{
+    "frames": {
+        "people_1": {
+            "x": 0,
+            "y": 0,
+            "width": 8,
+            "height": 8
+        },
+        "people_2": {
+            "x": 8,
+            "y": 0,
+            "width": 8,
+            "height": 8
+        },
+        "people_3": {
+            "x": 16,
+            "y": 0,
+            "width": 8,
+            "height": 8
+        },
+        "people_4": {
+            "x": 24,
+            "y": 0,
+            "width": 16,
+            "height": 15
+        },
+        "people_5": {
+            "x": 32,
+            "y": 0,
+            "width": 8,
+            "height": 8
+        },
+        "people_6": {
+            "x": 40,
+            "y": 0,
+            "width": 8,
+            "height": 8
+        },
+        "mons_1": {
+            "x": 0,
+            "y": 8,
+            "width": 8,
+            "height": 8
+        },
+        "mons_2": {
+            "x": 8,
+            "y": 8,
+            "width": 8,
+            "height": 8
+        },
+        "mons_3": {
+            "x": 16,
+            "y": 8,
+            "width": 8,
+            "height": 8
+        },
+        "mons_4": {
+            "x": 24,
+            "y": 8,
+            "width": 16,
+            "height": 15
+        },
+        "mons_5": {
+            "x": 32,
+            "y": 8,
+            "width": 8,
+            "height": 8
+        },
+        "mons_6": {
+            "x": 40,
+            "y": 8,
+            "width": 8,
+            "height": 8
+        }
+    },
+    "meta": {
+      "image": "Dungeon.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 47,
+        "h": 16
+      },
+      "scale": "1"
+    }
+  }
