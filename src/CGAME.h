@@ -33,6 +33,8 @@ protected:
 
     int numLanes;
     std::vector<int> lanes_visited;
+    std::vector<bool> isSecond;
+    std::vector<bool> isDraw;
     std::vector<float> speed_lane;
     std::vector<float> time_obj2;
     const int laneHeight = 132;
