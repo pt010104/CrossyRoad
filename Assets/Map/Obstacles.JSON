@@ -37,24 +37,18 @@
             "height": 32
         },
         "right_7": {
-            "x": 40,
-            "y": 16,
-            "width": 8,
-            "height": 8
-        },
-        "right_8": {
             "x": 75,
             "y": 16,
             "width": 16,
             "height": 16
-        }            
+        }             
     },
     "meta": {
       "image": "Obstacles.png",
       "format": "RGBA8888",
       "size": {
-        "w": 47,
-        "h": 16
+        "w": 91,
+        "h": 32
       },
       "scale": "1"
     }
