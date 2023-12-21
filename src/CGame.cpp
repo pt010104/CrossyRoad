@@ -13,16 +13,14 @@ void CGAME::GenObj(sf::RenderWindow& window)
     int indexObj=0;
     // random obj
     for (int j = -50; j < numLanes; j++) {
-        if (!lanes_visited[indexObj] && abs(j)%2==0) {
+        if (abs(j)%2==0) {
             ObjInLane[indexObj] = numBirdsDis(gen);        
             speed_lane[indexObj] = speedDis(gen);
-            lanes_visited[indexObj] = true; 
             std::string type_obj = object_rand[randObj(gen)]; 
             int randomX = (dis1(gen) == 0 ? 0 : 995);
             direction.push_back(randomX == 0 ? 1 : -1);
-            time_obj2[indexObj] = dis_obj2(gen) + direction[direction.size()-1]*300; 
-            lanes_visited[indexObj] = true;
-            int randomY = j * laneHeight; 
+            time_obj2[indexObj] = dis_obj2(gen) + direction[direction.size()-1]*200; 
+            int randomY = j * laneHeight-50; 
             if (type_obj == "birds")
                 objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
             else
@@ -47,13 +45,12 @@ CGAME::CGAME(sf::RenderWindow& window) : window(&window)
         stopGame = false;
         numLanes = window.getSize().y / laneHeight;
         int totalLanes = numLanes+50;
-        lanes_visited.assign(totalLanes,0);
-        secondObjCreated.assign(totalLanes,0);
-        speed_lane.assign(totalLanes, 0.0f);
-        time_obj2.assign(totalLanes, 0.0f);
-        ObjInLane.assign(totalLanes, 1);
-        isSecond.assign(totalLanes,false);
-        isDraw.assign(totalLanes,true);
+        secondObjCreated.assign(totalLanes*2,false);
+        speed_lane.assign(totalLanes*2, 0.0f);
+        time_obj2.assign(totalLanes*2, 0.0f);
+        ObjInLane.assign(totalLanes*2, 1);
+        isSecond.assign(totalLanes*2,false);
+        isDraw.assign(totalLanes*2,true);
         GenObj(window);
 }
 CGAME::~CGAME() {
@@ -63,7 +60,7 @@ CGAME::~CGAME() {
 
 void CGAME::drawGame() 
 {
-        if (window) {
+    if (window) {
             for (auto tile:maps)
                 tile.draw(*window);
             if (cn.getState())
@@ -71,19 +68,8 @@ void CGAME::drawGame()
             for (auto& obj : objects) 
             {
                 obj->draw(*window);
-            }
-
-            float lineY = view.getCenter().y - threshold;
-
-            //draw line
-            sf::Vertex line[] =
-            {
-                sf::Vertex(sf::Vector2f(0, lineY), sf::Color::White),
-                sf::Vertex(sf::Vector2f(window->getSize().x, lineY), sf::Color::White)
-            };
-
-            window->draw(line, 2, sf::Lines);       
-        }
+            }     
+    }
 }
 CPEOPLE CGAME::getPeople() {
         return cn;
@@ -194,14 +180,9 @@ void CGAME::updateAnimation(float dt) {
 
         cn.UpdateFrame(deltaTime);
     }
-    int indexObj=0;
     for (auto& obj : objects) {
-        if(isDraw[indexObj])
-        {
-            obj->UpdateFrame(deltaTime);
-            moveCooldown_animal = 0.1f;
-        }
-        indexObj++;
+        obj->UpdateFrame(deltaTime);
+        moveCooldown_animal = 0.1f;
     }
 }
     void CGAME::updatePosVehicle() {
@@ -209,40 +190,26 @@ void CGAME::updateAnimation(float dt) {
 }
 
 void CGAME::updatePosAnimal() {
+        for (auto& obj : objects) {
+            if(cn.getState())
+            {
+                if (CollisionManager::checkCollision(cn, *obj))
+                {
+                    // stopGame=true;
+                    // cn.Died();
+                }
+            }
+            obj->Move();
+        }
         int indexObj = 0;
         for (int i = -50; i < numLanes; i+=2) {
-            if ((direction[indexObj] == 1 && objects[indexObj]->getX() >= time_obj2[indexObj]) || 
-                (direction[indexObj] == -1 && objects[indexObj]->getX() <= time_obj2[indexObj]))
-            {
-                if (!secondObjCreated[indexObj] && ObjInLane[indexObj] == 2 && !isSecond[indexObj]) {
+            if ((direction[indexObj] == 1 && objects[indexObj]->getX() >= time_obj2[indexObj]) || (direction[indexObj] == -1 && objects[indexObj]->getX() <= time_obj2[indexObj]))
+                if (!secondObjCreated[indexObj] &&ObjInLane[indexObj] == 2) {
                     int randomY = i * laneHeight;
                     int x2 = direction[indexObj] == 1 ? 0: 995;
                     objects.emplace_back(std::make_shared<CBIRD2>(1000, x2 , randomY, speed_lane[indexObj],direction[indexObj]));
-                    objects[indexObj]->setIndexSecond(objects.size()-1);
                     secondObjCreated[indexObj] = true; 
-                    isSecond[objects.size()-1] = true;
-                }
-                if(objects[indexObj]->getIndexSecond()!=-100 && isDraw[objects[indexObj]->getIndexSecond()] == false)
-                    isDraw[objects[indexObj]->getIndexSecond()] = true;
-            }
-            objects[indexObj]->Move();
-            if (cn.getState())
-                if (CollisionManager::checkCollision(cn, *objects[indexObj]))
-                {
-                    stopGame=true;
-                    cn.Died();
-                }
-            indexObj++;
-        }
-        indexObj = 0;
-        for (auto& obj:objects)
-        {
-            if(isSecond[indexObj] && isDraw[indexObj])
-                obj->Move();
-            if(isSecond[indexObj] && (objects[indexObj]->getX()<0 || objects[indexObj]->getX()>1000) && isDraw[indexObj])
-            {
-                isDraw[indexObj] = false;
             }
             indexObj++;
         }
-}
+    }

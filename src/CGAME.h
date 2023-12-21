@@ -32,7 +32,6 @@ protected:
     std::vector<std::string> object_rand = {"birds","dinosaurs","birds2","cars","trucks"};
 
     int numLanes;
-    std::vector<int> lanes_visited;
     std::vector<bool> isSecond;
     std::vector<bool> isDraw;
     std::vector<float> speed_lane;
@@ -40,7 +39,7 @@ protected:
     const int laneHeight = 132;
     std::vector <int> ObjInLane;
     std::vector <char> direction;
-    std::vector<int> secondObjCreated;
+    std::vector<bool> secondObjCreated;
     std::vector<std::shared_ptr<CANIMAL>> objects;
     std::vector<Map> maps;
     sf::View view;

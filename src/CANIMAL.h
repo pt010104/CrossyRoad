@@ -22,7 +22,7 @@ protected:
     int currentFrameIndex;
     float frameTime;
     float animationSpeed;
-    int indexSecond;
+    int indexSecond=-100;
 public:
     CANIMAL();
     CANIMAL(int width, float startX, float startY);
