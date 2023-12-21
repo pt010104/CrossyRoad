@@ -9,6 +9,7 @@
 #include "CBIRD2.h"
 #include "CPEOPLE.h"
 #include "Map.h"
+#include "Obstacles.h"
 #include "CollisionManager.h"
 #include <thread>
 #include <iostream>
@@ -42,6 +43,7 @@ protected:
     std::vector<bool> secondObjCreated;
     std::vector<std::shared_ptr<CANIMAL>> objects;
     std::vector<Map> maps;
+    std::vector<Obstacles> obstacles;
     sf::View view;
 public:
     CGAME ();

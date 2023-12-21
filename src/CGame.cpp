@@ -34,7 +34,10 @@ void CGAME::GenObj(sf::RenderWindow& window)
         if(abs(j)%2==0)
             maps.emplace_back(window.getSize().x,j*laneHeight,"mons");                
         if (abs(j)%2 == 1)
-            maps.emplace_back(window.getSize().x,j*laneHeight,"people");                
+        {
+            maps.emplace_back(window.getSize().x,j*laneHeight,"people");    
+            obstacles.emplace_back(window.getSize().x,j*laneHeight,"right");
+        }            
     }    
 }
 CGAME::CGAME(sf::RenderWindow& window) : window(&window)
@@ -63,12 +66,18 @@ void CGAME::drawGame()
     if (window) {
             for (auto tile:maps)
                 tile.draw(*window);
-            if (cn.getState())
-                cn.draw(*window);
+            for (auto obstacle:obstacles)
+                obstacle.draw(*window);
             for (auto& obj : objects) 
             {
                 obj->draw(*window);
             }     
+
+
+            if (cn.getState())
+                cn.draw(*window);
+
+
     }
 }
 CPEOPLE CGAME::getPeople() {
