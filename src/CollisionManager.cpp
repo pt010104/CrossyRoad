@@ -1,7 +1,7 @@
 #include "CollisionManager.h"
 #include <cmath>
 
-bool CollisionManager::checkCollision(CPEOPLE& people, CANIMAL& animal) {
+bool CollisionManager::checkCollisionAnimal(CPEOPLE& people, CANIMAL& animal) {
     int bias = 0; //expand radius
     sf::Vector2f pos1 = people.get_Position();
     sf::Vector2f pos2 = animal.get_Position();

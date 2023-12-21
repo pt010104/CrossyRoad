@@ -29,6 +29,10 @@ Obstacles::Obstacles(int width, float startY,std::string tile): windowWidth(widt
             for (int i = 0; i<orderFrame.size();i++)
             {
                 int randomX = dist_x(gen);
+                while (std::find(coordX.begin(), coordX.end(), randomX) != coordX.end())
+                {
+                    randomX = dist_x(gen);
+                }
                 coordX.push_back(randomX);
             }
 

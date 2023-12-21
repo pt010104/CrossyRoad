@@ -6,7 +6,9 @@
 
 class CollisionManager {
 public:
-    static bool checkCollision( CPEOPLE& people, CANIMAL& animal);
+    static bool checkCollisionAnimal( CPEOPLE& people, CANIMAL& animal);
+    static bool checkCollisionObstacles( CPEOPLE& people, CANIMAL& animal);
+
 };
 
 #endif 

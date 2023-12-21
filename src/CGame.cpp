@@ -143,6 +143,15 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 view.setCenter(view.getCenter().x, playerPosition.y-200);
             }
             window.setView(view);
+            for (auto& obstacle : obstacles) {
+            if(cn.getState())
+            {
+                if (CollisionManager::checkCollision(cn, *obstacle))
+                {
+                    stopGame=true;
+                    cn.Died();
+                }
+            }
 }
 
 void CGAME::loadGame(std::istream& is) {
@@ -202,7 +211,7 @@ void CGAME::updatePosAnimal() {
         for (auto& obj : objects) {
             if(cn.getState())
             {
-                if (CollisionManager::checkCollision(cn, *obj))
+                if (CollisionManager::checkCollisionAnimal(cn, *obj))
                 {
                     stopGame=true;
                     cn.Died();
