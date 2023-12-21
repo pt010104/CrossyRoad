@@ -1,0 +1,61 @@
+{
+    "frames": {
+        "right_1": {
+            "x": 0,
+            "y": 16,
+            "width": 16,
+            "height": 16
+        },
+        "right_2": {
+            "x": 16,
+            "y": 16,
+            "width": 9,
+            "height": 16
+        },
+        "right_3": {
+            "x": 25,
+            "y": 16,
+            "width": 6,
+            "height": 16
+        },
+        "right_4": {
+            "x": 31,
+            "y": 16,
+            "width": 16,
+            "height": 16
+        },
+        "right_5": {
+            "x": 47,
+            "y": 16,
+            "width": 12,
+            "height": 16
+        },
+        "right_6": {
+            "x": 59,
+            "y": 0,
+            "width": 16,
+            "height": 32
+        },
+        "right_7": {
+            "x": 40,
+            "y": 16,
+            "width": 8,
+            "height": 8
+        },
+        "right_8": {
+            "x": 75,
+            "y": 16,
+            "width": 16,
+            "height": 16
+        }            
+    },
+    "meta": {
+      "image": "Obstacles.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 47,
+        "h": 16
+      },
+      "scale": "1"
+    }
+  }
