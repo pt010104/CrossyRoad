@@ -195,8 +195,8 @@ void CGAME::updatePosAnimal() {
             {
                 if (CollisionManager::checkCollision(cn, *obj))
                 {
-                    // stopGame=true;
-                    // cn.Died();
+                    stopGame=true;
+                    cn.Died();
                 }
             }
             obj->Move();
