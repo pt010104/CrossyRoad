@@ -107,8 +107,11 @@ std::vector<CANIMAL*> CGAME::getAnimals() {
 void CGAME::resetGame() {
     }
 void CGAME::exitGame(std::thread& thread) {
-            // Exit thread
+    stopGame = true;
+    if (thread.joinable()) {
+        thread.join();
     }
+}
 
 void CGAME::startGame(sf::RenderWindow& window) {   
           

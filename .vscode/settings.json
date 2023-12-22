@@ -73,7 +73,20 @@
         "ranges": "cpp",
         "span": "cpp",
         "valarray": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "charconv": "cpp",
+        "chrono": "cpp",
+        "filesystem": "cpp",
+        "format": "cpp",
+        "list": "cpp",
+        "locale": "cpp",
+        "mutex": "cpp",
+        "xhash": "cpp",
+        "xlocbuf": "cpp",
+        "xlocmes": "cpp",
+        "xlocmon": "cpp",
+        "xloctime": "cpp",
+        "xtree": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

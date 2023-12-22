@@ -17,7 +17,6 @@
 #include <memory>
 #include <vector>
 
-
 class CGAME {
 protected:
     sf::RenderWindow* window;
