@@ -13,16 +13,14 @@ void CGAME::GenObj(sf::RenderWindow& window)
     int indexObj=0;
     // random obj
     for (int j = -50; j < numLanes; j++) {
-        if (!lanes_visited[indexObj] && abs(j)%2==0) {
+        if (abs(j)%2==0) {
             ObjInLane[indexObj] = numBirdsDis(gen);        
             speed_lane[indexObj] = speedDis(gen);
-            lanes_visited[indexObj] = true; 
             std::string type_obj = object_rand[randObj(gen)]; 
             int randomX = (dis1(gen) == 0 ? 0 : 995);
             direction.push_back(randomX == 0 ? 1 : -1);
-            time_obj2[indexObj] = dis_obj2(gen) + direction[indexObj]*300; 
-            lanes_visited[indexObj] = true;
-            int randomY = j * laneHeight; 
+            time_obj2[indexObj] = dis_obj2(gen) + direction[direction.size()-1]*200; 
+            int randomY = j * laneHeight-50; 
             if (type_obj == "birds")
                 objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
             else
@@ -36,7 +34,10 @@ void CGAME::GenObj(sf::RenderWindow& window)
         if(abs(j)%2==0)
             maps.emplace_back(window.getSize().x,j*laneHeight,"mons");                
         if (abs(j)%2 == 1)
-            maps.emplace_back(window.getSize().x,j*laneHeight,"people");                
+        {
+            maps.emplace_back(window.getSize().x,j*laneHeight,"people");    
+            obstacles.emplace_back(window.getSize().x,j*laneHeight,"right");
+        }            
     }    
 }
 CGAME::CGAME(sf::RenderWindow& window) : window(&window)
@@ -47,11 +48,12 @@ CGAME::CGAME(sf::RenderWindow& window) : window(&window)
         stopGame = false;
         numLanes = window.getSize().y / laneHeight;
         int totalLanes = numLanes+50;
-        lanes_visited.assign(totalLanes,0);
-        secondObjCreated.assign(totalLanes,0);
-        speed_lane.assign(totalLanes, 0.0f);
-        time_obj2.assign(totalLanes, 0.0f);
-        ObjInLane.assign(totalLanes, 1);
+        secondObjCreated.assign(totalLanes*2,false);
+        speed_lane.assign(totalLanes*2, 0.0f);
+        time_obj2.assign(totalLanes*2, 0.0f);
+        ObjInLane.assign(totalLanes*2, 1);
+        isSecond.assign(totalLanes*2,false);
+        isDraw.assign(totalLanes*2,true);
         GenObj(window);
 }
 CGAME::~CGAME() {
@@ -61,27 +63,22 @@ CGAME::~CGAME() {
 
 void CGAME::drawGame() 
 {
-        if (window) {
+    if (window) {
             for (auto tile:maps)
                 tile.draw(*window);
-            if (cn.getState())
-                cn.draw(*window);
+            for (auto obstacle:obstacles)
+                obstacle.draw(*window);
             for (auto& obj : objects) 
             {
                 obj->draw(*window);
-            }
+            }     
 
-            float lineY = view.getCenter().y - threshold;
 
-            //draw line
-            sf::Vertex line[] =
-            {
-                sf::Vertex(sf::Vector2f(0, lineY), sf::Color::White),
-                sf::Vertex(sf::Vector2f(window->getSize().x, lineY), sf::Color::White)
-            };
+            if (cn.getState())
+                cn.draw(*window);
 
-            window->draw(line, 2, sf::Lines);       
-        }
+
+    }
 }
 CPEOPLE CGAME::getPeople() {
         return cn;
@@ -149,6 +146,17 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 view.setCenter(view.getCenter().x, playerPosition.y-200);
             }
             window.setView(view);
+            for (auto& obstacle : obstacles) {
+                if(cn.getState())
+                {
+                    if (false)
+                    // if (CollisionManager::checkCollision(cn, *obstacle))
+                    {
+                        stopGame=true;
+                        cn.Died();
+                    }
+                }
+            }
 }
 
 void CGAME::loadGame(std::istream& is) {
@@ -196,8 +204,8 @@ void CGAME::updateAnimation(float dt) {
         cn.UpdateFrame(deltaTime);
     }
     for (auto& obj : objects) {
-            obj->UpdateFrame(deltaTime);
-            moveCooldown_animal = 0.1f;
+        obj->UpdateFrame(deltaTime);
+        moveCooldown_animal = 0.1f;
     }
 }
     void CGAME::updatePosVehicle() {
@@ -208,10 +216,10 @@ void CGAME::updatePosAnimal() {
         for (auto& obj : objects) {
             if(cn.getState())
             {
-                if (CollisionManager::checkCollision(cn, *obj))
+                if (CollisionManager::checkCollisionAnimal(cn, *obj))
                 {
-                stopGame=true;
-                   cn.Died();
+                    stopGame=true;
+                    cn.Died();
                 }
             }
             obj->Move();

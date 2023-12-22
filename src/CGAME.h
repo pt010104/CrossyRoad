@@ -9,6 +9,7 @@
 #include "CBIRD2.h"
 #include "CPEOPLE.h"
 #include "Map.h"
+#include "Obstacles.h"
 #include "CollisionManager.h"
 #include <thread>
 #include <iostream>
@@ -16,6 +17,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>
+
 
 class CGAME {
 protected:
@@ -31,15 +33,17 @@ protected:
     std::vector<std::string> object_rand = {"birds","dinosaurs","birds2","cars","trucks"};
 
     int numLanes;
-    std::vector<int> lanes_visited;
+    std::vector<bool> isSecond;
+    std::vector<bool> isDraw;
     std::vector<float> speed_lane;
     std::vector<float> time_obj2;
     const int laneHeight = 132;
     std::vector <int> ObjInLane;
     std::vector <char> direction;
-    std::vector<int> secondObjCreated;
+    std::vector<bool> secondObjCreated;
     std::vector<std::shared_ptr<CANIMAL>> objects;
     std::vector<Map> maps;
+    std::vector<Obstacles> obstacles;
     sf::View view;
 public:
     CGAME ();

@@ -5,7 +5,9 @@
 CANIMAL::CANIMAL() : windowWidth(1000), mX(0), mY(0) {}
 CANIMAL::CANIMAL(int width, float startX, float startY)
     : windowWidth(width), mX(startX), mY(startY), currentFrameIndex(0), frameTime(0.0f),animationSpeed(0.15f)
-{}
+{
+    indexSecond=-100;
+}
 void CANIMAL::UpdateFrame(float deltaTime) {
     //std::cout<<"Update frame test";
     this->frameTime += deltaTime;
@@ -32,13 +34,6 @@ void CANIMAL::UpdateAnimation(const std::string& direction) {
 }
 void CANIMAL::draw(sf::RenderWindow& window) {
     sprite.setPosition(mX,mY);
-    sf::RectangleShape boundingBox;
-    boundingBox.setPosition(sprite.getPosition());
-    boundingBox.setSize(sf::Vector2f(sprite.getGlobalBounds().width,sprite.getGlobalBounds().height));
-    boundingBox.setFillColor((sf::Color::Transparent));
-    boundingBox.setOutlineColor(sf::Color::Red);
-    boundingBox.setOutlineThickness(1.f);
-    window.draw(boundingBox);
     window.draw(sprite);
 
 }
@@ -56,4 +51,10 @@ sf::Vector2f CANIMAL::get_Position() {
 
 float CANIMAL::getRadius() const {
     return this->radius;
+}
+void CANIMAL::setIndexSecond(int index){
+    indexSecond = index;
+}
+int CANIMAL::getIndexSecond(){
+    return indexSecond;
 }

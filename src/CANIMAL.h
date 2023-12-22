@@ -22,7 +22,7 @@ protected:
     int currentFrameIndex;
     float frameTime;
     float animationSpeed;
-
+    int indexSecond=-100;
 public:
     CANIMAL();
     CANIMAL(int width, float startX, float startY);
@@ -33,6 +33,8 @@ public:
     float getX();
     sf::FloatRect get_GlobalBounds() const;
     sf::Vector2f get_Position();
+    void setIndexSecond(int index);
+    int getIndexSecond();
     float getRadius() const;
     virtual ~CANIMAL() = default; 
 };
