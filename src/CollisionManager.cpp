@@ -1,6 +1,5 @@
 #include "CollisionManager.h"
 #include <cmath>
-
 bool CollisionManager::checkCollisionAnimal(CPEOPLE& people, CANIMAL& animal) {
     int bias = 0; //expand radius
     sf::Vector2f pos1 = people.get_Position();
@@ -13,4 +12,11 @@ bool CollisionManager::checkCollisionAnimal(CPEOPLE& people, CANIMAL& animal) {
     float radius2 = animal.getRadius()+bias; 
 
     return distance < (radius1 + radius2);
+}
+bool CollisionManager::checkCollisionObstacles(CPEOPLE& people, Obstacles& obs) {
+    sf::FloatRect peopleBounds = people.get_GlobalBounds();
+    sf::FloatRect obstaclesBounds = obs.get_GlobalBounds();
+    if(peopleBounds.width == 0 &&peopleBounds.height == 0)
+        return false;
+    return peopleBounds.intersects(obstaclesBounds);
 }

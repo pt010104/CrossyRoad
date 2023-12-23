@@ -7,7 +7,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis1(0,1); //obj1 appears at x=0 or 955
     std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj1 across it
-    std::uniform_real_distribution<> speedDis(2.0f, 3.0f); 
+    std::uniform_real_distribution<> speedDis(4.5f, 7.0f); 
     std::uniform_int_distribution<> numBirdsDis(1, 2); 
     std::uniform_int_distribution<> randObj(0, 2); 
     int indexObj=0;
@@ -35,8 +35,29 @@ void CGAME::GenObj(sf::RenderWindow& window)
             maps.emplace_back(window.getSize().x,j*laneHeight,"mons");                
         if (abs(j)%2 == 1)
         {
-            maps.emplace_back(window.getSize().x,j*laneHeight,"people");    
-            obstacles.emplace_back(window.getSize().x,j*laneHeight,"right");
+            maps.emplace_back(window.getSize().x,j*laneHeight,"people");              
+            int numFrames = 7;
+            std::uniform_int_distribution<int> dist(0, numFrames - 1);
+            std::uniform_int_distribution<int> dist2(2, 4);
+            int numObsInLane = dist2(gen);
+            std::vector <int> orderFrame;
+            std::vector <int> coordX;
+            for (int i =0; i<numObsInLane; ++i) {
+                int indexFrame = dist(gen);
+                orderFrame.push_back(indexFrame);
+            }
+            std::uniform_int_distribution<int> dist_x(1, 8);
+            for (int i = 0; i<orderFrame.size();i++)
+            {
+                int randomX = dist_x(gen);
+                while (std::find(coordX.begin(), coordX.end(), randomX) != coordX.end())
+                {
+                    randomX = dist_x(gen);
+                }
+                coordX.push_back(randomX);
+                std::string tileName = "right_" + std::to_string(orderFrame[i]); 
+                obstacles.emplace_back(window.getSize().x,randomX*133,j*laneHeight,tileName);
+            }
         }            
     }    
 }
@@ -72,8 +93,6 @@ void CGAME::drawGame()
             {
                 obj->draw(*window);
             }     
-
-
             if (cn.getState())
                 cn.draw(*window);
 
@@ -108,32 +127,32 @@ void CGAME::exitGame(std::thread& thread) {
     }
 
 void CGAME::startGame(sf::RenderWindow& window) {   
-          
+            int delayTime =0;
             moveCooldown -= deltaTime;
             if (moveCooldown <= 0.0f && !stopGame) {
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && isPress==false) {
                     isPress = true;
                     this->updatePosPeople('W');
-                    moveCooldown = 0.004f;
+                    moveCooldown = delayTime;
 
                 }
                 else
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)&& isPress==false) {
                     isPress = true;
                     this->updatePosPeople('A');
-                    moveCooldown = 0.004f;
+                    moveCooldown = delayTime;
                 }
                 else
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)&& isPress==false) {
                     isPress = true;
                     this->updatePosPeople('S');
-                    moveCooldown = 0.004f;
+                    moveCooldown = delayTime;
                 }
                 else
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)&& isPress==false) {
                     isPress = true;
                     this->updatePosPeople('D');
-                    moveCooldown = 0.004f;
+                    moveCooldown = delayTime;
                 }
                 isPress = false;
             }
@@ -143,13 +162,13 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 view.setCenter(view.getCenter().x, playerPosition.y-200);
             }
             window.setView(view);
-            for (auto& obstacle : obstacles) {
+            for (auto obstacle : obstacles) {
             if(cn.getState())
-            {
-                if (CollisionManager::checkCollision(cn, *obstacle))
                 {
-                    stopGame=true;
-                    cn.Died();
+                    if (CollisionManager::checkCollisionObstacles(cn, obstacle))
+                    {
+                        cn.setNearobs(true);
+                    }
                 }
             }
 }

@@ -55,6 +55,3 @@ float CANIMAL::getRadius() const {
 void CANIMAL::setIndexSecond(int index){
     indexSecond = index;
 }
-int CANIMAL::getIndexSecond(){
-    return indexSecond;
-}

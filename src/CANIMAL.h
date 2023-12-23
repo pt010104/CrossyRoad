@@ -34,7 +34,6 @@ public:
     sf::FloatRect get_GlobalBounds() const;
     sf::Vector2f get_Position();
     void setIndexSecond(int index);
-    int getIndexSecond();
     float getRadius() const;
     virtual ~CANIMAL() = default; 
 };

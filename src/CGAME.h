@@ -9,7 +9,6 @@
 #include "CBIRD2.h"
 #include "CPEOPLE.h"
 #include "Map.h"
-#include "Obstacles.h"
 #include "CollisionManager.h"
 #include <thread>
 #include <iostream>
@@ -28,7 +27,6 @@ protected:
     bool stopGame;
     int threshold;
     bool isPress;
-
     CPEOPLE cn;
     std::vector<std::string> object_rand = {"birds","dinosaurs","birds2","cars","trucks"};
 

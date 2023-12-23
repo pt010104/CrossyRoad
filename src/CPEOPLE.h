@@ -12,6 +12,7 @@ private:
     int windowWidth = 1000;
     int windowHeight = 800;
     float radius;
+    bool nearObs;
     
     sf::Sprite sprite;
     sf::Texture texture;
@@ -48,6 +49,8 @@ public:
         return radius;
     }
     bool getState() const { return mState; }
+    bool getNearObs();
+    void setNearobs(bool near);
     void Died();
 };
 

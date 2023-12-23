@@ -8,6 +8,7 @@
 class Obstacles{
 private:
     float mY;
+    float mX;
     float radius;
     int numFrames; 
     std::string typeTile;
@@ -18,15 +19,15 @@ private:
     sf::IntRect rectSourceSprite;
     std::unordered_map<std::string, Animation> animations;
     std::unordered_map<std::string, Frame> frames;
-    std::vector<int>orderFrame;
-    std::vector<int>coordX;
-
+    
     float frameTime;
     float animationSpeed;
 public:
     Obstacles();
-    Obstacles(int width, float startY,std::string tile);
+    Obstacles(int width,float startX, float startY,std::string tile);
     void draw(sf::RenderWindow& window);
+    sf::FloatRect get_GlobalBounds() const;
+
 };
 
 #endif

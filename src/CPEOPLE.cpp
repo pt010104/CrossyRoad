@@ -4,7 +4,7 @@ CPEOPLE::CPEOPLE() : mState(true), windowWidth(1000), windowHeight(800), current
     frameTime(0.f), currentFrameIndex(0)
 {
     numFrames = 5;
-
+    nearObs = false;
     SpriteLoader loader;
     if (!loader.LoadTexture("Assets/Player/Player_Chicken.png", texture)) {
     }
@@ -53,22 +53,26 @@ CPEOPLE::CPEOPLE(int startX, int startY) : CPEOPLE() {
 }
 
 void CPEOPLE::Up() {
-    mY = mY - 1;
+    if(!nearObs)
+        mY = mY - 1;
     UpdateAnimation("up");
 }
 
 void CPEOPLE::Left() {
-    mX = std::max(0 + spriteWidth, mX - 1);
+    if(!nearObs)
+        mX = std::max(0 + spriteWidth, mX - 1);
     UpdateAnimation("left");
 }
 
 void CPEOPLE::Right() {
-    mX = std::min(windowWidth - spriteWidth, mX + 1);
+    if(!nearObs)
+        mX = std::min(windowWidth - spriteWidth, mX + 1);
     UpdateAnimation("right");
 }
 
 void CPEOPLE::Down() {
-    mY = std::min(windowHeight - spriteHeight, mY + 1);
+    if(!nearObs)
+        mY = std::min(windowHeight - spriteHeight, mY + 1);
     UpdateAnimation("down");
 }
 void CPEOPLE::Died(){
@@ -111,4 +115,10 @@ void CPEOPLE::draw(sf::RenderWindow& window) {
     boundingBox.setOutlineThickness(1.f);
     window.draw(sprite);
     window.draw(boundingBox);
+}
+bool CPEOPLE::getNearObs(){
+    return nearObs;
+}
+void CPEOPLE::setNearobs(bool near){
+    nearObs = near;
 }
