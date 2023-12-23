@@ -65,6 +65,7 @@ CGAME::CGAME(sf::RenderWindow& window) : window(&window)
 {
         isPress = false;
         view = window.getDefaultView();
+        newGameMainView = view;
         threshold = 200; 
         stopGame = false;
         numLanes = window.getSize().y / laneHeight;
@@ -121,13 +122,47 @@ std::vector<CANIMAL*> CGAME::getAnimals() {
         // return animals;
     }
 void CGAME::resetGame() {
-    }
+    view = newGameMainView;
+    isPress = false;
+    threshold = 200;
+    stopGame = false;
+    // ... other variables specific to game state
+
+    // Clear vectors and reset their sizes
+    secondObjCreated.clear();
+    speed_lane.clear();
+    time_obj2.clear();
+    ObjInLane.clear();
+    isSecond.clear();
+    isDraw.clear();
+    maps.clear();
+    obstacles.clear();
+    objects.clear();
+
+    int totalLanes = window->getSize().y / laneHeight;
+    secondObjCreated.assign(totalLanes * 2, false);
+    speed_lane.assign(totalLanes * 2, 0.0f);
+    time_obj2.assign(totalLanes * 2, 0.0f);
+    ObjInLane.assign(totalLanes * 2, 1);
+    isSecond.assign(totalLanes * 2, false);
+    isDraw.assign(totalLanes * 2, true);
+
+    cn.reset();
+    // Re-generate game objects
+    GenObj(*window);
+}
 void CGAME::exitGame(std::thread& thread) {
-            // Exit thread
+    stopGame = true;
+    if (thread.joinable()) {
+        thread.join();
     }
+}
 
 void CGAME::startGame(sf::RenderWindow& window) {   
+<<<<<<< HEAD
             int delayTime =0;
+=======
+>>>>>>> d8b7c20b3861c15c6ddb3b49996f877fb0ccf072
             moveCooldown -= deltaTime;
             if (moveCooldown <= 0.0f && !stopGame) {
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && isPress==false) {
@@ -162,12 +197,23 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 view.setCenter(view.getCenter().x, playerPosition.y-200);
             }
             window.setView(view);
+<<<<<<< HEAD
             for (auto obstacle : obstacles) {
             if(cn.getState())
                 {
                     if (CollisionManager::checkCollisionObstacles(cn, obstacle))
                     {
                         cn.setNearobs(true);
+=======
+            for (auto& obstacle : obstacles) {
+                if(cn.getState())
+                {
+                    if (false)
+                    // if (CollisionManager::checkCollision(cn, *obstacle))
+                    {
+                        stopGame=true;
+                        cn.Died();
+>>>>>>> d8b7c20b3861c15c6ddb3b49996f877fb0ccf072
                     }
                 }
             }
@@ -250,3 +296,8 @@ void CGAME::updatePosAnimal() {
             indexObj++;
         }
     }
+
+bool CGAME::checkwindow(){
+    if (window) return true;
+    return false;
+}

@@ -116,9 +116,39 @@ void CPEOPLE::draw(sf::RenderWindow& window) {
     window.draw(sprite);
     window.draw(boundingBox);
 }
+<<<<<<< HEAD
 bool CPEOPLE::getNearObs(){
     return nearObs;
 }
 void CPEOPLE::setNearobs(bool near){
     nearObs = near;
+=======
+
+void CPEOPLE::reset(){
+    currentAnimation = "up";
+    mState = true;
+    
+    numFrames = 5;
+
+    SpriteLoader loader;
+    if (!loader.LoadTexture("Assets/Player/Player_Chicken.png", texture)) {
+    }
+    if (!loader.LoadAnimations("Assets/Player/Player_Chicken.json", frames, animations, numFrames)) {
+    }
+    sprite.setTexture(texture);
+    sprite.setScale(4.5f, 4.5f);
+    rectSourceSprite = sf::IntRect(
+        frames["up_1"].x,
+        frames["up_1"].y,
+        frames["up_1"].width,
+        frames["up_1"].height
+    );
+    sprite.setTextureRect(rectSourceSprite);
+    mX = windowWidth/2-50;
+    mY = windowHeight-sprite.getGlobalBounds().height-100; 
+    spriteWidth = sprite.getGlobalBounds().width;
+    spriteHeight = sprite.getGlobalBounds().height;
+    sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
+    radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
+>>>>>>> d8b7c20b3861c15c6ddb3b49996f877fb0ccf072
 }

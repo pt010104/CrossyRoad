@@ -43,6 +43,7 @@ protected:
     std::vector<Map> maps;
     std::vector<Obstacles> obstacles;
     sf::View view;
+    sf::View newGameMainView;
 public:
     CGAME ();
     CGAME(sf::RenderWindow& window);
@@ -64,6 +65,7 @@ public:
     void updateAnimation(float deltatime);
     void updatePosVehicle();
     void updatePosAnimal();
+    bool checkwindow();
 };
 
 

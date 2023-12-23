@@ -52,6 +52,7 @@ public:
     bool getNearObs();
     void setNearobs(bool near);
     void Died();
+    void reset();
 };
 
 #endif
