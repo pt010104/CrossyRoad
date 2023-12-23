@@ -44,6 +44,7 @@ CGAME::CGAME(sf::RenderWindow& window) : window(&window)
 {
         isPress = false;
         view = window.getDefaultView();
+        newGameMainView = view;
         threshold = 200; 
         stopGame = false;
         numLanes = window.getSize().y / laneHeight;
@@ -102,7 +103,35 @@ std::vector<CANIMAL*> CGAME::getAnimals() {
         // return animals;
     }
 void CGAME::resetGame() {
-    }
+    view = newGameMainView;
+    isPress = false;
+    threshold = 200;
+    stopGame = false;
+    // ... other variables specific to game state
+
+    // Clear vectors and reset their sizes
+    secondObjCreated.clear();
+    speed_lane.clear();
+    time_obj2.clear();
+    ObjInLane.clear();
+    isSecond.clear();
+    isDraw.clear();
+    maps.clear();
+    obstacles.clear();
+    objects.clear();
+
+    int totalLanes = window->getSize().y / laneHeight;
+    secondObjCreated.assign(totalLanes * 2, false);
+    speed_lane.assign(totalLanes * 2, 0.0f);
+    time_obj2.assign(totalLanes * 2, 0.0f);
+    ObjInLane.assign(totalLanes * 2, 1);
+    isSecond.assign(totalLanes * 2, false);
+    isDraw.assign(totalLanes * 2, true);
+
+    cn.reset();
+    // Re-generate game objects
+    GenObj(*window);
+}
 void CGAME::exitGame(std::thread& thread) {
     stopGame = true;
     if (thread.joinable()) {
@@ -111,7 +140,6 @@ void CGAME::exitGame(std::thread& thread) {
 }
 
 void CGAME::startGame(sf::RenderWindow& window) {   
-          
             moveCooldown -= deltaTime;
             if (moveCooldown <= 0.0f && !stopGame) {
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && isPress==false) {
@@ -236,3 +264,8 @@ void CGAME::updatePosAnimal() {
             indexObj++;
         }
     }
+
+bool CGAME::checkwindow(){
+    if (window) return true;
+    return false;
+}

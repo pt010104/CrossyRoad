@@ -5,6 +5,7 @@
 #include <atomic>
 #include "CGAME.h"
 #include "GameState.h"
+#include "Menu.h"
 
 class App {
 public:
@@ -18,9 +19,12 @@ private:
     sf::Texture menuTexture;
     sf::Sprite menuSprite;
     sf::Clock clock;
+    Menu menu;
     float deltaTime;
     CGAME game;
     void processEvents();
+    void handleMouseClick(const sf::Event& event);
+    void handleKeyPress(const sf::Event& event);
     void update();
     void render();
     void gameLoop();

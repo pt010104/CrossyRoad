@@ -49,6 +49,7 @@ public:
     }
     bool getState() const { return mState; }
     void Died();
+    void reset();
 };
 
 #endif
