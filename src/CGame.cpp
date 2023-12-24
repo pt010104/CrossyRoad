@@ -41,22 +41,17 @@ void CGAME::GenObj(sf::RenderWindow& window)
             std::uniform_int_distribution<int> dist2(2, 4);
             int numObsInLane = dist2(gen);
             std::vector <int> orderFrame;
-            std::vector <int> coordX;
             for (int i =0; i<numObsInLane; ++i) {
                 int indexFrame = dist(gen);
                 orderFrame.push_back(indexFrame);
             }
-            std::uniform_int_distribution<int> dist_x(1, 8);
+            std::vector<int> coordX(orderFrame.size()); 
+            std::iota(coordX.begin(), coordX.end(), 1); 
+            std::shuffle(coordX.begin(), coordX.end(), gen); 
             for (int i = 0; i<orderFrame.size();i++)
             {
-                int randomX = dist_x(gen);
-                while (std::find(coordX.begin(), coordX.end(), randomX) != coordX.end())
-                {
-                    randomX = dist_x(gen);
-                }
-                coordX.push_back(randomX);
                 std::string tileName = "right_" + std::to_string(orderFrame[i]); 
-                obstacles.emplace_back(window.getSize().x,randomX*133,j*laneHeight,tileName);
+                obstacles.emplace_back(window.getSize().x,coordX[i]*133,j*laneHeight,tileName);
             }
         }            
     }    
@@ -85,20 +80,26 @@ CGAME::~CGAME() {
 
 void CGAME::drawGame() 
 {
+    int visibleObj = (view.getCenter().y+400)/(133); 
     if (window) {
-            for (auto tile:maps)
-                tile.draw(*window);
-            for (auto obstacle:obstacles)
-                obstacle.draw(*window);
-            for (auto& obj : objects) 
-            {
-                obj->draw(*window);
-            }     
-            if (cn.getState())
-                cn.draw(*window);
+        for (int i = 0;i<visibleObj;i++)
+        {
+            maps[maps.size()-i-1].draw(*window);
+        }
+        for (int i = 0;i<objects.size();i++)
+        {
+            if(objects[i]->get_Position().y > visibleObj*133)
+                break;
+            objects[objects.size()-i-1]->draw(*window);
+        }
+        for (int i = 0;i<visibleObj;i++)
+        {
+            obstacles[obstacles.size()-i-1].draw(*window);
+        }
 
-
-    }
+        if (cn.getState())
+            cn.draw(*window);
+    }  
 }
 CPEOPLE CGAME::getPeople() {
         return cn;
@@ -188,15 +189,15 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 view.setCenter(view.getCenter().x, playerPosition.y-200);
             }
             window.setView(view);
-            for (auto obstacle : obstacles) {
-            if(cn.getState())
-                {
-                    if (CollisionManager::checkCollision(cn, obstacle))
-                    {
-                        cn.setNearobs(true);
-                    }
-                }
-            }
+            // for (auto obstacle : obstacles) {
+            // if(cn.getState())
+            //     {
+            //         if (CollisionManager::checkCollision(cn, obstacle))
+            //         {
+            //             cn.setNearobs(true);
+            //         }
+            //     }
+            // }
 }
 
 void CGAME::loadGame(std::istream& is) {

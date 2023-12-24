@@ -16,7 +16,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>
-
+#include <algorithm> 
 class CGAME {
 protected:
     sf::RenderWindow* window;
