@@ -24,7 +24,13 @@ bool CollisionManager::checkCollisionAnimal(CPEOPLE& people, CANIMAL& animal) {
 bool CollisionManager::checkCollision(CPEOPLE& people, Obstacles& obs) {
     sf::FloatRect peopleBounds = people.get_GlobalBounds();
     sf::FloatRect obstaclesBounds = obs.get_GlobalBounds();
+
+    sf::Vector2f posPeople = people.get_Position();
+    sf::Vector2f posObs = obs.get_Position();
+
     if(peopleBounds.width == 0 &&peopleBounds.height == 0)
         return false;
+    if (std::abs(posPeople.y - posObs.y) > 10) 
+        return false; 
     return peopleBounds.intersects(obstaclesBounds);
 }

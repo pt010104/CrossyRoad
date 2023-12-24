@@ -14,20 +14,23 @@ Obstacles::Obstacles(int width,float startX, float startY,std::string tile): win
             if (!loader.LoadAnimations("Assets/Map/Obstacles.json", frames, animations, numFrames)) {
                 std::cerr<<"Failed to load Json Map";
             }
-            sprite.setTexture(TextureManager::GetTexture("Assets/Map/Obstacles.png"));
+            sprite.setTexture(texture);
+            sprite.setScale(4.0f,4.0f);
             rectSourceSprite = sf::IntRect(
                 frames[typeTile].x,
                 frames[typeTile].y,
                 frames[typeTile].width,
                 frames[typeTile].height
             );    
-            sprite.setScale(133*2/sprite.getGlobalBounds().width,133/sprite.getGlobalBounds().height);
+            sprite.setTextureRect(rectSourceSprite);
+            sprite.setPosition(mX,mY);
 }
 void Obstacles::draw(sf::RenderWindow& window) {
-        this->sprite.setTextureRect(rectSourceSprite);
-        sprite.setPosition(mX,mY);
         window.draw(sprite);
 }
 sf::FloatRect Obstacles::get_GlobalBounds() const {
-    return this->sprite.getGlobalBounds();
+    return sprite.getGlobalBounds();
+}
+sf::Vector2f Obstacles::get_Position() const{
+    return sprite.getPosition();
 }

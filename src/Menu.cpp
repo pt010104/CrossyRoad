@@ -48,8 +48,6 @@ void Menu::renderMainMenu() {
         //     buttonSprite.setPosition(xPos + button.offset.x, yPos + button.offset.y);
         //     window.draw(buttonSprite);
         // }
-
-        window.display();
     // }
 }
 

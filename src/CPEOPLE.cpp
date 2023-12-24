@@ -54,25 +54,25 @@ CPEOPLE::CPEOPLE(int startX, int startY) : CPEOPLE() {
 
 void CPEOPLE::Up() {
     if(!nearObs)
-        mY = mY - 2;
+        mY = mY - 3;
     UpdateAnimation("up");
 }
 
 void CPEOPLE::Left() {
     if(!nearObs)
-        mX = std::max(0 + spriteWidth, mX - 2);
+        mX = std::max(0 + spriteWidth, mX - 3);
     UpdateAnimation("left");
 }
 
 void CPEOPLE::Right() {
     if(!nearObs)
-        mX = std::min(windowWidth - spriteWidth, mX +  2);
+        mX = std::min(windowWidth - spriteWidth, mX +  3);
     UpdateAnimation("right");
 }
 
 void CPEOPLE::Down() {
     if(!nearObs)
-        mY = std::min(windowHeight - spriteHeight, mY +  2);
+        mY = std::min(windowHeight - spriteHeight, mY +  3);
     UpdateAnimation("down");
 }
 void CPEOPLE::Died(){
@@ -107,14 +107,7 @@ void CPEOPLE::UpdateAnimation(const std::string& direction) {
 
 void CPEOPLE::draw(sf::RenderWindow& window) {
     sprite.setPosition(mX,mY);
-    sf::RectangleShape boundingBox;
-    boundingBox.setPosition(sprite.getPosition());
-    boundingBox.setSize(sf::Vector2f(sprite.getGlobalBounds().width-5,sprite.getGlobalBounds().height));
-    boundingBox.setFillColor((sf::Color::Transparent));
-    boundingBox.setOutlineColor(sf::Color::Red);
-    boundingBox.setOutlineThickness(1.f);
     window.draw(sprite);
-    window.draw(boundingBox);
 }
 bool CPEOPLE::getNearObs(){
     return nearObs;

@@ -7,7 +7,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis1(0,1); //obj1 appears at x=0 or 955
     std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj1 across it
-    std::uniform_real_distribution<> speedDis(6.0f, 7.0f); 
+    std::uniform_real_distribution<> speedDis(8.0f, 10.0f); 
     std::uniform_int_distribution<> numBirdsDis(1, 2); 
     std::uniform_int_distribution<> randObj(0, 2); 
     int indexObj=0;
@@ -37,7 +37,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
         {
             maps.emplace_back(window.getSize().x,j*laneHeight,"people");              
             int numFrames = 7;
-            std::uniform_int_distribution<int> dist(0, numFrames - 1);
+            std::uniform_int_distribution<int> dist(1, numFrames);
             std::uniform_int_distribution<int> dist2(2, 4);
             int numObsInLane = dist2(gen);
             std::vector <int> orderFrame;
@@ -183,15 +183,15 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 view.setCenter(view.getCenter().x, playerPosition.y-200);
             }
             window.setView(view);
-            // for (auto obstacle : obstacles) {
-            // if(cn.getState())
-            //     {
-            //         if (CollisionManager::checkCollision(cn, obstacle))
-            //         {
-            //             cn.setNearobs(true);
-            //         }
-            //     }
-            // }
+            for (auto obstacle : obstacles) {            
+            if(cn.getState())
+                {
+                    if (CollisionManager::checkCollision(cn, obstacle))
+                    {
+                        cn.setNearobs(true);
+                    }
+                }
+            }
 }
 
 void CGAME::loadGame(std::istream& is) {

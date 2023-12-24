@@ -27,7 +27,7 @@ public:
     Obstacles(int width,float startX, float startY,std::string tile);
     void draw(sf::RenderWindow& window);
     sf::FloatRect get_GlobalBounds() const;
-
+    sf::Vector2f get_Position() const;
 };
 
 #endif
