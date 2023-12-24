@@ -116,13 +116,12 @@ void CPEOPLE::draw(sf::RenderWindow& window) {
     window.draw(sprite);
     window.draw(boundingBox);
 }
-<<<<<<< HEAD
 bool CPEOPLE::getNearObs(){
     return nearObs;
 }
 void CPEOPLE::setNearobs(bool near){
     nearObs = near;
-=======
+}
 
 void CPEOPLE::reset(){
     currentAnimation = "up";
@@ -150,5 +149,4 @@ void CPEOPLE::reset(){
     spriteHeight = sprite.getGlobalBounds().height;
     sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
     radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
->>>>>>> d8b7c20b3861c15c6ddb3b49996f877fb0ccf072
 }

@@ -1,6 +1,5 @@
 #ifndef CGAME_H
 #define CGAME_H
-
 #include <fstream>
 #include "CTRUCK.h"
 #include "CCAR.h"
@@ -9,6 +8,7 @@
 #include "CBIRD2.h"
 #include "CPEOPLE.h"
 #include "Map.h"
+#include "Obstacles.h"
 #include "CollisionManager.h"
 #include <thread>
 #include <iostream>
@@ -16,7 +16,6 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>
-
 
 class CGAME {
 protected:

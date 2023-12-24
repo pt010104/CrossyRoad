@@ -6,6 +6,8 @@
 #include "CGAME.h"
 #include "GameState.h"
 #include "Menu.h"
+#include <mutex>               
+#include <condition_variable>   
 
 class App {
 public:
@@ -22,6 +24,9 @@ private:
     Menu menu;
     float deltaTime;
     CGAME game;
+    bool gameRunning;
+    bool exitGameFlag;
+
     void processEvents();
     void handleMouseClick(const sf::Event& event);
     void handleKeyPress(const sf::Event& event);
@@ -32,6 +37,8 @@ private:
     void pauseGame();
     void resumeGame();
     void exitGame();
+    std::mutex gameMutex;
+    std::condition_variable gameCondition;
 };
 
 #endif 

@@ -7,7 +7,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis1(0,1); //obj1 appears at x=0 or 955
     std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj1 across it
-    std::uniform_real_distribution<> speedDis(4.5f, 7.0f); 
+    std::uniform_real_distribution<> speedDis(6.0f, 7.0f); 
     std::uniform_int_distribution<> numBirdsDis(1, 2); 
     std::uniform_int_distribution<> randObj(0, 2); 
     int indexObj=0;
@@ -159,35 +159,26 @@ void CGAME::exitGame(std::thread& thread) {
 }
 
 void CGAME::startGame(sf::RenderWindow& window) {   
-<<<<<<< HEAD
-            int delayTime =0;
-=======
->>>>>>> d8b7c20b3861c15c6ddb3b49996f877fb0ccf072
-            moveCooldown -= deltaTime;
-            if (moveCooldown <= 0.0f && !stopGame) {
+            if (!stopGame) {
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && isPress==false) {
                     isPress = true;
                     this->updatePosPeople('W');
-                    moveCooldown = delayTime;
 
                 }
                 else
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)&& isPress==false) {
                     isPress = true;
                     this->updatePosPeople('A');
-                    moveCooldown = delayTime;
                 }
                 else
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)&& isPress==false) {
                     isPress = true;
                     this->updatePosPeople('S');
-                    moveCooldown = delayTime;
                 }
                 else
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)&& isPress==false) {
                     isPress = true;
                     this->updatePosPeople('D');
-                    moveCooldown = delayTime;
                 }
                 isPress = false;
             }
@@ -197,23 +188,12 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 view.setCenter(view.getCenter().x, playerPosition.y-200);
             }
             window.setView(view);
-<<<<<<< HEAD
             for (auto obstacle : obstacles) {
             if(cn.getState())
                 {
-                    if (CollisionManager::checkCollisionObstacles(cn, obstacle))
+                    if (CollisionManager::checkCollision(cn, obstacle))
                     {
                         cn.setNearobs(true);
-=======
-            for (auto& obstacle : obstacles) {
-                if(cn.getState())
-                {
-                    if (false)
-                    // if (CollisionManager::checkCollision(cn, *obstacle))
-                    {
-                        stopGame=true;
-                        cn.Died();
->>>>>>> d8b7c20b3861c15c6ddb3b49996f877fb0ccf072
                     }
                 }
             }

@@ -1,22 +1,26 @@
 #include "App.h"
 #include <stdlib.h>
 App::App() : window(sf::VideoMode(1000, 800), "Crossy Road"), game(window), menu(sf::Font(), window) {
+    gameRunning = true;
+    exitGameFlag = false; 
     gameThread = std::thread(&App::gameLoop, this);
+
 }
 App::~App() {
+    {
+        std::lock_guard<std::mutex> lock(gameMutex);
+            exitGameFlag = true;
+            gameCondition.notify_one();
+    }
     if (gameThread.joinable()) {
         gameThread.join();
     }
 }
-    
+
 void App::run() {
-    while (window.isOpen()) {
-        if (gameThread.joinable()) {
-            gameThread.join();
-        }
+    while (window.isOpen() && !exitGameFlag) {
         processEvents();
         render();
-        gameThread = std::thread(&App::gameLoop, this);
     }
 }
 
@@ -121,31 +125,43 @@ void App::render() {
 }
 
 void App::gameLoop() {
-    switch (currentGameState) {
-        case GameState::MENU:
-            
-            menu.handleInputMainMenu();
-            break;
-
-        case GameState::PLAYING:
-            try {
-                game.startGame(window);
-                update();
-            } catch (const std::exception& e) {
-                std::cerr << "Exception: " << e.what() << std::endl;
-            }
-            break;
-
-        case GameState::PAUSED:
-            
-            menu.handleInputPausedMenu();
-            break;
-
-        case GameState::EXITING:
-            break;
-        default:
-            break;
+    std::unique_lock<std::mutex> lock(gameMutex);
+    while (!exitGameFlag) {
+        gameCondition.wait(lock, [this]{ return gameRunning || exitGameFlag; });
+        
+        if (exitGameFlag) {
+            break; 
         }
+
+        switch (currentGameState) {
+            case GameState::MENU:
+                
+                menu.handleInputMainMenu();
+                break;
+
+            case GameState::PLAYING:
+                try {
+                    game.startGame(window);
+                    update();
+                } catch (const std::exception& e) {
+                    std::cerr << "Exception: " << e.what() << std::endl;
+                }
+                break;
+
+            case GameState::PAUSED:
+                
+                menu.handleInputPausedMenu();
+                break;
+
+            case GameState::EXITING:
+                break;
+            default:
+                break;
+        }
+        lock.unlock();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1)); 
+        lock.lock();
+    }
 }
 
 void App::startGame() {
@@ -153,18 +169,22 @@ void App::startGame() {
 }
 
 void App::pauseGame() {
-    currentGameState = GameState::PAUSED;
+    std::lock_guard<std::mutex> lock(gameMutex);
+    gameRunning = false; 
 }
 
 void App::resumeGame() {
-    currentGameState = GameState::PLAYING;
-}
-
-void App::exitGame() {
-    //clean up maybe
-    window.close();
-    currentGameState = GameState::EXITING;
-    if (gameThread.joinable()) {
-        gameThread.join();
+    {
+        std::lock_guard<std::mutex> lock(gameMutex);
+        gameRunning = true;
     }
+    gameCondition.notify_one(); 
+}
+void App::exitGame() {
+    {
+        std::lock_guard<std::mutex> lock(gameMutex);
+        exitGameFlag = true; // Set the flag to exit the game
+    }
+    gameCondition.notify_one(); // Signal the game loop to wake up and exit
+    window.close();
 }

@@ -13,7 +13,7 @@ bool CollisionManager::checkCollisionAnimal(CPEOPLE& people, CANIMAL& animal) {
 
     return distance < (radius1 + radius2);
 }
-bool CollisionManager::checkCollisionObstacles(CPEOPLE& people, Obstacles& obs) {
+bool CollisionManager::checkCollision(CPEOPLE& people, Obstacles& obs) {
     sf::FloatRect peopleBounds = people.get_GlobalBounds();
     sf::FloatRect obstaclesBounds = obs.get_GlobalBounds();
     if(peopleBounds.width == 0 &&peopleBounds.height == 0)
