@@ -45,13 +45,13 @@ void CGAME::GenObj(sf::RenderWindow& window)
                 int indexFrame = dist(gen);
                 orderFrame.push_back(indexFrame);
             }
-            std::vector<int> coordX(orderFrame.size()); 
+            std::vector<int> coordX(8); 
             std::iota(coordX.begin(), coordX.end(), 1); 
             std::shuffle(coordX.begin(), coordX.end(), gen); 
             for (int i = 0; i<orderFrame.size();i++)
             {
                 std::string tileName = "right_" + std::to_string(orderFrame[i]); 
-                obstacles.emplace_back(window.getSize().x,coordX[i]*133,j*laneHeight,tileName);
+                obstacles.emplace_back(window.getSize().x,coordX[i]*133,j*laneHeight-15,tileName);
             }
         }            
     }    
