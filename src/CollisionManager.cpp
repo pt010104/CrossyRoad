@@ -1,16 +1,24 @@
 #include "CollisionManager.h"
 #include <cmath>
 bool CollisionManager::checkCollisionAnimal(CPEOPLE& people, CANIMAL& animal) {
-    int bias = 0; //expand radius
-    sf::Vector2f pos1 = people.get_Position();
-    sf::Vector2f pos2 = animal.get_Position();
-    float dx = (pos1.x - pos2.x);
-    float dy = (pos1.y - pos2.y);
+    sf::Vector2f posPeople = people.get_Position();
+    float widthPeople = people.get_GlobalBounds().width;
+    float heightPeople = people.get_GlobalBounds().height;
+
+    sf::Vector2f posAnimal = animal.get_Position();
+    float widthAnimal = animal.get_GlobalBounds().width;
+    float heightAnimal = animal.get_GlobalBounds().height;
+
+    bool isAbove = posPeople.y + heightPeople <= (posAnimal.y+heightAnimal/2+10);
+    if (isAbove) {
+        return false;
+    }
+
+    float dx = (posPeople.x - posAnimal.x);
+    float dy = (posPeople.y - posAnimal.y);
     float distance = std::sqrt(dx * dx + dy * dy);
-
     float radius1 = people.getRadius();
-    float radius2 = animal.getRadius()+bias; 
-
+    float radius2 = animal.getRadius();
     return distance < (radius1 + radius2);
 }
 bool CollisionManager::checkCollision(CPEOPLE& people, Obstacles& obs) {

@@ -80,26 +80,20 @@ CGAME::~CGAME() {
 
 void CGAME::drawGame() 
 {
-    int visibleObj = (view.getCenter().y+400)/(133); 
     if (window) {
-        for (int i = 0;i<visibleObj;i++)
-        {
-            maps[maps.size()-i-1].draw(*window);
-        }
-        for (int i = 0;i<objects.size();i++)
-        {
-            if(objects[i]->get_Position().y > visibleObj*133)
-                break;
-            objects[objects.size()-i-1]->draw(*window);
-        }
-        for (int i = 0;i<visibleObj;i++)
-        {
-            obstacles[obstacles.size()-i-1].draw(*window);
-        }
+            for (auto tile:maps)
+                tile.draw(*window);
+            for (auto obstacle:obstacles)
+                obstacle.draw(*window);
+            if (cn.getState())
+                cn.draw(*window);
+            for (auto& obj : objects) 
+            {
+                obj->draw(*window);
+            }     
 
-        if (cn.getState())
-            cn.draw(*window);
-    }  
+
+    }
 }
 CPEOPLE CGAME::getPeople() {
         return cn;
