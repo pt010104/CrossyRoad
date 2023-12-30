@@ -7,7 +7,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis1(0,1); //obj1 appears at x=0 or 955
     std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj1 across it
-    std::uniform_real_distribution<> speedDis(8.0f, 10.0f); 
+    std::uniform_real_distribution<> speedDis(7.0f, 9.0f); 
     std::uniform_int_distribution<> numBirdsDis(1, 2); 
     std::uniform_int_distribution<> randObj(0, 2); 
     int indexObj=0;
@@ -157,23 +157,59 @@ void CGAME::startGame(sf::RenderWindow& window) {
             if (!stopGame) {
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && isPress==false) {
                     isPress = true;
-                    this->updatePosPeople('W');
+                    bool canMove = true;
+                    for (auto obstacle : obstacles) {
+                        if (CollisionManager::checkCollisionInDirection(cn, obstacle, 'W')) {
+                            canMove = false;
+                            break;
+                        }
+                    }
+                    if (canMove) {
+                        this->updatePosPeople('W');
+                    }
 
                 }
                 else
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)&& isPress==false) {
                     isPress = true;
-                    this->updatePosPeople('A');
+                    bool canMove = true;
+                    for (auto obstacle : obstacles) {
+                        if (CollisionManager::checkCollisionInDirection(cn, obstacle, 'A')) {
+                            canMove = false;
+                            break;
+                        }
+                    }
+                    if (canMove) {
+                        this->updatePosPeople('A');
+                    }
                 }
                 else
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)&& isPress==false) {
                     isPress = true;
-                    this->updatePosPeople('S');
+                    bool canMove = true;
+                    for (auto obstacle : obstacles) {
+                        if (CollisionManager::checkCollisionInDirection(cn, obstacle, 'S')) {
+                            canMove = false;
+                            break;
+                        }
+                    }
+                    if (canMove) {
+                        this->updatePosPeople('S');
+                    }
                 }
                 else
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)&& isPress==false) {
                     isPress = true;
-                    this->updatePosPeople('D');
+                    bool canMove = true;
+                    for (auto obstacle : obstacles) {
+                        if (CollisionManager::checkCollisionInDirection(cn, obstacle, 'D')) {
+                            canMove = false;
+                            break;
+                        }
+                    }
+                    if (canMove) {
+                        this->updatePosPeople('D');
+                    }
                 }
                 isPress = false;
             }
@@ -183,18 +219,15 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 view.setCenter(view.getCenter().x, playerPosition.y-200);
             }
             window.setView(view);
-            for (auto obstacle : obstacles) {            
-            if(cn.getState())
-                {
-                    if(cn.getNearObs())
-                        cn.setNearobs(false);
-                    else
-                    if (CollisionManager::checkCollision(cn, obstacle))
-                    {
-                        cn.setNearobs(true);
-                    }
-                }
-            }
+            // for (auto obstacle : obstacles) {            
+            // if(cn.getState())
+            //     {
+            //         if (CollisionManager::checkCollision(cn, obstacle))
+            //         {
+            //             cn.setNearobs(true);
+            //         }
+            //     }
+            // }
 }
 
 void CGAME::loadGame(std::istream& is) {

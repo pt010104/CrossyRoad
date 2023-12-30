@@ -30,8 +30,42 @@ bool CollisionManager::checkCollision(CPEOPLE& people, Obstacles& obs) {
 
     if(peopleBounds.width == 0 &&peopleBounds.height == 0)
         return false;
-    if (std::abs((posPeople.y+peopleBounds.height) - (posObs.y+obstaclesBounds.height)) > 10) 
+    if (std::abs((posPeople.y+peopleBounds.height) - (posObs.y+obstaclesBounds.height)) > obstaclesBounds.height) 
         return false; 
         
     return peopleBounds.intersects(obstaclesBounds);
+}
+
+bool CollisionManager::checkCollisionInDirection(CPEOPLE& people, Obstacles& obs, char direction){
+    sf::FloatRect peopleBounds = people.get_GlobalBounds();
+    sf::FloatRect obstaclesBounds = obs.get_GlobalBounds();
+
+    sf::Vector2f posPeople = people.get_Position();
+    sf::Vector2f posObs = obs.get_Position();
+
+    float threshold = 10.0f;
+
+    if(peopleBounds.width == 0 &&peopleBounds.height == 0)
+        return false;
+
+    switch (direction) {
+        case 'W':
+            if (std::abs((posPeople.y) - (posObs.y) - obstaclesBounds.height) > threshold)
+                return false;
+            return peopleBounds.intersects(obstaclesBounds);
+        case 'A':
+            if (std::abs((posPeople.x) - (posObs.x + obstaclesBounds.width)) > threshold)
+                return false;
+            return peopleBounds.intersects(obstaclesBounds);
+        case 'S':
+            if (std::abs((posPeople.y + peopleBounds.height) - (posObs.y)) > threshold)
+                return false;
+            return peopleBounds.intersects(obstaclesBounds);
+        case 'D':
+            if (std::abs((posPeople.x + peopleBounds.width) - (posObs.x)) > threshold)
+                return false;
+            return peopleBounds.intersects(obstaclesBounds);
+        default:
+            return false;
+    }
 }

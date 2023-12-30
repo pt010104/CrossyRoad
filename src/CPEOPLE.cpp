@@ -54,25 +54,25 @@ CPEOPLE::CPEOPLE(int startX, int startY) : CPEOPLE() {
 
 void CPEOPLE::Up() {
     if(!nearObs)
-        mY = mY - 3;
+        mY = mY - 4;
     UpdateAnimation("up");
 }
 
 void CPEOPLE::Left() {
     if(!nearObs)
-        mX = std::max(0 + spriteWidth, mX - 3);
+        mX = std::max(0 + spriteWidth, mX - 4);
     UpdateAnimation("left");
 }
 
 void CPEOPLE::Right() {
     if(!nearObs)
-        mX = std::min(windowWidth - spriteWidth, mX +  3);
+        mX = std::min(windowWidth - spriteWidth, mX +  4);
     UpdateAnimation("right");
 }
 
 void CPEOPLE::Down() {
     if(!nearObs)
-        mY = std::min(windowHeight - spriteHeight, mY +  3);
+        mY = std::min(windowHeight - spriteHeight, mY +  4);
     UpdateAnimation("down");
 }
 void CPEOPLE::Died(){
@@ -118,6 +118,7 @@ void CPEOPLE::setNearobs(bool near){
 void CPEOPLE::reset(){
     currentAnimation = "up";
     mState = true;
+    nearObs = false;
     
     numFrames = 5;
 
