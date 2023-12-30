@@ -27,6 +27,7 @@ private:
     sf::View mainMenuCameraView;
     sf::Texture menuTexture;
     sf::Texture playTextture;
+    sf::Texture saveTextture;
     sf::Sprite menuSprite;
     std::vector<Button> mainMenuButtons;
     std::vector<Button> pausedMenuButtons;

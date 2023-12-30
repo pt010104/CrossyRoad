@@ -8,6 +8,9 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
     if (!playTextture.loadFromFile("Assets/Menu/PlayButton.png")) {
         std::cerr << "Failed to load main menu image." << std::endl;
     }
+    if (!saveTextture.loadFromFile("Assets/Menu/loadSave.png")) {
+        std::cerr << "Failed to load main menu image." << std::endl;
+    }
     mainMenuCameraView = window.getDefaultView();
     Button playButton;
     playButton.sprite.setTexture(playTextture);
@@ -16,7 +19,15 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
     playButton.onClick = []() {
         std::cout << "Play button clicked!\n";
     };
+    Button loadSave;
+    loadSave.sprite.setTexture(saveTextture);
+    loadSave.sprite.setPosition(397, 333);
+    loadSave.name = "loadSave";
+    loadSave.onClick = []() {
+        std::cout << "Play button clicked!\n";
+    };   
     mainMenuButtons.push_back(playButton);
+    mainMenuButtons.push_back(loadSave);
 
 }
 
