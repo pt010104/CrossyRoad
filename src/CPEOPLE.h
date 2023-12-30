@@ -13,6 +13,11 @@ private:
     int windowHeight = 800;
     float radius;
     bool nearObs;
+
+    bool canMoveUp;
+    bool canMoveDown;
+    bool canMoveLeft;
+    bool canMoveRight;
     
     sf::Sprite sprite;
     sf::Texture texture;
@@ -53,6 +58,17 @@ public:
     void setNearobs(bool near);
     void Died();
     void reset();
+
+    void setCanMoveUp(bool value) { canMoveUp = value; }
+    void setCanMoveDown(bool value) { canMoveDown = value; }
+    void setCanMoveLeft(bool value) { canMoveLeft = value; }
+    void setCanMoveRight(bool value) { canMoveRight = value; }
+
+    bool getCanMoveUp() const { return canMoveUp; }
+    bool getCanMoveDown() const { return canMoveDown; }
+    bool getCanMoveLeft() const { return canMoveLeft; }
+    bool getCanMoveRight() const { return canMoveRight; }
+
 };
 
 #endif
