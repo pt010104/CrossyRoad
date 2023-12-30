@@ -4,16 +4,20 @@ bool mainMenuDrawn = false;
 bool pausedMenuDrawn = false;
 
 Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_font(font) {
+
+    if (!playTextture.loadFromFile("Assets/Menu/PlayButton.png")) {
+        std::cerr << "Failed to load main menu image." << std::endl;
+    }
     mainMenuCameraView = window.getDefaultView();
     Button playButton;
-    playButton.sprite.setTexture(menuTexture);
-    playButton.sprite.setPosition(100, 100);
+    playButton.sprite.setTexture(playTextture);
+    playButton.sprite.setPosition(382, 658);
+    playButton.name = "play";
     playButton.onClick = []() {
         std::cout << "Play button clicked!\n";
     };
     mainMenuButtons.push_back(playButton);
 
-    // Initialize buttons for other menus similarly...
 }
 
 void Menu::setFont(const std::string& fontPath) {
@@ -26,7 +30,7 @@ void Menu::renderMainMenu() {
     // if (!mainMenuDrawn) {
         window.setView(mainMenuCameraView);
 
-        if (!menuTexture.loadFromFile("Assets/Menu/TmpMainMenu.png")) {
+        if (!menuTexture.loadFromFile("Assets/Menu/MenuGame.png")) {
             std::cerr << "Failed to load main menu image." << std::endl;
         }
 
@@ -41,14 +45,10 @@ void Menu::renderMainMenu() {
         window.draw(menuSprite);
 
         mainMenuDrawn = true;
+    for (auto& button : mainMenuButtons) {
+        window.draw(button.sprite);
+    }
 
-        // for (auto& button : mainMenuButtons) {
-        //     // Adjust button positions relative to the menu position if needed
-        //     sf::Sprite& buttonSprite = button.sprite;
-        //     buttonSprite.setPosition(xPos + button.offset.x, yPos + button.offset.y);
-        //     window.draw(buttonSprite);
-        // }
-    // }
 }
 
 void Menu::renderPausedMenu() {
@@ -80,12 +80,22 @@ void Menu::renderPausedMenu() {
     //     window.display();
     // }
 }
+std::string Menu::handleInputMainMenu() {
+    sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
 
-void Menu::handleInputMainMenu() {
-    int clickedButtonIndex = checkButtonClick(mainMenuButtons, sf::Vector2f(sf::Mouse::getPosition(window)));
-    if (clickedButtonIndex != -1) {
-        mainMenuButtons[clickedButtonIndex].onClick();
+    int clickedButtonIndex = -1;
+    clickedButtonIndex = checkButtonClick(mainMenuButtons, sf::Vector2f(sf::Mouse::getPosition(window)));
+
+    mainMenuButtons[clickedButtonIndex].onHover(); 
+
+    if (clickedButtonIndex == -1) {
+        for (auto& button : mainMenuButtons) {
+            button.onUnhover(); 
+        }
     }
+
+    return clickedButtonIndex != -1 ? mainMenuButtons[clickedButtonIndex].name : "";
+
 }
 
 void Menu::handleInputPausedMenu() {

@@ -38,7 +38,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
             maps.emplace_back(window.getSize().x,j*laneHeight,"people");              
             int numFrames = 7;
             std::uniform_int_distribution<int> dist(1, numFrames);
-            std::uniform_int_distribution<int> dist2(1, 3);
+            std::uniform_int_distribution<int> dist2(2, 3);
             int numObsInLane = dist2(gen);
             std::vector <int> orderFrame;
             for (int i =0; i<numObsInLane; ++i) {

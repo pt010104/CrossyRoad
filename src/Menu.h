@@ -4,9 +4,18 @@
 #include <functional>
 
 // Define the structure for a button
-struct Button {
+class Button {
+public:
     sf::Sprite sprite;
-    std::function<void()> onClick; // Function to execute when clicked
+    std::function<void()> onClick;
+    std::string name;
+    Button() = default;
+    void onHover() {
+        sprite.setColor(sf::Color(197, 235, 0, 250)); 
+    }
+    void onUnhover() {
+        sprite.setColor(sf::Color(255, 255, 255, 255)); 
+    }
 };
 
 extern bool mainMenuDrawn;
@@ -17,6 +26,7 @@ private:
     sf::RenderWindow& window;
     sf::View mainMenuCameraView;
     sf::Texture menuTexture;
+    sf::Texture playTextture;
     sf::Sprite menuSprite;
     std::vector<Button> mainMenuButtons;
     std::vector<Button> pausedMenuButtons;
@@ -32,7 +42,7 @@ public:
     void renderPausedMenu();
     // Add functions for other menus (scoreMenu, settingsMenu, etc.)
 
-    void handleInputMainMenu();
+    std::string handleInputMainMenu();
     void handleInputPausedMenu();
     // Add functions for handling input in other menus
 

@@ -49,9 +49,14 @@ void App::processEvents() {
 void App::handleMouseClick(const sf::Event& event) {
     if (event.mouseButton.button == sf::Mouse::Left) {
         sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-
+        std::string buttonName = menu.handleInputMainMenu();
         if (currentGameState == GameState::MENU) {
-            if (false) {
+            if(buttonName == "play")
+            {
+                if (game.checkwindow()) {
+                    game.resetGame();
+                }
+                currentGameState = GameState::PLAYING;        
             }
         }
         else if (currentGameState == GameState::PAUSED) {
@@ -133,13 +138,11 @@ void App::gameLoop() {
         if (exitGameFlag) {
             break; 
         }
-
         switch (currentGameState) {
-            case GameState::MENU:
-                
-                menu.handleInputMainMenu();
+            case GameState::MENU:{
+                std::string tmp = menu.handleInputMainMenu();
                 break;
-
+            }
             case GameState::PLAYING:
                 try {
                     game.startGame(window);
@@ -184,8 +187,8 @@ void App::resumeGame() {
 void App::exitGame() {
     {
         std::lock_guard<std::mutex> lock(gameMutex);
-        exitGameFlag = true; // Set the flag to exit the game
+        exitGameFlag = true; 
     }
-    gameCondition.notify_one(); // Signal the game loop to wake up and exit
+    gameCondition.notify_one(); 
     window.close();
 }
