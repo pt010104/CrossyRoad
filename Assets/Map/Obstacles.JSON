@@ -14,30 +14,30 @@
         },
         "right_3": {
             "x": 25,
-            "y": 24,
-            "width": 6,
-            "height": 9
+            "y": 14,
+            "width": 14,
+            "height": 18
         },
         "right_4": {
-            "x": 31,
+            "x": 39,
             "y": 16,
             "width": 16,
             "height": 16
         },
         "right_5": {
-            "x": 47,
+            "x": 55,
             "y": 16,
             "width": 12,
             "height": 16
         },
         "right_6": {
-            "x": 59,
+            "x": 67,
             "y": 16,
             "width": 16,
             "height": 16
         },
         "right_7": {
-            "x": 75,
+            "x": 83,
             "y": 16,
             "width": 16,
             "height": 16
