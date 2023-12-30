@@ -94,9 +94,10 @@ void App::handleKeyPress(const sf::Event& event) {
 
 void App::update() {
     deltaTime = clock.restart().asSeconds();
-    game.updateAnimation(deltaTime);
     game.updatePosAnimal();
     game.updatePosVehicle();
+    game.updateAnimation(deltaTime);
+
 }
 
 void App::render() {

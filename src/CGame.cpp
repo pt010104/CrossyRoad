@@ -7,12 +7,12 @@ void CGAME::GenObj(sf::RenderWindow& window)
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis1(0,1); //obj1 appears at x=0 or 955
     std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj1 across it
-    std::uniform_real_distribution<> speedDis(7.0f, 9.0f); 
+    std::uniform_real_distribution<> speedDis(5.0f, 7.0f); 
     std::uniform_int_distribution<> numBirdsDis(1, 2); 
     std::uniform_int_distribution<> randObj(0, 2); 
     int indexObj=0;
     // random obj
-    for (int j = -50; j < numLanes; j++) {
+    for (int j = -40; j < numLanes; j++) {
         if (abs(j)%2==0) {
             ObjInLane[indexObj] = numBirdsDis(gen);        
             speed_lane[indexObj] = speedDis(gen);
@@ -38,7 +38,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
             maps.emplace_back(window.getSize().x,j*laneHeight,"people");              
             int numFrames = 7;
             std::uniform_int_distribution<int> dist(1, numFrames);
-            std::uniform_int_distribution<int> dist2(2, 4);
+            std::uniform_int_distribution<int> dist2(1, 3);
             int numObsInLane = dist2(gen);
             std::vector <int> orderFrame;
             for (int i =0; i<numObsInLane; ++i) {
@@ -55,7 +55,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
             }
         }            
     }    
-}
+}   
 CGAME::CGAME(sf::RenderWindow& window) : window(&window)
 {
         isPress = false;
@@ -219,15 +219,6 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 view.setCenter(view.getCenter().x, playerPosition.y-200);
             }
             window.setView(view);
-            // for (auto obstacle : obstacles) {            
-            // if(cn.getState())
-            //     {
-            //         if (CollisionManager::checkCollision(cn, obstacle))
-            //         {
-            //             cn.setNearobs(true);
-            //         }
-            //     }
-            // }
 }
 
 void CGAME::loadGame(std::istream& is) {
@@ -296,7 +287,7 @@ void CGAME::updatePosAnimal() {
             obj->Move();
         }
         int indexObj = 0;
-        for (int i = -50; i < numLanes; i+=2) {
+        for (int i = -40; i < numLanes; i+=2) {
             if ((direction[indexObj] == 1 && objects[indexObj]->getX() >= time_obj2[indexObj]) || (direction[indexObj] == -1 && objects[indexObj]->getX() <= time_obj2[indexObj]))
                 if (!secondObjCreated[indexObj] &&ObjInLane[indexObj] == 2) {
                     int randomY = i * laneHeight;
