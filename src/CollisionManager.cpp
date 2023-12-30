@@ -30,8 +30,9 @@ bool CollisionManager::checkCollision(CPEOPLE& people, Obstacles& obs) {
 
     if(peopleBounds.width == 0 &&peopleBounds.height == 0)
         return false;
-    if (std::abs((posPeople.y+peopleBounds.height) - (posObs.y+obstaclesBounds.height)) > 10) 
+    if (std::abs((posPeople.y+peopleBounds.height) - (posObs.y+obstaclesBounds.height)) > obstaclesBounds.height) 
         return false; 
+        
     return peopleBounds.intersects(obstaclesBounds);
 }
 
