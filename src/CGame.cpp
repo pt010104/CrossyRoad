@@ -186,6 +186,9 @@ void CGAME::startGame(sf::RenderWindow& window) {
             for (auto obstacle : obstacles) {            
             if(cn.getState())
                 {
+                    if(cn.getNearObs())
+                        cn.setNearobs(false);
+                    else
                     if (CollisionManager::checkCollision(cn, obstacle))
                     {
                         cn.setNearobs(true);

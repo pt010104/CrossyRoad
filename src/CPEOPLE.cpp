@@ -115,7 +115,6 @@ bool CPEOPLE::getNearObs(){
 void CPEOPLE::setNearobs(bool near){
     nearObs = near;
 }
-
 void CPEOPLE::reset(){
     currentAnimation = "up";
     mState = true;
