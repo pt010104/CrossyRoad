@@ -53,26 +53,40 @@ CPEOPLE::CPEOPLE(int startX, int startY) : CPEOPLE() {
 }
 
 void CPEOPLE::Up() {
-    if(!nearObs)
+    // if(!nearObs)
         mY = mY - 3;
+    if (currentAnimationRight != currentAnimation){
+        currentAnimationRight = currentAnimation;    
+    }
     UpdateAnimation("up");
 }
 
 void CPEOPLE::Left() {
-    if(!nearObs)
+    // if(!nearObs)
         mX = std::max(0 + spriteWidth, mX - 3);
+    if (currentAnimationRight != currentAnimation){
+        currentAnimationRight = currentAnimation;    
+    }
     UpdateAnimation("left");
 }
 
 void CPEOPLE::Right() {
-    if(!nearObs)
+    // if(!nearObs)
+    if (currentAnimationRight != currentAnimation){
+        mX = mX - 2;
+        currentAnimationRight = currentAnimation;    
+    }
         mX = std::min(windowWidth - spriteWidth, mX +  3);
+    
     UpdateAnimation("right");
 }
 
 void CPEOPLE::Down() {
-    if(!nearObs)
+    // if(!nearObs)
         mY = std::min(windowHeight - spriteHeight, mY +  3);
+    if (currentAnimationRight != currentAnimation){
+        currentAnimationRight = currentAnimation;    
+    }
     UpdateAnimation("down");
 }
 void CPEOPLE::Died(){

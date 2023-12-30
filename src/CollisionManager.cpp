@@ -42,14 +42,13 @@ bool CollisionManager::checkCollisionInDirection(CPEOPLE& people, Obstacles& obs
     sf::Vector2f posPeople = people.get_Position();
     sf::Vector2f posObs = obs.get_Position();
 
-    float threshold = 10.0f;
+    float threshold = 10;
 
     if(peopleBounds.width == 0 &&peopleBounds.height == 0)
         return false;
-
     switch (direction) {
         case 'W':
-            if (std::abs((posPeople.y) - (posObs.y) - obstaclesBounds.height) > threshold)
+            if (std::abs((posPeople.y) - ((posObs.y) + obstaclesBounds.height)) > threshold)
                 return false;
             return peopleBounds.intersects(obstaclesBounds);
         case 'A':
@@ -63,6 +62,10 @@ bool CollisionManager::checkCollisionInDirection(CPEOPLE& people, Obstacles& obs
         case 'D':
             if (std::abs((posPeople.x + peopleBounds.width) - (posObs.x)) > threshold)
                 return false;
+            if (((posPeople.y - peopleBounds.height) - (posObs.y)) <= 0 && ((posPeople.y) - ((posObs.y) - obstaclesBounds.height) >= 0)){
+                if (((posPeople.x + peopleBounds.width) - (posObs.x)) <= 1) 
+                    return true;
+            }
             return peopleBounds.intersects(obstaclesBounds);
         default:
             return false;

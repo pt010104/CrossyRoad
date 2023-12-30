@@ -28,6 +28,7 @@ private:
     std::unordered_map<std::string, Frame> frames;
     std::unordered_map<std::string, Animation> animations;
     std::string currentAnimation; 
+    std::string currentAnimationRight = "down";
     float animationSpeed; 
     float frameTime; 
     size_t currentFrameIndex; 
