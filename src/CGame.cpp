@@ -54,7 +54,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
                 obstacles.emplace_back(window.getSize().x,coordX[i]*133,j*laneHeight-15,tileName);
             }
         }            
-    }    
+    }
 }   
 CGAME::CGAME(sf::RenderWindow& window) : window(&window)
 {
@@ -143,8 +143,15 @@ void CGAME::resetGame() {
     isDraw.assign(totalLanes * 2, true);
 
     cn.reset();
+    
     // Re-generate game objects
     GenObj(*window);
+    currentObs.clear();
+    for (auto obstacle : obstacles){
+        sf::Vector2f obsPos = obstacle.get_Position();
+        if (obsPos.y >= -100 && obsPos.y <= 800)
+            currentObs.push_back(obstacle);
+    }
 }
 void CGAME::exitGame(std::thread& thread) {
     stopGame = true;
@@ -158,7 +165,7 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && isPress==false) {
                     isPress = true;
                     bool canMove = true;
-                    for (auto obstacle : obstacles) {
+                    for (auto obstacle : currentObs) {
                         if (CollisionManager::checkCollisionInDirection(cn, obstacle, 'W')) {
                             canMove = false;
                             break;
@@ -173,7 +180,7 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)&& isPress==false) {
                     isPress = true;
                     bool canMove = true;
-                    for (auto obstacle : obstacles) {
+                    for (auto obstacle : currentObs) {
                         if (CollisionManager::checkCollisionInDirection(cn, obstacle, 'A')) {
                             canMove = false;
                             break;
@@ -187,7 +194,7 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)&& isPress==false) {
                     isPress = true;
                     bool canMove = true;
-                    for (auto obstacle : obstacles) {
+                    for (auto obstacle : currentObs) {
                         if (CollisionManager::checkCollisionInDirection(cn, obstacle, 'S')) {
                             canMove = false;
                             break;
@@ -201,7 +208,7 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)&& isPress==false) {
                     isPress = true;
                     bool canMove = true;
-                    for (auto obstacle : obstacles) {
+                    for (auto obstacle : currentObs) {
                         if (CollisionManager::checkCollisionInDirection(cn, obstacle, 'D')) {
                             canMove = false;
                             break;
@@ -213,10 +220,17 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 }
                 isPress = false;
             }
-            //move camera
+            //move camera && refresh currentObstacles
             sf::Vector2f playerPosition = cn.get_Position();
             if (playerPosition.y < view.getCenter().y - threshold) {
                 view.setCenter(view.getCenter().x, playerPosition.y-200);
+                currentObs.clear();
+                for (auto obstacle : obstacles){
+                    sf::Vector2f obsPos = obstacle.get_Position();
+                    if (obsPos.y >= (playerPosition.y - 700) && obsPos.y <= (playerPosition.y + 200)){
+                        currentObs.push_back(obstacle);
+                    }
+                }
             }
             window.setView(view);
 }
