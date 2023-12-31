@@ -18,6 +18,15 @@ App::~App() {
 }
 
 void App::run() {
+    sf::SoundBuffer buffer;
+    if (!buffer.loadFromFile("Assets/Sounds/mainSound.wav")) {
+        std::cerr << "Error loading mainSound" << std::endl;
+    }
+    else
+    {
+        sound.setBuffer(buffer);
+        sound.play();
+    }
     while (window.isOpen() && !exitGameFlag) {
         processEvents();
         render();
@@ -49,8 +58,8 @@ void App::processEvents() {
 void App::handleMouseClick(const sf::Event& event) {
     if (event.mouseButton.button == sf::Mouse::Left) {
         sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-        std::string buttonName = menu.handleInputMainMenu();
         if (currentGameState == GameState::MENU) {
+            std::string buttonName = menu.handleInputMainMenu();
             if(buttonName == "play")
             {
                 if (game.checkwindow()) {

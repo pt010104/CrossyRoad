@@ -1,6 +1,6 @@
 #include "src/App.h"
 #include <iostream>
-int main() {
+int main() {    
     App* app = new App;
     app->run(); 
     delete app;

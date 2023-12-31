@@ -9,7 +9,7 @@ run: CrossyRoad.exe
 	./CrossyRoad.exe
 
 CrossyRoad.exe: $(OBJS)
-	g++ -g $^ -o $@ -Llib -lsfml-graphics -lsfml-window -lsfml-system
+	g++ -g $^ -o $@ -Llib -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system 
 
 %.o: %.cpp
 	g++ -g -Iinclude -c $< -o $@

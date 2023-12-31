@@ -1,6 +1,7 @@
 #ifndef APP_H
 #define APP_H
 
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <atomic>
 #include "CGAME.h"
@@ -21,6 +22,7 @@ private:
     sf::Texture menuTexture;
     sf::Sprite menuSprite;
     sf::Clock clock;
+    sf::Sound sound;
     Menu menu;
     float deltaTime;
     CGAME game;
