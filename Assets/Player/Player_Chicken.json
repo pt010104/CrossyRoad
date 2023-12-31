@@ -104,7 +104,7 @@
     }
 },
   "meta": {
-    "image": "RedChicken.png",
+    "image": "Player_Chicken.png",
     "format": "RGBA8888",
     "size": {
       "w": 90,
