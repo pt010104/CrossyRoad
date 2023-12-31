@@ -63,9 +63,11 @@ bool CollisionManager::checkCollisionInDirection(CPEOPLE& people, Obstacles& obs
         case 'D':
             if (std::abs((posPeople.x + peopleBounds.width) - (posObs.x)) > threshold)
                 return false;
-            if (((posPeople.y - peopleBounds.height) - (posObs.y)) <= 0 && ((posPeople.y) - ((posObs.y) - obstaclesBounds.height) >= 0)){
-                if (((posPeople.x + peopleBounds.width) - (posObs.x)) <= 0) 
+            if (((posPeople.y + peopleBounds.height) - (posObs.y)) >= 0 && ((posPeople.y) - ((posObs.y) + obstaclesBounds.height) <= 0)){
+                float distance = (posPeople.x + peopleBounds.width) - (posObs.x);
+                if ((distance) <= 10 && (distance >= -5)) {
                     return true;
+                }
             }
             return peopleBounds.intersects(obstaclesBounds);
         default:
