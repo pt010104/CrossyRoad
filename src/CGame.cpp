@@ -7,7 +7,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis1(0,1); //obj1 appears at x=0 or 955
     std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj1 across it
-    std::uniform_real_distribution<> speedDis(7.0f, 8.5f); 
+    std::uniform_real_distribution<> speedDis(7.5f, 8.5f); 
     std::uniform_int_distribution<> numBirdsDis(1, 2); 
     std::uniform_int_distribution<> randObj(0, 2); 
     int indexObj=0;
@@ -93,7 +93,10 @@ void CGAME::drawGame(float& realTime)
                 cn.draw(*window);
             for (auto& obj : objects) 
             {
-                obj->draw(*window);
+                if (drag.state != "fire")
+                    obj->draw(*window);
+                else if (obj->get_Position().y != drag.mY-25 && obj->get_Position().y != drag.mY+25)
+                    obj->draw(*window);
             }     
             if (realTime >=timeAppear && drag.state == "disap")
             {
@@ -312,15 +315,16 @@ void CGAME::updatePosAnimal() {
         for (auto& obj : objects) {
             if(cn.getState())
             {
-                if (CollisionManager::checkCollisionAnimal(cn, *obj))
-                {
-                    stopGame=true;
-                    cn.Died();
-                }
+                if (drag.state != "fire" || (obj->get_Position().y != drag.mY-25 && obj->get_Position().y != drag.mY+25))
+                    if (CollisionManager::checkCollisionAnimal(cn, *obj))
+                    {
+                        stopGame=true;
+                        cn.Died();
+                    }
             }
             if (drag.state != "fire")
                 obj->Move();
-            else if (obj->get_Position().y != drag.mY-25 || obj->get_Position().y != drag.mY+25)
+            else if (obj->get_Position().y != drag.mY-25 && obj->get_Position().y != drag.mY+25)
                 obj->Move();
         }
         int indexObj = 0;

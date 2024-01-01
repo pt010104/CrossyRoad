@@ -42,7 +42,7 @@ void Dragon::appear(float deltaTime){
             state = "fire";
         }
         else
-        if(timeDelay >= 6.0f && state =="fire"){
+        if(timeDelay >= 7.0f && state =="fire"){
             UpdateAnimation("right");
             timeDelay = 0;
             state = "explode";
