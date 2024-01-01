@@ -7,7 +7,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis1(0,1); //obj1 appears at x=0 or 955
     std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj1 across it
-    std::uniform_real_distribution<> speedDis(5.0f, 7.0f); 
+    std::uniform_real_distribution<> speedDis(7.5f, 9.5f); 
     std::uniform_int_distribution<> numBirdsDis(1, 2); 
     std::uniform_int_distribution<> randObj(0, 2); 
     int indexObj=0;
@@ -38,7 +38,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
             maps.emplace_back(window.getSize().x,j*laneHeight,"people");              
             int numFrames = 7;
             std::uniform_int_distribution<int> dist(1, numFrames);
-            std::uniform_int_distribution<int> dist2(2, 3);
+            std::uniform_int_distribution<int> dist2(2, 4);
             int numObsInLane = dist2(gen);
             std::vector <int> orderFrame;
             for (int i =0; i<numObsInLane; ++i) {
@@ -51,7 +51,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
             for (int i = 0; i<orderFrame.size();i++)
             {
                 std::string tileName = "right_" + std::to_string(orderFrame[i]); 
-                obstacles.emplace_back(window.getSize().x,coordX[i]*133,j*laneHeight-15,tileName);
+                obstacles.emplace_back(window.getSize().x,coordX[i]*133,j*laneHeight+25,tileName);
             }
         }            
     }

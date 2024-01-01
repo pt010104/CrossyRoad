@@ -13,7 +13,10 @@ bool CollisionManager::checkCollisionAnimal(CPEOPLE& people, CANIMAL& animal) {
     if (isAbove) {
         return false;
     }
-
+    bool isBelow = posPeople.y >= (posAnimal.y+heightAnimal/2-10);
+    if (isBelow) {
+        return false;
+    }
     float dx = (posPeople.x - posAnimal.x);
     float dy = (posPeople.y - posAnimal.y);
     float distance = std::sqrt(dx * dx + dy * dy);

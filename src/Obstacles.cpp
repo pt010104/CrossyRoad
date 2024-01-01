@@ -15,7 +15,7 @@ Obstacles::Obstacles(int width,float startX, float startY,std::string tile): win
                 std::cerr<<"Failed to load Json Map";
             }
             sprite.setTexture(texture);
-            sprite.setScale(4.0f,4.0f);
+            sprite.setScale(4.1f,4.1f);
             rectSourceSprite = sf::IntRect(
                 frames[typeTile].x,
                 frames[typeTile].y,

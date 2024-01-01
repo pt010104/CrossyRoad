@@ -16,7 +16,7 @@ CBIRD::CBIRD(int width, float startX, float startY, float birdSpeed, int direct)
             std::cerr<<"Failed to load Json Bird";
         }
         sprite.setTexture(TextureManager::GetTexture("Assets/Animal/Bird.png"));
-        sprite.setScale(6.5f,6.5f);
+        sprite.setScale(7.0f,7.0f);
         rectSourceSprite = sf::IntRect(
             frames["right_1"].x,
             frames["right_1"].y,
