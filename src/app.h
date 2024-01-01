@@ -22,9 +22,11 @@ private:
     sf::Texture menuTexture;
     sf::Sprite menuSprite;
     sf::Clock clock;
+    sf::Clock realTimeClock;
     sf::Sound sound;
     Menu menu;
     float deltaTime;
+    float realTime;
     CGAME game;
     bool gameRunning;
     bool exitGameFlag;

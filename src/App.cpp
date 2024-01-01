@@ -63,6 +63,7 @@ void App::handleMouseClick(const sf::Event& event) {
             if(buttonName == "play")
             {
                 if (game.checkwindow()) {
+                    realTimeClock.restart();
                     game.resetGame();
                 }
                 currentGameState = GameState::PLAYING;        
@@ -99,6 +100,7 @@ void App::handleKeyPress(const sf::Event& event) {
         }
         else if (currentGameState == GameState::MENU) {
             if (game.checkwindow()) {
+                realTimeClock.restart();
                 game.resetGame();
             }
             currentGameState = GameState::PLAYING;
@@ -107,6 +109,7 @@ void App::handleKeyPress(const sf::Event& event) {
 }
 
 void App::update() {
+    realTime = realTimeClock.getElapsedTime().asSeconds();
     deltaTime = clock.restart().asSeconds();
     game.updatePosAnimal();
     game.updatePosVehicle();
@@ -122,7 +125,7 @@ void App::render() {
             break;
 
         case GameState::PLAYING:
-            game.drawGame();
+            game.drawGame(realTime);
             break;
 
         case GameState::PAUSED:

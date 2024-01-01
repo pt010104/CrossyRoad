@@ -7,7 +7,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis1(0,1); //obj1 appears at x=0 or 955
     std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj1 across it
-    std::uniform_real_distribution<> speedDis(7.5f, 9.5f); 
+    std::uniform_real_distribution<> speedDis(7.0f, 8.5f); 
     std::uniform_int_distribution<> numBirdsDis(1, 2); 
     std::uniform_int_distribution<> randObj(0, 2); 
     int indexObj=0;
@@ -21,6 +21,9 @@ void CGAME::GenObj(sf::RenderWindow& window)
             direction.push_back(randomX == 0 ? 1 : -1);
             time_obj2[indexObj] = dis_obj2(gen) + direction[direction.size()-1]*200; 
             int randomY = j * laneHeight-50; 
+            //create traffic pos
+            TrafficLight_pos.push_back(j*laneHeight-25);      
+
             if (type_obj == "birds")
                 objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
             else
@@ -31,14 +34,14 @@ void CGAME::GenObj(sf::RenderWindow& window)
                 objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
             indexObj++;        
         }
-        if(abs(j)%2==0)
-            maps.emplace_back(window.getSize().x,j*laneHeight,"mons");                
-        if (abs(j)%2 == 1)
+        if(abs(j)%2==0) //mons tile 
+            maps.emplace_back(window.getSize().x,j*laneHeight,"mons");      
+        if (abs(j)%2 == 1) //map tile 
         {
             maps.emplace_back(window.getSize().x,j*laneHeight,"people");              
             int numFrames = 7;
             std::uniform_int_distribution<int> dist(1, numFrames);
-            std::uniform_int_distribution<int> dist2(2, 4);
+            std::uniform_int_distribution<int> dist2(3, 4);
             int numObsInLane = dist2(gen);
             std::vector <int> orderFrame;
             for (int i =0; i<numObsInLane; ++i) {
@@ -58,6 +61,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
 }   
 CGAME::CGAME(sf::RenderWindow& window) : window(&window)
 {
+        timeAppear = 10;
         isPress = false;
         view = window.getDefaultView();
         newGameMainView = view;
@@ -78,7 +82,7 @@ CGAME::~CGAME() {
 
 }
 
-void CGAME::drawGame() 
+void CGAME::drawGame(float& realTime) 
 {
     if (window) {
             for (auto tile:maps)
@@ -91,7 +95,23 @@ void CGAME::drawGame()
             {
                 obj->draw(*window);
             }     
-
+            if (realTime >=timeAppear && drag.state == "disap")
+            {
+                auto it = std::upper_bound(TrafficLight_pos.begin(), TrafficLight_pos.end(), cn.get_Position().y);
+                if (it != TrafficLight_pos.begin())
+                {
+                    --it;
+                    drag.mY = *it;
+                    drag.state = "appear";
+                }
+                timeAppear += 25;
+             
+            }
+            if (drag.state != "disap")
+            {
+                    drag.appear(realTime-(timeAppear-25));   
+                    drag.draw(*window);
+            }   
 
     }
 }
@@ -133,7 +153,7 @@ void CGAME::resetGame() {
     maps.clear();
     obstacles.clear();
     objects.clear();
-
+    TrafficLight_pos.clear();    
     int totalLanes = window->getSize().y / laneHeight;
     secondObjCreated.assign(totalLanes * 2, false);
     speed_lane.assign(totalLanes * 2, 0.0f);
@@ -143,7 +163,6 @@ void CGAME::resetGame() {
     isDraw.assign(totalLanes * 2, true);
 
     cn.reset();
-    
     // Re-generate game objects
     GenObj(*window);
     currentObs.clear();
@@ -283,6 +302,7 @@ void CGAME::updateAnimation(float dt) {
         obj->UpdateFrame(deltaTime);
         moveCooldown_animal = 0.1f;
     }
+    drag.UpdateFrame(deltaTime);
 }
     void CGAME::updatePosVehicle() {
             // Move CTRUCK and CCAR
@@ -298,7 +318,10 @@ void CGAME::updatePosAnimal() {
                     cn.Died();
                 }
             }
-            obj->Move();
+            if (drag.state != "fire")
+                obj->Move();
+            else if (obj->get_Position().y != drag.mY-25 || obj->get_Position().y != drag.mY+25)
+                obj->Move();
         }
         int indexObj = 0;
         for (int i = -40; i < numLanes; i+=2) {

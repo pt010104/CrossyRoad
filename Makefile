@@ -15,4 +15,6 @@ CrossyRoad.exe: $(OBJS)
 	g++ -g -Iinclude -c $< -o $@
 
 clean:
-	-del *.o *.exe
+	del /Q *.exe 2>NUL
+	del /Q *.o 2>NUL
+	del /Q src\*.o 2>NUL

@@ -9,6 +9,7 @@
 #include "CPEOPLE.h"
 #include "Map.h"
 #include "Obstacles.h"
+#include "Dragon.h"
 #include "CollisionManager.h"
 #include <thread>
 #include <iostream>
@@ -25,8 +26,10 @@ protected:
     float deltaTime;
     bool stopGame;
     int threshold;
+    float timeAppear;
     bool isPress;
     CPEOPLE cn;
+    Dragon drag;
     std::vector<std::string> object_rand = {"birds","dinosaurs","birds2","cars","trucks"};
 
     int numLanes;
@@ -34,6 +37,7 @@ protected:
     std::vector<bool> isDraw;
     std::vector<float> speed_lane;
     std::vector<float> time_obj2;
+    std::vector<float> TrafficLight_pos;
     const int laneHeight = 132;
     std::vector <int> ObjInLane;
     std::vector <char> direction;
@@ -50,7 +54,7 @@ public:
     void GenObj(sf::RenderWindow& window);
     ~CGAME();
 
-    void drawGame();
+    void drawGame(float& realTime);
     CPEOPLE getPeople();
     std::vector<CVEHICLE*> getVehicles();
     std::vector<CANIMAL*> getAnimals();

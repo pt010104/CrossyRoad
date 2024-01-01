@@ -1,6 +1,6 @@
 #include "CPEOPLE.h"
 #include <iostream>
-CPEOPLE::CPEOPLE() : mState(true), windowWidth(1000), windowHeight(800), currentAnimation("up"), animationSpeed(0.2f), 
+CPEOPLE::CPEOPLE() : mState(true), windowWidth(1000), windowHeight(800), currentAnimation("down"), animationSpeed(0.2f), 
     frameTime(0.f), currentFrameIndex(0)
 {
     numFrames = 5;
@@ -40,10 +40,10 @@ CPEOPLE::CPEOPLE(int startX, int startY) : CPEOPLE() {
     sprite.setScale(4.5f, 4.5f);
 
     rectSourceSprite = sf::IntRect(
-        frames["up_1"].x,
-        frames["up_1"].y,
-        frames["up_1"].width,
-        frames["up_1"].height
+        frames["down_1"].x,
+        frames["down_1"].y,
+        frames["down_1"].width,
+        frames["down_1"].height
     );
     sprite.setTextureRect(rectSourceSprite);
     spriteWidth = sprite.getGlobalBounds().width;
@@ -116,7 +116,7 @@ void CPEOPLE::setNearobs(bool near){
     nearObs = near;
 }
 void CPEOPLE::reset(){
-    currentAnimation = "up";
+    currentAnimation = "down";
     mState = true;
     nearObs = false;
     
@@ -130,14 +130,14 @@ void CPEOPLE::reset(){
     sprite.setTexture(texture);
     sprite.setScale(4.5f, 4.5f);
     rectSourceSprite = sf::IntRect(
-        frames["up_1"].x,
-        frames["up_1"].y,
-        frames["up_1"].width,
-        frames["up_1"].height
+        frames["down_1"].x,
+        frames["down_1"].y,
+        frames["down_1"].width,
+        frames["down_1"].height
     );
     sprite.setTextureRect(rectSourceSprite);
     mX = windowWidth/2-50;
-    mY = windowHeight-sprite.getGlobalBounds().height-100; 
+    mY = windowHeight-sprite.getGlobalBounds().height-50; 
     spriteWidth = sprite.getGlobalBounds().width;
     spriteHeight = sprite.getGlobalBounds().height;
     sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));

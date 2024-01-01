@@ -1,0 +1,97 @@
+{
+  "frames": {
+  "right_1": {
+      "x": 0,
+      "y": 0,
+      "width": 32,
+      "height": 31
+  },
+  "right_2": {
+      "x": 32,
+      "y": 0,
+      "width": 32,
+      "height": 31
+  },
+  "right_3": {
+      "x": 64,
+      "y": 0,
+      "width": 32,
+      "height": 31
+  },
+  "right_4": {
+    "x": 96,
+    "y": 0,
+    "width": 32,
+    "height": 31
+},
+  "right_5": {
+    "x": 128,
+    "y": 0,
+    "width": 32,
+    "height": 31
+  },
+  "right_6": {
+    "x": 160,
+    "y": 0,
+    "width": 32,
+    "height": 31
+  },
+  "right_7": {
+    "x": 192,
+    "y": 0,
+    "width": 32,
+    "height": 31
+  },
+  "right_8": {
+    "x": 224,
+    "y": 0,
+    "width": 32,
+    "height": 31
+  },
+  "fire_1": {
+    "x": 0,
+    "y": 32,
+    "width": 256,
+    "height": 30
+  },
+  "fire_2": {
+    "x": 0,
+    "y": 63,
+    "width": 256,
+    "height": 30
+  },
+  "fire_3": {
+    "x": 0,
+    "y": 94,
+    "width": 256,
+    "height": 30
+  },
+  "appear_1": {
+    "x": 0,
+    "y": 125,
+    "width": 33,
+    "height": 32
+  },
+  "appear_2": {
+    "x": 32,
+    "y": 125,
+    "width": 33,
+    "height": 32
+  },
+  "appear_3": {
+    "x": 65,
+    "y": 125,
+    "width": 33,
+    "height": 32
+  }
+},
+  "meta": {
+    "image": "Dragon.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 256,
+      "h": 155
+    },
+    "scale": "1"
+  }
+}
