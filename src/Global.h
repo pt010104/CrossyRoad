@@ -4,5 +4,6 @@
 #include <SFML/Audio.hpp>
 
 extern sf::Sound globalSound;
+extern bool globalObstacles;
 
 #endif 

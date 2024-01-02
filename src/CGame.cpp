@@ -38,23 +38,26 @@ void CGAME::GenObj(sf::RenderWindow& window)
             maps.emplace_back(window.getSize().x,j*laneHeight,"mons");      
         if (abs(j)%2 == 1) //map tile 
         {
-            maps.emplace_back(window.getSize().x,j*laneHeight,"people");              
-            int numFrames = 7;
-            std::uniform_int_distribution<int> dist(1, numFrames);
-            std::uniform_int_distribution<int> dist2(3, 4);
-            int numObsInLane = dist2(gen);
-            std::vector <int> orderFrame;
-            for (int i =0; i<numObsInLane; ++i) {
-                int indexFrame = dist(gen);
-                orderFrame.push_back(indexFrame);
-            }
-            std::vector<int> coordX(8); 
-            std::iota(coordX.begin(), coordX.end(), 1); 
-            std::shuffle(coordX.begin(), coordX.end(), gen); 
-            for (int i = 0; i<orderFrame.size();i++)
-            {
-                std::string tileName = "right_" + std::to_string(orderFrame[i]); 
-                obstacles.emplace_back(window.getSize().x,coordX[i]*133,j*laneHeight+25,tileName);
+            maps.emplace_back(window.getSize().x,j*laneHeight,"people");      
+            if (globalObstacles)
+            {        
+                int numFrames = 7;
+                std::uniform_int_distribution<int> dist(1, numFrames);
+                std::uniform_int_distribution<int> dist2(3, 4);
+                int numObsInLane = dist2(gen);
+                std::vector <int> orderFrame;
+                for (int i =0; i<numObsInLane; ++i) {
+                    int indexFrame = dist(gen);
+                    orderFrame.push_back(indexFrame);
+                }
+                std::vector<int> coordX(8); 
+                std::iota(coordX.begin(), coordX.end(), 1); 
+                std::shuffle(coordX.begin(), coordX.end(), gen); 
+                for (int i = 0; i<orderFrame.size();i++)
+                {
+                    std::string tileName = "right_" + std::to_string(orderFrame[i]); 
+                    obstacles.emplace_back(window.getSize().x,coordX[i]*133,j*laneHeight+25,tileName);
+                }
             }
         }            
     }

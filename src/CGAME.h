@@ -18,6 +18,7 @@
 #include <memory>
 #include <vector>
 #include <algorithm> 
+#include "Global.h"
 class CGAME {
 protected:
     sf::RenderWindow* window;

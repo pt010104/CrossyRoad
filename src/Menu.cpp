@@ -241,9 +241,13 @@ void Menu::displaySettings(std::vector<Button>& buttons,const sf::Vector2f& mous
                         if (obstaclesOn == true) //turn off obs
                         {
                             obstaclesOn = false;
+                            globalObstacles = false;
                         }
                         else 
+                        {
+                            globalObstacles = true;
                             obstaclesOn = true;
+                        }
                     }
                 else
                 if (buttons[i].name == "settingPannel" || buttons[i].name == "settingsButton")
