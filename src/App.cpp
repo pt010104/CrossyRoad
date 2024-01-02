@@ -68,6 +68,11 @@ void App::handleMouseClick(const sf::Event& event) {
                 }
                 currentGameState = GameState::PLAYING;        
             }
+            if (buttonName == "settingsButton")
+            {
+                menu.isSettingPannel = true;
+            }
+            else menu.isSettingPannel = false;
         }
         else if (currentGameState == GameState::PAUSED) {
 
