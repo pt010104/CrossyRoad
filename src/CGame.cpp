@@ -155,6 +155,7 @@ void CGAME::resetGame() {
     isDraw.clear();
     maps.clear();
     obstacles.clear();
+    currentObs.clear();
     objects.clear();
     TrafficLight_pos.clear();    
     int totalLanes = window->getSize().y / laneHeight;
