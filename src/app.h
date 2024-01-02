@@ -10,6 +10,8 @@
 #include <mutex>               
 #include <condition_variable>   
 #include <iostream>
+#include "Global.h"
+
 class App {
 public:
     App();
@@ -23,7 +25,6 @@ private:
     sf::Sprite menuSprite;
     sf::Clock clock;
     sf::Clock realTimeClock;
-    sf::Sound sound;
     Menu menu;
     float deltaTime;
     float realTime;

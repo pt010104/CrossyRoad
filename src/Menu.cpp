@@ -54,28 +54,31 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
 
     Button settingPannel;
     settingPannel.sprite.setTexture(settingPannelTexture);
-    settingPannel.sprite.setPosition(-500, -500);
+    settingPannel.sprite.setPosition(294,327);
     settingPannel.name = "settingPannel";
     settingPannel.onClick = []() {
         std::cout << "Sound button clicked!\n";
     };   
+    settingPannel.isDraw = false;
 
     Button sound;
     Button obstacles;
 
     sound.sprite.setTexture(soundTexture);
-    sound.sprite.setPosition(-200, -200);
+    sound.sprite.setPosition(294+33,327+256);
     sound.name = "soundButton";
     sound.onClick = []() {
         std::cout << "Sound button clicked!\n";
     };   
+    sound.isDraw = false;
 
     obstacles.sprite.setTexture(obstaclesTexture);
-    obstacles.sprite.setPosition(-200, -200);
+    obstacles.sprite.setPosition(294+213,327+256);
     obstacles.name = "obstaclesButton";
     obstacles.onClick = []() {
         std::cout << "Obstacles button clicked!\n";
     };  
+    obstacles.isDraw = false;
 
     mainMenuButtons.push_back(playButton);
     mainMenuButtons.push_back(loadSave);
@@ -112,7 +115,22 @@ void Menu::renderMainMenu() {
 
         mainMenuDrawn = true;
     for (auto& button : mainMenuButtons) {
-        window.draw(button.sprite);
+        if(button.isDraw)
+            window.draw(button.sprite);
+    }
+    if (isSettingPannel && soundOn == false)
+    {
+        sf::RectangleShape rectangle(sf::Vector2f(164.0f, 164.0f)); 
+        rectangle.setFillColor(sf::Color(0, 0, 0, 150)); // 50/255
+        rectangle.setPosition(294+30, 327+78); 
+        window.draw(rectangle);
+    }
+    if (isSettingPannel && obstaclesOn == false)
+    {
+        sf::RectangleShape rectangle(sf::Vector2f(168.0f, 164.0f)); 
+        rectangle.setFillColor(sf::Color(0, 0, 0, 150)); // 50/255
+        rectangle.setPosition(294+215, 327+78); 
+        window.draw(rectangle);
     }
 }
 
@@ -145,50 +163,104 @@ void Menu::renderPausedMenu() {
     //     window.display();
     // }
 }
-std::string Menu::handleInputMainMenu() {
+std::string Menu::handleInputMainMenu(bool isClicked) {
 
     sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
     int clickedButtonIndex = -1;
     if (!isSettingPannel)
     {
-        clickedButtonIndex = checkButtonClick(mainMenuButtons, sf::Vector2f(sf::Mouse::getPosition(window)));
+        clickedButtonIndex = checkButtonClick(mainMenuButtons,mousePos);
         if (clickedButtonIndex != -1) {
             mainMenuButtons[clickedButtonIndex].onHover(); 
         }
-    }
-    else 
-        displaySettings(mainMenuButtons,mousePos);
-    if (clickedButtonIndex == -1) {
-        for (auto& button : mainMenuButtons) {
-            button.onUnhover(); 
+        if (clickedButtonIndex == -1) {
+            for (auto& button : mainMenuButtons) {
+                button.onUnhover(); 
+            }
         }
     }
-
+    else 
+        displaySettings(mainMenuButtons,mousePos,isClicked);
     return clickedButtonIndex != -1 ? mainMenuButtons[clickedButtonIndex].name : "";
 
 }
-void Menu::displaySettings(std::vector<Button>& buttons,const sf::Vector2f& mousePosition) {
-    
-    // buttons[settings_pannel.indexObstacles].sprite.setPosition(settings_pannel.sprite.getPosition().x+213,
-    //     settings_pannel.sprite.getPosition().y+256);
+void Menu::displaySettings(std::vector<Button>& buttons,const sf::Vector2f& mousePosition,bool isClicked) {
+    int indexPannel;
+    int indexSound;
+    int indexObs;
     isSettingPannel = true;
+    bool isClose = true;
+
     for (size_t i = 0; i < buttons.size(); ++i) {
+        buttons[i].onUnhover();
         if (buttons[i].name == "settingPannel")
         {
-            buttons[i].sprite.setPosition(294,327);
+            buttons[i].isDraw = true;
+            indexPannel = i;
         }
-        if (buttons[i].sprite.getGlobalBounds().contains(mousePosition)) {
-            if (buttons[i].name == "soundButton")
+        else
+        if (buttons[i].name == "soundButton")
+        {
+            indexSound = i;
+            buttons[i].isDraw = true;
+        }
+        else
+        if (buttons[i].name == "obstaclesButton")
+        {
+            indexObs = i;
+            buttons[i].isDraw = true;
+        }
+        else 
+            buttons[i].isDraw = false;
+    }
+    //check hover
+    if (buttons[indexSound].sprite.getGlobalBounds().contains(mousePosition))
+        buttons[indexSound].onHover(); 
+    if (buttons[indexObs].sprite.getGlobalBounds().contains(mousePosition))
+        buttons[indexObs].onHover(); 
+    //check click
+    for (size_t i = 0; i < buttons.size(); ++i) {
+        if (isClicked) {
+            if (buttons[i].sprite.getGlobalBounds().contains(mousePosition) && buttons[i].isDraw) 
             {
-                buttons[i].sprite.setPosition(294+33,327+256);
-                if (soundOn == true) //turn off sound
+                if (buttons[i].name == "soundButton")
                 {
-                    sf::RectangleShape rectangle(sf::Vector2f(167.0f, 16.0f)); 
-                    rectangle.setFillColor(sf::Color(0, 0, 0, 50)); // 50/255
-                    rectangle.setPosition(414, 414); 
-                    soundOn = false;
+                    if (soundOn == true) //turn off sound
+                    {
+                        globalSound.stop();
+                        soundOn = false;
+                    }
+                    else 
+                    {
+                        globalSound.play();
+                        soundOn = true;
+                    }
                 }
+                if (buttons[i].name == "obstaclesButton")
+                    {
+                        if (obstaclesOn == true) //turn off obs
+                        {
+                            obstaclesOn = false;
+                        }
+                        else 
+                            obstaclesOn = true;
+                    }
+                else
+                if (buttons[i].name == "settingPannel" || buttons[i].name == "settingsButton")
+                    isClose =false;
             }
+        }
+        else isClose = false;
+    }
+    if (isClose) 
+    {
+        buttons[indexPannel].isDraw = false;
+        buttons[indexObs].isDraw = false;
+        buttons[indexSound].isDraw = false;
+        isSettingPannel = false;
+        for (size_t i = 0; i < buttons.size(); ++i) {
+            if (i!=indexPannel && i!=indexObs && i!=indexSound)
+                buttons[i].isDraw = true;
         }
     }
 
@@ -200,7 +272,7 @@ void Menu::handleInputPausedMenu() {
 
 int Menu::checkButtonClick(const std::vector<Button>& buttons, const sf::Vector2f& mousePosition) {
     for (size_t i = 0; i < buttons.size(); ++i) {
-        if (buttons[i].sprite.getGlobalBounds().contains(mousePosition)) {
+        if (buttons[i].sprite.getGlobalBounds().contains(mousePosition) && buttons[i].isDraw) {
             return static_cast<int>(i);
         }
     }

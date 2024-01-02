@@ -2,14 +2,15 @@
 #include <iostream>
 #include <vector>
 #include <functional>
-
+#include "Global.h"
 // Define the structure for a button
 class Button {
 public:
     sf::Sprite sprite;
     std::function<void()> onClick;
     std::string name;
-    Button() = default;
+    bool isDraw;
+    Button() {isDraw = true;};
     void onHover();
     void onUnhover();
 };
@@ -49,8 +50,8 @@ public:
     void renderPausedMenu();
     // Add functions for other menus (scoreMenu, settingsMenu, etc.)
 
-    std::string handleInputMainMenu();
-    void displaySettings(std::vector<Button>& buttons,const sf::Vector2f& mousePosition);
+    std::string handleInputMainMenu(bool isClicked);
+    void displaySettings(std::vector<Button>& buttons,const sf::Vector2f& mousePosition, bool isClicked);
     void handleInputPausedMenu();
     // Add functions for handling input in other menus
 

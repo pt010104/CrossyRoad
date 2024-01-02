@@ -24,8 +24,9 @@ void App::run() {
     }
     else
     {
-        sound.setBuffer(buffer);
-        sound.play();
+        globalSound.setBuffer(buffer);
+        globalSound.setLoop(true);
+        globalSound.play();
     }
     while (window.isOpen() && !exitGameFlag) {
         processEvents();
@@ -59,7 +60,7 @@ void App::handleMouseClick(const sf::Event& event) {
     if (event.mouseButton.button == sf::Mouse::Left) {
         sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
         if (currentGameState == GameState::MENU) {
-            std::string buttonName = menu.handleInputMainMenu();
+            std::string buttonName = menu.handleInputMainMenu(true);
             if(buttonName == "play")
             {
                 if (game.checkwindow()) {
@@ -72,7 +73,6 @@ void App::handleMouseClick(const sf::Event& event) {
             {
                 menu.isSettingPannel = true;
             }
-            else menu.isSettingPannel = false;
         }
         else if (currentGameState == GameState::PAUSED) {
 
@@ -157,7 +157,7 @@ void App::gameLoop() {
         }
         switch (currentGameState) {
             case GameState::MENU:{
-                std::string tmp = menu.handleInputMainMenu();
+                std::string tmp = menu.handleInputMainMenu(false);
                 break;
             }
             case GameState::PLAYING:
