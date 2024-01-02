@@ -32,11 +32,16 @@ void Dragon::appear(float deltaTime){
     {
         if(state == "appear")
         {
-            UpdateAnimation("right");
-            state = "right";
+            UpdateAnimation("appear");
+            state = "wait";
         }
         else
-        if(timeDelay >= 2.0f && state == "right"){
+        if(timeDelay >= 0.5f && state == "wait"){
+            UpdateAnimation("right");
+            timeDelay = 0;
+            state = "right";
+        }
+        if(timeDelay >= 3.0f && state == "right"){
             UpdateAnimation("fire");
             timeDelay = 0;
             state = "fire";
@@ -45,12 +50,13 @@ void Dragon::appear(float deltaTime){
         if(timeDelay >= 7.0f && state =="fire"){
             UpdateAnimation("right");
             timeDelay = 0;
-            state = "explode";
+            state = "waitDisap";
         }
         else
-        if(timeDelay >= 2.0f && state == "explode"){
+        if(timeDelay >= 2.0f && state == "waitDisap"){
             UpdateAnimation("appear");
             timeDelay = 0;
+            state = "explode";
         }
     }
 
