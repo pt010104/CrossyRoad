@@ -11,8 +11,6 @@ private:
     float mX;
     float radius;
     int numFrames; 
-    std::string typeTile;
-
     int windowWidth;
     sf::Texture texture;
     sf::Sprite sprite;
@@ -23,6 +21,7 @@ private:
     float frameTime;
     float animationSpeed;
 public:
+    std::string typeTile;
     Obstacles();
     Obstacles(int width,float startX, float startY,std::string tile);
     void draw(sf::RenderWindow& window);

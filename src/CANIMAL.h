@@ -6,11 +6,14 @@
 #include <string>
 #include "SpriteLoader.h"
 #include "TextureManager.h"
+#include <iostream>
 
 class CANIMAL {
 protected:
 
     float mX, mY;
+    float speed;
+    int direction;
     float radius;
     int windowWidth;
     sf::Texture texture;
@@ -23,9 +26,10 @@ protected:
     float frameTime;
     float animationSpeed;
     int indexSecond=-100;
+    std::string name;
 public:
     CANIMAL();
-    CANIMAL(int width, float startX, float startY);
+    CANIMAL(int width, float startX, float startY,std::string name);
     virtual void Move()  = 0;
     void UpdateFrame(float deltaTime);
     void UpdateAnimation(const std::string& direction);
@@ -35,6 +39,7 @@ public:
     sf::Vector2f get_Position();
     void setIndexSecond(int index);
     float getRadius() const;
+    std::string serialize();
     virtual ~CANIMAL() = default; 
 };
 

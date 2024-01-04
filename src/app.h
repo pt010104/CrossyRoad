@@ -24,7 +24,6 @@ private:
     sf::Texture menuTexture;
     sf::Sprite menuSprite;
     sf::Clock clock;
-    sf::Clock realTimeClock;
     Menu menu;
     float deltaTime;
     float realTime;

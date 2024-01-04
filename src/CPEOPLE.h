@@ -38,13 +38,13 @@ public:
     void draw(sf::RenderWindow& window); 
     void UpdateFrame(float deltaTime);
     void UpdateAnimation(const std::string& direction);
-    int getX(){return mX;};
     sf::FloatRect get_GlobalBounds() const {
         return sprite.getGlobalBounds();
     }
     sf::Vector2f get_Position() const{
         return sprite.getPosition();
     }
+    void set_Position(int X,int Y);
     float getRadius() const {
         return radius;
     }

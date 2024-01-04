@@ -5,8 +5,6 @@
 
 class CDINOSAUR : public CANIMAL {
 private:
-    float speed;
-    int direction;
     int numFrames; 
 public:
     CDINOSAUR();

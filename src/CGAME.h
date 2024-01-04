@@ -32,7 +32,6 @@ protected:
     CPEOPLE cn;
     Dragon drag;
     std::vector<std::string> object_rand = {"birds","dinosaurs","birds2","cars","trucks"};
-
     int numLanes;
     std::vector<bool> isSecond;
     std::vector<bool> isDraw;
@@ -41,7 +40,7 @@ protected:
     std::vector<float> TrafficLight_pos;
     const int laneHeight = 132;
     std::vector <int> ObjInLane;
-    std::vector <char> direction;
+    std::vector <int> direction;
     std::vector<bool> secondObjCreated;
     std::vector<std::shared_ptr<CANIMAL>> objects;
     std::vector<Map> maps;
@@ -62,8 +61,8 @@ public:
     void resetGame();
     void exitGame(std::thread& thread);
     void startGame(sf::RenderWindow& window);
-    void loadGame(std::istream& is);
-    void saveGame(std::ostream& os);
+    void loadGame(const std::string& filename);
+    void saveGame(const std::string& filename);
     void pauseGame(std::thread& thread);
     void resumeGame(std::thread& thread);
     void updatePosPeople(char direction);

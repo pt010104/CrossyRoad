@@ -178,6 +178,13 @@ std::string Menu::handleInputMainMenu(bool isClicked) {
                 button.onUnhover(); 
             }
         }
+        if(mainMenuButtons[clickedButtonIndex].name == "loadSave")
+            typePlay = "loadGame";
+        else 
+        if(mainMenuButtons[clickedButtonIndex].name == "play")
+            typePlay = "newGame";
+
+
     }
     else 
         displaySettings(mainMenuButtons,mousePos,isClicked);

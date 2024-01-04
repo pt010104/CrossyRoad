@@ -3,8 +3,8 @@
 #include "CANIMAL.h"
 
 CANIMAL::CANIMAL() : windowWidth(1000), mX(0), mY(0) {}
-CANIMAL::CANIMAL(int width, float startX, float startY)
-    : windowWidth(width), mX(startX), mY(startY), currentFrameIndex(0), frameTime(0.0f),animationSpeed(0.13f)
+CANIMAL::CANIMAL(int width, float startX, float startY, std::string name)
+    : windowWidth(width), mX(startX), mY(startY), currentFrameIndex(0), frameTime(0.0f),animationSpeed(0.13f), name(name)
 {
     indexSecond=-100;
 }
@@ -54,4 +54,7 @@ float CANIMAL::getRadius() const {
 }
 void CANIMAL::setIndexSecond(int index){
     indexSecond = index;
+}
+std::string CANIMAL::serialize(){
+    return name + " "+ std::to_string(mX) + " " + std::to_string(mY) +" "+ std::to_string(speed) + " " + std::to_string(direction);
 }

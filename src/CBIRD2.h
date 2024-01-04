@@ -4,8 +4,7 @@
 
 class CBIRD2 : public CANIMAL {
 private:
-    float speed;
-    int direction;
+
     int numFrames; 
 public:
     CBIRD2();

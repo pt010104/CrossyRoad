@@ -71,7 +71,7 @@ CGAME::CGAME(sf::RenderWindow& window) : window(&window)
         threshold = 200; 
         stopGame = false;
         numLanes = window.getSize().y / laneHeight;
-        int totalLanes = numLanes+50;
+        int totalLanes = numLanes+40;
         secondObjCreated.assign(totalLanes*2,false);
         speed_lane.assign(totalLanes*2, 0.0f);
         time_obj2.assign(totalLanes*2, 0.0f);
@@ -161,17 +161,22 @@ void CGAME::resetGame() {
     currentObs.clear();
     objects.clear();
     TrafficLight_pos.clear();    
-    int totalLanes = window->getSize().y / laneHeight;
+    numLanes = window->getSize().y / laneHeight;
+    int totalLanes = numLanes +40;
     secondObjCreated.assign(totalLanes * 2, false);
     speed_lane.assign(totalLanes * 2, 0.0f);
     time_obj2.assign(totalLanes * 2, 0.0f);
     ObjInLane.assign(totalLanes * 2, 1);
     isSecond.assign(totalLanes * 2, false);
     isDraw.assign(totalLanes * 2, true);
-
+    realTimeClock.restart();
+    timeAppear = 10;
     cn.reset();
     // Re-generate game objects
-    GenObj(*window);
+    if(typePlay == "newGame")
+        GenObj(*window);
+    else if (typePlay == "loadGame")
+        loadGame("save.txt");
     currentObs.clear();
     for (auto obstacle : obstacles){
         sf::Vector2f obsPos = obstacle.get_Position();
@@ -187,86 +192,210 @@ void CGAME::exitGame(std::thread& thread) {
 }
 
 void CGAME::startGame(sf::RenderWindow& window) {   
-            if (!stopGame) {
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && isPress==false) {
-                    isPress = true;
-                    bool canMove = true;
-                    for (auto obstacle : currentObs) {
-                        if (CollisionManager::checkCollisionInDirection(cn, obstacle, 'W')) {
-                            canMove = false;
-                            break;
-                        }
-                    }
-                    if (canMove) {
-                        this->updatePosPeople('W');
-                    }
+    if (!stopGame) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && isPress==false) {
+            saveGame("save.txt");
+        }
 
-                }
-                else
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)&& isPress==false) {
-                    isPress = true;
-                    bool canMove = true;
-                    for (auto obstacle : currentObs) {
-                        if (CollisionManager::checkCollisionInDirection(cn, obstacle, 'A')) {
-                            canMove = false;
-                            break;
-                        }
-                    }
-                    if (canMove) {
-                        this->updatePosPeople('A');
-                    }
-                }
-                else
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)&& isPress==false) {
-                    isPress = true;
-                    bool canMove = true;
-                    for (auto obstacle : currentObs) {
-                        if (CollisionManager::checkCollisionInDirection(cn, obstacle, 'S')) {
-                            canMove = false;
-                            break;
-                        }
-                    }
-                    if (canMove) {
-                        this->updatePosPeople('S');
-                    }
-                }
-                else
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)&& isPress==false) {
-                    isPress = true;
-                    bool canMove = true;
-                    for (auto obstacle : currentObs) {
-                        if (CollisionManager::checkCollisionInDirection(cn, obstacle, 'D')) {
-                            canMove = false;
-                            break;
-                        }
-                    }
-                    if (canMove) {
-                        this->updatePosPeople('D');
-                    }
-                }
-                isPress = false;
-            }
-            //move camera && refresh currentObstacles
-            sf::Vector2f playerPosition = cn.get_Position();
-            if (playerPosition.y < view.getCenter().y - threshold) {
-                view.setCenter(view.getCenter().x, playerPosition.y-200);
-                currentObs.clear();
-                for (auto obstacle : obstacles){
-                    sf::Vector2f obsPos = obstacle.get_Position();
-                    if (obsPos.y >= (playerPosition.y - 700) && obsPos.y <= (playerPosition.y + 200)){
-                        currentObs.push_back(obstacle);
-                    }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && isPress==false) {
+            isPress = true;
+            bool canMove = true;
+            for (auto obstacle : currentObs) {
+                if (CollisionManager::checkCollisionInDirection(cn, obstacle, 'W')) {
+                    canMove = false;
+                    break;
                 }
             }
-            window.setView(view);
+            if (canMove) {
+                this->updatePosPeople('W');
+            }
+
+        }
+        else
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)&& isPress==false) {
+            isPress = true;
+            bool canMove = true;
+            for (auto obstacle : currentObs) {
+                if (CollisionManager::checkCollisionInDirection(cn, obstacle, 'A')) {
+                    canMove = false;
+                    break;
+                }
+            }
+            if (canMove) {
+                this->updatePosPeople('A');
+            }
+        }
+        else
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)&& isPress==false) {
+            isPress = true;
+            bool canMove = true;
+            for (auto obstacle : currentObs) {
+                if (CollisionManager::checkCollisionInDirection(cn, obstacle, 'S')) {
+                    canMove = false;
+                    break;
+                }
+            }
+            if (canMove) {
+                this->updatePosPeople('S');
+            }
+        }
+        else
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)&& isPress==false) {
+            isPress = true;
+            bool canMove = true;
+            for (auto obstacle : currentObs) {
+                if (CollisionManager::checkCollisionInDirection(cn, obstacle, 'D')) {
+                    canMove = false;
+                    break;
+                }
+            }
+            if (canMove) {
+                this->updatePosPeople('D');
+            }
+        }
+        isPress = false;
+    }
+    //move camera && refresh currentObstacles
+    sf::Vector2f playerPosition = cn.get_Position();
+    if (playerPosition.y < view.getCenter().y - threshold) {
+        view.setCenter(view.getCenter().x, playerPosition.y-200);
+        currentObs.clear();
+        for (auto obstacle : obstacles){
+            sf::Vector2f obsPos = obstacle.get_Position();
+            if (obsPos.y >= (playerPosition.y - 700) && obsPos.y <= (playerPosition.y + 200)){
+                currentObs.push_back(obstacle);
+            }
+        }
+    }
+    window.setView(view);
 }
 
-void CGAME::loadGame(std::istream& is) {
+void CGAME::loadGame(const std::string& filename) {
+ std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error when open file for loading game state" << std::endl;
     }
 
-void CGAME::saveGame(std::ostream& os) {
+    float centerX, centerY, sizeX, sizeY;
+    file >> centerX >> centerY;
+    file >> sizeX >> sizeY;
+    view.setCenter(centerX, centerY);
+    view.setSize(sizeX, sizeY);
+   
+//  lane 
+    int indexObj=0;
+    for (int i = -40; i < numLanes; ++i) {
+        if(abs(i)%2==0) //mons tile 
+            maps.emplace_back(1000,i*laneHeight,"mons");      
+        if (abs(i)%2 == 1) //map tile 
+        {
+            maps.emplace_back(1000,i*laneHeight,"people");    
+        }
+    }
+    int objInLane_size;
+    file >> objInLane_size;
+    for(int i = 0 ;i< objInLane_size;i++)
+    {
+            int tempSecondObjCreated;
+            int tempisSecond;
+            int tempisDraw;
+            file >> ObjInLane[i]
+                >> speed_lane[i]
+                >> direction[i]
+                >> time_obj2[i]
+                >> tempSecondObjCreated  
+                >> tempisSecond
+                >> tempisDraw;
+            secondObjCreated[i] = (tempSecondObjCreated != 0);
+            isSecond[i] = (tempisSecond!=0);
+            isDraw[i] = (tempisDraw!=0);
+    }
+    //  objects
+    int sizeObj;
+    file >> sizeObj;
+    std::string objectType;
+    for (int i =0;i< sizeObj ;i++) {
+        file >> objectType;
+        float x,y,speed;
+        int direction;
+        file >> x >> y >> speed >> direction;
+        if (objectType == "birds") {
+            objects.emplace_back(std::make_shared<CBIRD>(1000, x, y,speed,direction));
+        }
+        else
+        if (objectType == "dinosaurs")
+            objects.emplace_back(std::make_shared<CDINOSAUR>(1000, x, y,speed,direction));
+        else
+        if (objectType == "birds2")
+            objects.emplace_back(std::make_shared<CBIRD2>(1000, x, y,speed,direction));
+    }
+    int obsSize;
+    file >> obsSize;
+    std::string typeObs;
+    for (int i  = 0;i<obsSize;i++) {
+        int x,y;
+        file >> typeObs >> x >> y;
+        obstacles.emplace_back(1000,x,y,typeObs);
+
+    }
+    float pos;
+    int trafficSize;
+    file >>trafficSize;
+    for(int i =0;i<trafficSize;i++) {
+        file >> pos;
+        TrafficLight_pos.push_back(pos);
+    }
+    int X,Y;
+    file >> X >> Y;
+    cn.set_Position(X,Y);
+    file.close();
+    std::cout << "Game state loaded from " << filename << std::endl;
+}
+
+void CGAME::saveGame(const std::string& filename)
+{
+    std::ofstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error open file for saving game " << std::endl;
+        return;
     }
 
+    file << view.getCenter().x << " " << view.getCenter().y << std::endl; 
+    file << view.getSize().x << " " << view.getSize().y << std::endl; 
+    file <<ObjInLane.size()<<std::endl;
+    // Save lane 
+    for (int i = 0; i < ObjInLane.size(); ++i) {
+        file << ObjInLane[i] << " "
+             << speed_lane[i] << " "
+             << direction[i] << " "
+             << time_obj2[i] << " "
+             << secondObjCreated[i] << " "
+             << isSecond[i] << " "
+             << isDraw[i] << std::endl;
+    }
+    //  objects
+    file << objects.size()<<std::endl;
+    for (const auto& obj : objects) {
+        file << obj->serialize() << std::endl;
+    }
+    //obstacles
+    file << obstacles.size()<<std::endl;
+    for (const auto& obstacle : obstacles) {
+        file << obstacle.typeTile << " " << obstacle.get_Position().x<< " " << obstacle.get_Position().y << std::endl;
+    }
+
+    //  TrafficLight 
+    file << TrafficLight_pos.size();
+    for (const auto& pos : TrafficLight_pos) {
+        file << pos << " ";
+    }
+    file << std::endl;
+    //cn pos
+    file << cn.get_Position().x << " "<< cn.get_Position().y;
+
+    file.close();
+    std::cout << "Game state saved to " << filename << std::endl;
+}
 void CGAME::pauseGame(std::thread& thread) {
             // Pause the thread
     }

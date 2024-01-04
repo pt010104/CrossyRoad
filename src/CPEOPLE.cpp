@@ -143,3 +143,8 @@ void CPEOPLE::reset(){
     sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
     radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
 }
+
+void CPEOPLE::set_Position(int X, int Y){
+    mX = X;
+    mY = Y;
+}

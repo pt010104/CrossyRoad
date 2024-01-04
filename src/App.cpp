@@ -73,6 +73,14 @@ void App::handleMouseClick(const sf::Event& event) {
             {
                 menu.isSettingPannel = true;
             }
+            if (buttonName == "loadSave")
+            {
+                if (game.checkwindow()) {
+                    realTimeClock.restart();
+                    game.resetGame();
+                }
+                currentGameState = GameState::PLAYING;   
+            }
         }
         else if (currentGameState == GameState::PAUSED) {
 

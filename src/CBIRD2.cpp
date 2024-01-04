@@ -3,8 +3,10 @@
 CBIRD2::CBIRD2()
 {}
 CBIRD2::CBIRD2(int width, float startX, float startY, float birdSpeed, int direct)
-    : CANIMAL(width, startX, startY), speed(birdSpeed), direction(direct)
+    : CANIMAL(width, startX, startY,"birds2")
 {
+        speed = birdSpeed;
+        direction = direct;
         mX = startX;
         mY = startY;
         numFrames = 8;
