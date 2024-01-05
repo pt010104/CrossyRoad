@@ -57,7 +57,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
             {        
                 int numFrames = 7;
                 std::uniform_int_distribution<int> dist(1, numFrames);
-                std::uniform_int_distribution<int> dist2(3, 4);
+                std::uniform_int_distribution<int> dist2(4, 5);
                 int numObsInLane = dist2(gen);
                 std::vector <int> orderFrame;
                 for (int i =0; i<numObsInLane; ++i) {
@@ -109,7 +109,7 @@ void CGAME::drawGame(float& realTime)
                 obstacle.draw(*window);
             if (cn.getState())
                 cn.draw(*window);
-            for (auto& obj : objects) 
+            for (auto& obj : currentObjects) 
             {
                 if (drag.state != "fire")
                     obj->draw(*window);
@@ -175,6 +175,7 @@ void CGAME::resetGame() {
     obstacles.clear();
     currentObs.clear();
     objects.clear();
+    currentObjects.clear();
     TrafficLight_pos.clear();    
     numLanes = window->getSize().y / laneHeight;
     int totalLanes = numLanes +40;
@@ -198,17 +199,28 @@ void CGAME::resetGame() {
                 if (obsPos.y >= -100 && obsPos.y <= 800)
                     currentObs.push_back(obstacle);
         }
+        for (auto& object : objects){
+                sf::Vector2f objPos = object->get_Position();
+                if (objPos.y >= -100 && objPos.y <= 800)
+                    currentObjects.push_back(object);
+        }
+        
     }
     else if (typePlay == "loadGame")
     {
         currentObs.clear();
         loadGame("save.txt",*window);
         for (auto obstacle : obstacles){
-        sf::Vector2f obsPos = obstacle.get_Position();
-        if (obsPos.y >= (cn.get_Position().y - 700) && obsPos.y <= (cn.get_Position().y + 700)){
-            currentObs.push_back(obstacle);
+            sf::Vector2f obsPos = obstacle.get_Position();
+            if (obsPos.y >= (cn.get_Position().y - 700) && obsPos.y <= (cn.get_Position().y + 700)){
+                currentObs.push_back(obstacle);
+            }
         }
-    }
+        for (auto& object : objects){
+            sf::Vector2f objPos = object->get_Position();
+            if (objPos.y >= (cn.get_Position().y - 700) && objPos.y <= (cn.get_Position().y + 700))
+                currentObjects.push_back(object);
+        }
     }
 }
 void CGAME::exitGame(std::thread& thread) {
@@ -294,6 +306,17 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 currentObs.push_back(obstacle);
             }
         }
+        for (int i =0;i<currentObs.size();i++)
+        {
+            if (currentObs[i].get_Position().y > (playerPosition.y +200) &&!currentObs.empty()) {
+                currentObs.erase(currentObs.begin()+i);
+            } 
+        }
+        for (auto& object : objects){
+            sf::Vector2f objPos = object->get_Position();
+            if (objPos.y >= (cn.get_Position().y - 700) && objPos.y <= (cn.get_Position().y + 200))
+                currentObjects.push_back(object);
+        }
     }
     window.setView(view);
 }
@@ -341,7 +364,6 @@ void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
     //  objects
     int sizeObj;
     file >> sizeObj;
-    objects.clear();
     std::cout<<"load obj begin"<<std::endl;
     for (int i =0;i< sizeObj ;i++) {
         std::string objectType;

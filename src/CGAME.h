@@ -48,6 +48,7 @@ protected:
     std::vector<Map> maps;
     std::vector<Obstacles> obstacles;
     std::vector<Obstacles> currentObs;
+     std::vector<std::shared_ptr<CANIMAL>> currentObjects;
     sf::View view;
     sf::View newGameMainView;
 public:
