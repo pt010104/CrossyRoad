@@ -31,8 +31,10 @@ private:
     sf::Texture soundTexture;
     sf::Texture obstaclesTexture;
     sf::Texture settingPannelTexture;
+    
     bool soundOn;
     bool obstaclesOn;
+    bool endlessOn;
 
     sf::Sprite menuSprite;
     std::vector<Button> mainMenuButtons;
