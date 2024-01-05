@@ -205,7 +205,7 @@ void CGAME::resetGame() {
         loadGame("save.txt",*window);
         for (auto obstacle : obstacles){
         sf::Vector2f obsPos = obstacle.get_Position();
-        if (obsPos.y >= (cn.get_Position().y - 700) && obsPos.y <= (cn.get_Position().y + 200)){
+        if (obsPos.y >= (cn.get_Position().y - 700) && obsPos.y <= (cn.get_Position().y + 700)){
             currentObs.push_back(obstacle);
         }
     }
@@ -383,7 +383,7 @@ void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
     int X,Y;
     file >> X >> Y;
     cn.set_Position(X,Y);
-    view.setCenter(centerX, Y-200);
+    view.setCenter(centerX, centerY);
     view.setSize(sizeX, sizeY);
     file.close();
     std::cout << "Game state loaded from " << filename << std::endl;
