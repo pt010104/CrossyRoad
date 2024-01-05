@@ -64,7 +64,7 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
     modeClassic.sprite.setPosition(406, 385);
     modeClassic.name = "modeClassic";
     modeClassic.onClick = []() {
-        std::cout << "Endless mode button clicked!\n";
+        std::cout << "Classic mode button clicked!\n";
     };
 
     Button settingsButton;
