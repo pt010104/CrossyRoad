@@ -25,6 +25,8 @@ private:
     sf::Texture menuTexture;
     sf::Texture playTextture;
     sf::Texture saveTextture;
+    sf::Texture endlessTexture;
+    sf::Texture classicTexture;
     sf::Texture settingTextture;
     sf::Texture soundTexture;
     sf::Texture obstaclesTexture;
@@ -56,4 +58,7 @@ public:
     // Add functions for handling input in other menus
 
     void resetMainMenu();
+
+    void pressEndless();
+    void pressClassic();
 };

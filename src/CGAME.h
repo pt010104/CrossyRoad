@@ -33,7 +33,8 @@ protected:
     bool isPress;
     int level;
     int finishLine;
-    bool endless = false;
+    bool endless = true;
+    bool isFinished = false;
     CPEOPLE cn;
     Dragon drag;
     std::vector<std::string> object_rand = {"birds","dinosaurs","birds2","cars","trucks"};
@@ -81,6 +82,8 @@ public:
     bool getEndless();
     void setLevel(int l);
     int getLevel();
+    void setFinish(bool finish) {isFinished = finish;}
+    bool getFinish() { return isFinished; }
 };
 
 
