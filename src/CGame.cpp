@@ -173,6 +173,7 @@ void CGAME::resetGame() {
     isSecond.clear();
     isDraw.clear();
     maps.clear();
+    std::cout<<"clear map done"<<std::endl;
     obstacles.clear();
     currentObs.clear();
     objects.clear();
@@ -189,6 +190,7 @@ void CGAME::resetGame() {
     isDraw.assign(totalLanes, true);
     
     timeAppear = 10;
+    realTimeClock.restart();
     cn.reset();
     // Re-generate game objects
     if(typePlay == "newGame")
@@ -196,14 +198,14 @@ void CGAME::resetGame() {
         currentObs.clear();
         GenObj(*window);
         for (auto obstacle : obstacles){
-                sf::Vector2f obsPos = obstacle.get_Position();
-                if (obsPos.y >= -100 && obsPos.y <= 800)
-                    currentObs.push_back(obstacle);
+            sf::Vector2f obsPos = obstacle.get_Position();
+            if (obsPos.y >= -100 && obsPos.y <= 800)
+                currentObs.push_back(obstacle);
         }
         for (auto& object : objects){
-                sf::Vector2f objPos = object->get_Position();
-                if (objPos.y >= -100 && objPos.y <= 800)
-                    currentObjects.push_back(object);
+            sf::Vector2f objPos = object->get_Position();
+            if (objPos.y >= -100 && objPos.y <= 800)
+                currentObjects.push_back(object);
         }
         
     }
@@ -221,8 +223,9 @@ void CGAME::resetGame() {
             sf::Vector2f objPos = object->get_Position();
             if (objPos.y >= (cn.get_Position().y - 700) && objPos.y <= (cn.get_Position().y + 700))
                 currentObjects.push_back(object);
-        }
+        }   
     }
+    std::cout<<"Reset done"<<std::endl;
 }
 void CGAME::exitGame(std::thread& thread) {
     stopGame = true;
@@ -319,10 +322,11 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 currentObjects.push_back(object);
         }
     }
+    //level
     if (!endless){
         finishLine = 800 - numLanes*laneHeight;
         if (playerPosition.y < finishLine - level*multiplier){
-            if (level < 5) {
+            if (level <= 5) {
                 std::cout << "level " << level++ << " completed\n";
                 resetGame();
             }

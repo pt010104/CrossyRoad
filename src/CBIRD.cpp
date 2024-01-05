@@ -1,6 +1,5 @@
 #include "CBIRD.h"
 #include <iostream>
-#include <memory>
 
 CBIRD::CBIRD()
 {}
@@ -20,7 +19,7 @@ CBIRD::CBIRD(int width, float startX, float startY, float birdSpeed, int direct)
         if (!loader.LoadAnimations("Assets/Animal/Bird.json", frames, animations, numFrames)) {
             std::cerr<<"Failed to load Json Bird";
         }
-        sprite.setTexture(texture);
+        sprite.setTexture(TextureManager::GetTexture("Assets/Animal/Bird.png"));
         sprite.setScale(7.0f,7.0f);
         rectSourceSprite = sf::IntRect(
             frames["right_1"].x,
