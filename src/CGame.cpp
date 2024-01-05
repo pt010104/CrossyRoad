@@ -331,7 +331,7 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 std::cout << "level " << level++ << " completed\n";
                 resetGame();
             }
-            else if (level == 5) {
+            else if (level == 6) {
                 stopGame = true;
                 cn.Died();
                 std::cout << "gg\n";
