@@ -163,6 +163,7 @@ void CGAME::resetGame() {
     isPress = false;
     threshold = 200;
     stopGame = false;
+    setFinish(false);
     // other variables specific to game state
     // Clear vectors and reset their sizes
     direction.clear();
@@ -330,10 +331,12 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 std::cout << "level " << level++ << " completed\n";
                 resetGame();
             }
-            else {
+            else if (level == 5) {
                 stopGame = true;
                 cn.Died();
                 std::cout << "gg\n";
+                level++;
+                setFinish(true);
             }
         }
     }

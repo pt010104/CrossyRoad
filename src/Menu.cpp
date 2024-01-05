@@ -9,22 +9,28 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
     soundOn = true;
     isSettingPannel = false;
     if (!playTextture.loadFromFile("Assets/Menu/PlayButton.png")) {
-        std::cerr << "Failed to load main menu image." << std::endl;
+        std::cerr << "Failed to load play button image." << std::endl;
     }
     if (!saveTextture.loadFromFile("Assets/Menu/loadSave.png")) {
-        std::cerr << "Failed to load main menu image." << std::endl;
+        std::cerr << "Failed to load load save image." << std::endl;
+    }
+    if (!endlessTexture.loadFromFile("Assets/Menu/modeEndless.png")) {
+        std::cerr << "Failed to load mode endless image." << std::endl;
+    }
+    if (!classicTexture.loadFromFile("Assets/Menu/modeClassic.png")) {
+        std::cerr << "Failed to load mode classic image." << std::endl;
     }
     if (!settingTextture.loadFromFile("Assets/Menu/settingsButton.png")) {
-        std::cerr << "Failed to load main menu image." << std::endl;
+        std::cerr << "Failed to load settings button image." << std::endl;
     }
     if (!soundTexture.loadFromFile("Assets/Menu/soundButton.png")) {
-        std::cerr << "Failed to load main menu image." << std::endl;
+        std::cerr << "Failed to load sound button image." << std::endl;
     }
     if (!obstaclesTexture.loadFromFile("Assets/Menu/obstaclesButton.png")) {
-        std::cerr << "Failed to load main menu image." << std::endl;
+        std::cerr << "Failed to load obstacles button image." << std::endl;
     }
     if (!settingPannelTexture.loadFromFile("Assets/Menu/Settings.png")) {
-        std::cerr << "Failed to load main menu image." << std::endl;
+        std::cerr << "Failed to load settings image." << std::endl;
     }
 
     mainMenuCameraView = window.getDefaultView();
@@ -43,6 +49,23 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
     loadSave.onClick = []() {
         std::cout << "Loadsave button clicked!\n";
     };   
+
+    Button modeEndless;
+    modeEndless.sprite.setTexture(endlessTexture);
+    modeEndless.sprite.setPosition(406, 385);
+    modeEndless.name = "modeEndless";
+    modeEndless.onClick = []() {
+        std::cout << "Endless mode button clicked!\n";
+    }; 
+
+    Button modeClassic;
+    modeClassic.isDraw = false;
+    modeClassic.sprite.setTexture(classicTexture);
+    modeClassic.sprite.setPosition(406, 385);
+    modeClassic.name = "modeClassic";
+    modeClassic.onClick = []() {
+        std::cout << "Classic mode button clicked!\n";
+    };
 
     Button settingsButton;
     settingsButton.sprite.setTexture(settingTextture);
@@ -82,11 +105,12 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
 
     mainMenuButtons.push_back(playButton);
     mainMenuButtons.push_back(loadSave);
+    mainMenuButtons.push_back(modeEndless);
+    mainMenuButtons.push_back(modeClassic);
     mainMenuButtons.push_back(settingsButton);
     mainMenuButtons.push_back(settingPannel);
     mainMenuButtons.push_back(sound);
     mainMenuButtons.push_back(obstacles);
-
 }
 
 void Menu::setFont(const std::string& fontPath) {
@@ -112,7 +136,6 @@ void Menu::renderMainMenu() {
 
         menuSprite.setPosition(xPos, yPos);
         window.draw(menuSprite);
-
         mainMenuDrawn = true;
     for (auto& button : mainMenuButtons) {
         if(button.isDraw)
@@ -180,11 +203,8 @@ std::string Menu::handleInputMainMenu(bool isClicked) {
         }
         if(mainMenuButtons[clickedButtonIndex].name == "loadSave")
             typePlay = "loadGame";
-        else 
-        if(mainMenuButtons[clickedButtonIndex].name == "play")
+        else if(mainMenuButtons[clickedButtonIndex].name == "play")
             typePlay = "newGame";
-
-
     }
     else 
         displaySettings(mainMenuButtons,mousePos,isClicked);
@@ -299,4 +319,26 @@ void Button::onHover(){
 }
 void Button::onUnhover(){
     sprite.setColor(sf::Color(255, 255, 255, 255)); 
+}
+
+void Menu::pressEndless(){
+    for (auto& button : mainMenuButtons){
+        if (button.name == "modeEndless"){
+            button.isDraw = false;
+        }
+        else if (button.name == "modeClassic"){
+            button.isDraw = true;
+        }
+    }
+}
+
+void Menu::pressClassic(){
+    for (auto& button : mainMenuButtons){
+        if (button.name == "modeClassic"){
+            button.isDraw = false;
+        }
+        else if (button.name == "modeEndless"){
+            button.isDraw = true;
+        }
+    }
 }
