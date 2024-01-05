@@ -50,6 +50,8 @@ protected:
     std::vector<Obstacles> currentObs;
     sf::View view;
     sf::View newGameMainView;
+    int level;
+    bool endless = true;
 public:
     CGAME ();
     CGAME(sf::RenderWindow& window);
@@ -72,6 +74,10 @@ public:
     void updatePosVehicle();
     void updatePosAnimal();
     bool checkwindow();
+    void setEndless(bool mode);
+    bool getEndless();
+    void setLevel(int l);
+    int getLevel();
 };
 
 

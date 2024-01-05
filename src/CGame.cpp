@@ -295,6 +295,38 @@ void CGAME::startGame(sf::RenderWindow& window) {
             }
         }
     }
+    if (!endless){
+        int finishLine = 800 - numLanes*laneHeight;
+        int multiplier = 10*laneHeight;
+        switch (level){
+            case 1:
+                if (playerPosition.y < finishLine + multiplier)
+                    stopGame = true;
+                break;
+            case 2:
+                if (playerPosition.y < finishLine + 2*multiplier)
+                    stopGame = true;
+                break;
+            case 3:
+                if (playerPosition.y < finishLine + 3*multiplier)
+                    stopGame = true;
+                break;
+            case 4:
+                if (playerPosition.y < finishLine + 5*multiplier)
+                    stopGame = true;
+                break;
+            case 5:
+                if (playerPosition.y < finishLine + 8*multiplier)
+                    stopGame = true;
+                break;
+            default:
+                break;
+        }
+        if (stopGame && level < 5){
+            level++;
+            resetGame();
+        }
+    }
     window.setView(view);
 }
 
@@ -502,4 +534,20 @@ void CGAME::updatePosAnimal() {
 bool CGAME::checkwindow(){
     if (window) return true;
     return false;
+}
+
+void CGAME::setEndless(bool mode){
+    endless = mode;
+}
+
+bool CGAME::getEndless(){
+    return endless;
+}
+
+void CGAME::setLevel(int l){
+    level = l;
+}
+
+int CGAME::getLevel(){
+    return level;
 }

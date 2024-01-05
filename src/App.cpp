@@ -61,20 +61,20 @@ void App::handleMouseClick(const sf::Event& event) {
         sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
         if (currentGameState == GameState::MENU) {
             std::string buttonName = menu.handleInputMainMenu(true);
-            if(buttonName == "play")
-            {
+            if(buttonName == "play"){
                 if (game.checkwindow()) {
                     realTimeClock.restart();
                     game.resetGame();
                 }
                 currentGameState = GameState::PLAYING;        
             }
-            if (buttonName == "settingsButton")
-            {
+            if (buttonName == "settingsButton"){
                 menu.isSettingPannel = true;
             }
-            if (buttonName == "loadSave")
-            {
+            if (buttonName == "mode"){
+                game.setEndless(!game.getEndless());
+            }
+            if (buttonName == "loadSave"){
                 if (game.checkwindow()) {
                     realTimeClock.restart();
                     game.resetGame();

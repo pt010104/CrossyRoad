@@ -53,6 +53,7 @@ public:
     void setNearobs(bool near);
     void Died();
     void reset();
+    void finish();
 };
 
 #endif
