@@ -147,4 +147,5 @@ void CPEOPLE::reset(){
 void CPEOPLE::set_Position(int X, int Y){
     mX = X;
     mY = Y;
+    sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
 }

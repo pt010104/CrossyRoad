@@ -28,12 +28,12 @@ Map::Map(int width, float startY,std::string tile): windowWidth(width), mY(start
         
 }
 void Map::draw(sf::RenderWindow& window) {
-        for (size_t x = 0; x < orderFrame.size(); ++x) {
-            int frameIndex = orderFrame[x];
-            Frame& newFrame = this->animations[typeTile].frames[frameIndex];
-            this->rectSourceSprite = sf::IntRect(newFrame.x, newFrame.y, newFrame.width, newFrame.height);
-            this->sprite.setTextureRect(rectSourceSprite);
-            sprite.setPosition(x * 133,mY);
-            window.draw(sprite);
-        }
+    for (size_t x = 0; x < orderFrame.size(); ++x) {
+                int frameIndex = orderFrame[x];
+                Frame& newFrame = this->animations[typeTile].frames[frameIndex];
+                this->rectSourceSprite = sf::IntRect(newFrame.x, newFrame.y, newFrame.width, newFrame.height);
+                this->sprite.setTextureRect(rectSourceSprite);
+                sprite.setPosition(x * 133,mY);
+                window.draw(sprite);
+    }
 }

@@ -19,6 +19,8 @@
 #include <vector>
 #include <algorithm> 
 #include "Global.h"
+#include "SpriteLoader.h"
+
 class CGAME {
 protected:
     sf::RenderWindow* window;
@@ -61,7 +63,7 @@ public:
     void resetGame();
     void exitGame(std::thread& thread);
     void startGame(sf::RenderWindow& window);
-    void loadGame(const std::string& filename);
+    void loadGame(const std::string& filename,sf::RenderWindow& window);
     void saveGame(const std::string& filename);
     void pauseGame(std::thread& thread);
     void resumeGame(std::thread& thread);

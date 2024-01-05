@@ -17,21 +17,35 @@ void CGAME::GenObj(sf::RenderWindow& window)
             ObjInLane[indexObj] = numBirdsDis(gen);        
             speed_lane[indexObj] = speedDis(gen);
             std::string type_obj = object_rand[randObj(gen)]; 
-            int randomX = (dis1(gen) == 0 ? 0 : 995);
-            direction.push_back(randomX == 0 ? 1 : -1);
+            float randomX = (dis1(gen) == 0 ? 0 : 995);
+            direction[indexObj] = randomX == 0 ? 1 : -1;
             time_obj2[indexObj] = dis_obj2(gen) + direction[direction.size()-1]*200; 
-            int randomY = j * laneHeight-50; 
+            float randomY = j * laneHeight-50; 
             //create traffic pos
             TrafficLight_pos.push_back(j*laneHeight-25);      
 
             if (type_obj == "birds")
+            {
                 objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                if (ObjInLane[indexObj]==2)
+                    objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY+50, speedDis(gen),direction[indexObj]));
+
+            }
             else
             if (type_obj == "dinosaurs")
+            {
                 objects.emplace_back(std::make_shared<CDINOSAUR>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));       
+                 if (ObjInLane[indexObj]==2)
+                    objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY+50, speedDis(gen),direction[indexObj]));
+
+            }
             else
             if (type_obj == "birds2")
+            {
                 objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
+                if (ObjInLane[indexObj]==2)
+                    objects.emplace_back(std::make_shared<CDINOSAUR>(window.getSize().x, randomX, randomY+50, speedDis(gen),direction[indexObj]));
+            }
             indexObj++;        
         }
         if(abs(j)%2==0) //mons tile 
@@ -78,6 +92,7 @@ CGAME::CGAME(sf::RenderWindow& window) : window(&window)
         ObjInLane.assign(totalLanes*2, 1);
         isSecond.assign(totalLanes*2,false);
         isDraw.assign(totalLanes*2,true);
+        direction.assign(totalLanes, 1);
         GenObj(window);
 }
 CGAME::~CGAME() {
@@ -90,7 +105,7 @@ void CGAME::drawGame(float& realTime)
     if (window) {
             for (auto tile:maps)
                 tile.draw(*window);
-            for (auto obstacle:obstacles)
+            for (auto obstacle:currentObs)
                 obstacle.draw(*window);
             if (cn.getState())
                 cn.draw(*window);
@@ -147,9 +162,9 @@ void CGAME::resetGame() {
     isPress = false;
     threshold = 200;
     stopGame = false;
-    // ... other variables specific to game state
-
+    // other variables specific to game state
     // Clear vectors and reset their sizes
+    direction.clear();
     secondObjCreated.clear();
     speed_lane.clear();
     time_obj2.clear();
@@ -164,24 +179,36 @@ void CGAME::resetGame() {
     numLanes = window->getSize().y / laneHeight;
     int totalLanes = numLanes +40;
     secondObjCreated.assign(totalLanes * 2, false);
-    speed_lane.assign(totalLanes * 2, 0.0f);
-    time_obj2.assign(totalLanes * 2, 0.0f);
-    ObjInLane.assign(totalLanes * 2, 1);
-    isSecond.assign(totalLanes * 2, false);
-    isDraw.assign(totalLanes * 2, true);
-    realTimeClock.restart();
+    direction.assign(totalLanes, 1);
+    speed_lane.assign(totalLanes, 0.0f);
+    time_obj2.assign(totalLanes, 0.0f);
+    ObjInLane.assign(totalLanes, 1);
+    isSecond.assign(totalLanes, false);
+    isDraw.assign(totalLanes, true);
+    
     timeAppear = 10;
     cn.reset();
     // Re-generate game objects
     if(typePlay == "newGame")
+    {
+        currentObs.clear();
         GenObj(*window);
+        for (auto obstacle : obstacles){
+                sf::Vector2f obsPos = obstacle.get_Position();
+                if (obsPos.y >= -100 && obsPos.y <= 800)
+                    currentObs.push_back(obstacle);
+        }
+    }
     else if (typePlay == "loadGame")
-        loadGame("save.txt");
-    currentObs.clear();
-    for (auto obstacle : obstacles){
+    {
+        currentObs.clear();
+        loadGame("save.txt",*window);
+        for (auto obstacle : obstacles){
         sf::Vector2f obsPos = obstacle.get_Position();
-        if (obsPos.y >= -100 && obsPos.y <= 800)
+        if (obsPos.y >= (cn.get_Position().y - 700) && obsPos.y <= (cn.get_Position().y + 200)){
             currentObs.push_back(obstacle);
+        }
+    }
     }
 }
 void CGAME::exitGame(std::thread& thread) {
@@ -194,6 +221,7 @@ void CGAME::exitGame(std::thread& thread) {
 void CGAME::startGame(sf::RenderWindow& window) {   
     if (!stopGame) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && isPress==false) {
+            isPress = true;
             saveGame("save.txt");
         }
 
@@ -270,8 +298,9 @@ void CGAME::startGame(sf::RenderWindow& window) {
     window.setView(view);
 }
 
-void CGAME::loadGame(const std::string& filename) {
- std::ifstream file(filename);
+void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
+    
+    std::fstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Error when open file for loading game state" << std::endl;
     }
@@ -279,17 +308,14 @@ void CGAME::loadGame(const std::string& filename) {
     float centerX, centerY, sizeX, sizeY;
     file >> centerX >> centerY;
     file >> sizeX >> sizeY;
-    view.setCenter(centerX, centerY);
-    view.setSize(sizeX, sizeY);
    
 //  lane 
-    int indexObj=0;
     for (int i = -40; i < numLanes; ++i) {
         if(abs(i)%2==0) //mons tile 
-            maps.emplace_back(1000,i*laneHeight,"mons");      
+            maps.emplace_back(window.getSize().x,i*laneHeight,"mons");      
         if (abs(i)%2 == 1) //map tile 
         {
-            maps.emplace_back(1000,i*laneHeight,"people");    
+            maps.emplace_back(window.getSize().x,i*laneHeight,"people");    
         }
     }
     int objInLane_size;
@@ -299,13 +325,15 @@ void CGAME::loadGame(const std::string& filename) {
             int tempSecondObjCreated;
             int tempisSecond;
             int tempisDraw;
+            int direct;
             file >> ObjInLane[i]
-                >> speed_lane[i]
-                >> direction[i]
+                >> speed_lane[i] 
+                >> direct
                 >> time_obj2[i]
                 >> tempSecondObjCreated  
                 >> tempisSecond
                 >> tempisDraw;
+            direction[i] = direct;
             secondObjCreated[i] = (tempSecondObjCreated != 0);
             isSecond[i] = (tempisSecond!=0);
             isDraw[i] = (tempisDraw!=0);
@@ -313,29 +341,36 @@ void CGAME::loadGame(const std::string& filename) {
     //  objects
     int sizeObj;
     file >> sizeObj;
-    std::string objectType;
+    objects.clear();
+    std::cout<<"load obj begin"<<std::endl;
     for (int i =0;i< sizeObj ;i++) {
+        std::string objectType;
         file >> objectType;
         float x,y,speed;
         int direction;
         file >> x >> y >> speed >> direction;
         if (objectType == "birds") {
-            objects.emplace_back(std::make_shared<CBIRD>(1000, x, y,speed,direction));
+            objects.push_back(std::make_shared<CBIRD>(window.getSize().x, 0, y,speed,direction));
         }
         else
         if (objectType == "dinosaurs")
-            objects.emplace_back(std::make_shared<CDINOSAUR>(1000, x, y,speed,direction));
+        {
+            objects.push_back(std::make_shared<CDINOSAUR>(window.getSize().x, 0, y,speed,direction));
+        }
         else
         if (objectType == "birds2")
-            objects.emplace_back(std::make_shared<CBIRD2>(1000, x, y,speed,direction));
+        {
+            objects.push_back(std::make_shared<CBIRD2>(window.getSize().x, 0, y,speed,direction));
+        }
     }
+    std::cout<<"load obj done";
     int obsSize;
     file >> obsSize;
     std::string typeObs;
     for (int i  = 0;i<obsSize;i++) {
         int x,y;
         file >> typeObs >> x >> y;
-        obstacles.emplace_back(1000,x,y,typeObs);
+        obstacles.emplace_back(window.getSize().x,x,y,typeObs);
 
     }
     float pos;
@@ -348,6 +383,8 @@ void CGAME::loadGame(const std::string& filename) {
     int X,Y;
     file >> X >> Y;
     cn.set_Position(X,Y);
+    view.setCenter(centerX, Y-200);
+    view.setSize(sizeX, sizeY);
     file.close();
     std::cout << "Game state loaded from " << filename << std::endl;
 }
@@ -460,18 +497,7 @@ void CGAME::updatePosAnimal() {
             else if (obj->get_Position().y != drag.mY-25 && obj->get_Position().y != drag.mY+25)
                 obj->Move();
         }
-        int indexObj = 0;
-        for (int i = -40; i < numLanes; i+=2) {
-            if ((direction[indexObj] == 1 && objects[indexObj]->getX() >= time_obj2[indexObj]) || (direction[indexObj] == -1 && objects[indexObj]->getX() <= time_obj2[indexObj]))
-                if (!secondObjCreated[indexObj] &&ObjInLane[indexObj] == 2) {
-                    int randomY = i * laneHeight;
-                    int x2 = direction[indexObj] == 1 ? 0: 995;
-                    objects.emplace_back(std::make_shared<CBIRD2>(1000, x2 , randomY, speed_lane[indexObj],direction[indexObj]));
-                    secondObjCreated[indexObj] = true; 
-            }
-            indexObj++;
-        }
-    }
+}
 
 bool CGAME::checkwindow(){
     if (window) return true;

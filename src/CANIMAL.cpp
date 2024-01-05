@@ -55,6 +55,6 @@ float CANIMAL::getRadius() const {
 void CANIMAL::setIndexSecond(int index){
     indexSecond = index;
 }
-std::string CANIMAL::serialize(){
-    return name + " "+ std::to_string(mX) + " " + std::to_string(mY) +" "+ std::to_string(speed) + " " + std::to_string(direction);
+std::string CANIMAL::serialize(){//
+    return name + " " +"\n" + std::to_string(mX) + " " + std::to_string(mY) +" "+ std::to_string(speed) + " " + std::to_string(direction);
 }
