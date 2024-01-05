@@ -31,6 +31,9 @@ protected:
     int threshold;
     float timeAppear;
     bool isPress;
+    int level;
+    int finishLine;
+    bool endless = false;
     CPEOPLE cn;
     Dragon drag;
     std::vector<std::string> object_rand = {"birds","dinosaurs","birds2","cars","trucks"};
@@ -41,6 +44,7 @@ protected:
     std::vector<float> time_obj2;
     std::vector<float> TrafficLight_pos;
     const int laneHeight = 132;
+    const int multiplier = laneHeight*1;
     std::vector <int> ObjInLane;
     std::vector <int> direction;
     std::vector<bool> secondObjCreated;
@@ -48,10 +52,9 @@ protected:
     std::vector<Map> maps;
     std::vector<Obstacles> obstacles;
     std::vector<Obstacles> currentObs;
+     std::vector<std::shared_ptr<CANIMAL>> currentObjects;
     sf::View view;
     sf::View newGameMainView;
-    int level;
-    bool endless = true;
 public:
     CGAME ();
     CGAME(sf::RenderWindow& window);
