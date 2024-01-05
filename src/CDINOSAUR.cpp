@@ -17,7 +17,7 @@ CDINOSAUR::CDINOSAUR(int width, float startX, float startY, float birdSpeed, int
         if (!loader.LoadAnimations("Assets/Animal/Dinosaur.json", frames, animations, numFrames)) {
             std::cerr<<"Failed to load Json Bird";
         }
-        sprite.setTexture(texture);
+        sprite.setTexture(TextureManager::GetTexture("Assets/Animal/Dinosaur.png"));
         sprite.setScale(7.0f,7.0f);
         rectSourceSprite = sf::IntRect(
             frames["right_1"].x,
