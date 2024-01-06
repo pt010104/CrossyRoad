@@ -36,7 +36,10 @@ private:
     sf::Texture settingPannelTexture;
     sf::Texture highScoreTexture;
     
-    
+    sf::Texture pausedTexture;
+    sf::Texture resumeTexture;
+    sf::Texture retryTexture;
+    sf::Texture returnMenuTexture;
     
     bool endlessOn;
 
