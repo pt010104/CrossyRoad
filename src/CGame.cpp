@@ -322,7 +322,8 @@ void CGAME::resetGame() {
             sf::Vector2f objPos = object->get_Position();
             if (objPos.y >= (cn.get_Position().y - 700) && objPos.y <= (cn.get_Position().y + 700))
                 currentObjects.push_back(object);
-        }   
+        }
+        typePlay = "newGame";   
     }
     std::cout<<"Reset done"<<std::endl;
     stopGame = false;
@@ -335,7 +336,7 @@ void CGAME::exitGame(std::thread& thread) {
 }
 
 void CGAME::startGame(sf::RenderWindow& window) {   
-    if (!stopGame && !isFinished) {
+    if (!stopGame && !specialAnim && !isFinished) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && isPress==false) {
             isPress = true;
             saveGame("save.txt");
@@ -401,7 +402,7 @@ void CGAME::startGame(sf::RenderWindow& window) {
     }
     //move camera && refresh currentObstacles
     sf::Vector2f playerPosition = cn.get_Position();
-    if (playerPosition.y < view.getCenter().y - threshold) {
+    if (playerPosition.y < view.getCenter().y - threshold && !specialAnim && !isFinished) {
         viewX = view.getCenter().x;
         viewY = playerPosition.y - 200;
         view.setCenter(viewX, viewY);
@@ -425,16 +426,22 @@ void CGAME::startGame(sf::RenderWindow& window) {
         }
     }
     //level
-    if (!endless && !isFinished)
-    {     
+    if (!endless && !specialAnim && !isFinished){
         finishLine = 3;
         if (playerPosition.y <= lanePos[lanePos.size()-1-finishLine-static_cast<int>(std::floor(level * 1.5))]){
+            setSpecial(true);
+            isPress = true;
+            std::cout << "special animation triggered\n";
+        }
+    }
+    if (!endless && isFinished)
+    {     
+        std::cout << "advance level\n";
             if (level <= 5) {
-                isPress = true;
-                std::cout << "level " << level++ << " completed\n";
-                setFinish(true);
+                std::cout << "level " << level++ << " completed\n";   
                 resetGame();
-                _sleep(200);
+                window.setView(view);
+                _sleep(500);
                 isPress = false;
                 setFinish(false);
             }
@@ -446,9 +453,8 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 // resetGame();
                 isPress = false;
             }
-        }
     }
-    window.setView(view);
+    if (!specialAnim && !isFinished) window.setView(view);
 }
 
 void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
@@ -622,7 +628,6 @@ void CGAME::updateAnimation(float dt) {
         moveCooldown_animal -= deltaTime;
         if(cn.getState())
         {
-
             cn.UpdateFrame(deltaTime);
         }
         for (int i =0;i<objects.size();i++) {
@@ -686,4 +691,8 @@ void CGAME::setLevel(int l){
 
 int CGAME::getLevel(){
     return level;
+}
+
+void CGAME::finishAnimation(){
+    
 }

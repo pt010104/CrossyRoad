@@ -35,6 +35,7 @@ protected:
     int finishLine;
     bool endless = true;
     bool isFinished = false;
+    bool specialAnim = false;
     CPEOPLE cn;
     Dragon drag;
     std::vector<std::string> object_rand = {"birds","dinosaurs","birds2","cars","trucks"};
@@ -84,8 +85,12 @@ public:
     int getLevel();
     void setFinish(bool finish) {isFinished = finish;}
     bool getFinish() { return isFinished; }
+    void setSpecial(bool special) {specialAnim = special;}
+    bool getSpecial() { return specialAnim; }
     int getNumBirds();
     sf::View getView() { return view; }
+    void finishAnimation();
+    void setPress(bool press) { isPress = press; }
 };
 
 

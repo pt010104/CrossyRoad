@@ -12,6 +12,8 @@
 #include <iostream>
 #include "Global.h"
 
+using namespace std::chrono_literals;
+
 class App {
 public:
     App();
@@ -30,6 +32,9 @@ private:
     CGAME game;
     bool gameRunning;
     bool exitGameFlag;
+
+    std::chrono::steady_clock::time_point start;
+    std::chrono::seconds work_duration = 3s;
 
     void processEvents();
     void handleMouseClick(const sf::Event& event);
