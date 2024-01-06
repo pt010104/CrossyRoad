@@ -483,7 +483,6 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 std::cout << "level " << level++ << " completed\n";   
                 resetGame();
                 window.setView(view);
-                _sleep(500);
                 isPress = false;
                 setFinish(false);
             }

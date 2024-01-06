@@ -37,8 +37,7 @@ private:
     sf::Texture highScoreTexture;
     
     
-    bool soundOn;
-    bool obstaclesOn;
+    
     bool endlessOn;
 
     sf::Sprite menuSprite;
@@ -52,7 +51,9 @@ private:
 public:
     bool isSettingPannel;
     bool isHighScore;
-
+    bool soundOn;
+    bool obstaclesOn;
+    
     Menu(const sf::Font& font, sf::RenderWindow& window);
 
     void setFont(const std::string& fontPath);

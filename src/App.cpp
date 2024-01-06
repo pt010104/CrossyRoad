@@ -180,7 +180,8 @@ void App::render() {
             break;
 
         case GameState::WIN:{
-             globalSound.stop();
+            if(menu.soundOn)
+                globalSound.stop();
             sf::SoundBuffer buffer;
             sf::Sound soundWin;
             if (!buffer.loadFromFile("Assets/Sounds/gameWin.wav")) {
@@ -199,7 +200,8 @@ void App::render() {
                 window.display();
             }
             currentGameState = GameState::MENU;
-            globalSound.play();
+            if(menu.soundOn)
+                globalSound.play();
             break;
         }
             
