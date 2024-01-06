@@ -32,8 +32,11 @@ void App::run() {
         if (!game.getFinish())
         {
             processEvents();
-            game.startGame(window);
-            update();  
+            if (currentGameState == GameState::PLAYING)
+            {
+                game.startGame(window);
+                update();  
+            }
             render();
         }
     }

@@ -323,6 +323,7 @@ void CGAME::resetGame() {
             if (objPos.y >= (cn.get_Position().y - 700) && objPos.y <= (cn.get_Position().y + 700))
                 currentObjects.push_back(object);
         }   
+        typePlay = "newGame";
     }
     std::cout<<"Reset done"<<std::endl;
     stopGame = false;
@@ -434,7 +435,6 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 std::cout << "level " << level++ << " completed\n";
                 setFinish(true);
                 resetGame();
-                _sleep(200);
                 isPress = false;
                 setFinish(false);
             }
@@ -463,12 +463,33 @@ void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
     file >> sizeX >> sizeY;
    
 //  lane 
-    for (int i = -40; i < numLanes; ++i) {
+    file >> endless >> level;
+
+    int levelIndexLane = 52 - 3 - static_cast<int>(std::floor(level * 1.5));
+    std::vector<std::string> nameTile = {"people_map"+std::to_string(level),"mons_map"+std::to_string(level)};
+
+    for (int i = -100; i < numLanes; ++i) {
         if(abs(i)%2==0) //mons tile 
-            maps.emplace_back(window.getSize().x,i*laneHeight,"mons");      
-        if (abs(i)%2 == 1) //map tile 
         {
-            maps.emplace_back(window.getSize().x,i*laneHeight,"people");    
+            if (lanePos.size()-1 < levelIndexLane && !endless)
+            {
+                maps.emplace_back(window.getSize().x,i*laneHeight,"wall"); //set wall at next level position
+            }
+            else
+                maps.emplace_back(window.getSize().x,i*laneHeight,nameTile[1]); //0 is people, 1 is mons      
+        }
+        if (abs(i)%2 == 1) //people tile 
+        {
+            int posMidLane = i*laneHeight;
+            lanePos.push_back (posMidLane);
+            if (lanePos.size()-1 < levelIndexLane && !endless)
+            {
+                maps.emplace_back(window.getSize().x,i*laneHeight,"wall"); //set wall at next level position
+            }
+            else
+            {
+                maps.emplace_back(window.getSize().x,i*laneHeight,nameTile[0]);      
+            }
         }
     }
     int objInLane_size;
@@ -551,6 +572,9 @@ void CGAME::saveGame(const std::string& filename)
 
     file << view.getCenter().x << " " << view.getCenter().y << std::endl; 
     file << view.getSize().x << " " << view.getSize().y << std::endl; 
+
+    file << endless << " " << level <<std::endl;
+
     file <<ObjInLane.size()<<std::endl;
     // Save lane 
     for (int i = 0; i < ObjInLane.size(); ++i) {
