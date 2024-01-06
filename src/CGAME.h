@@ -84,6 +84,7 @@ public:
     int getLevel();
     void setFinish(bool finish) {isFinished = finish;}
     bool getFinish() { return isFinished; }
+    sf::View getView() { return view; }
 };
 
 

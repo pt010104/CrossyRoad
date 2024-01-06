@@ -1,4 +1,5 @@
 #include "Menu.h"
+#include "Global.h"
 
 bool mainMenuDrawn = false;
 bool pausedMenuDrawn = false;
@@ -159,33 +160,12 @@ void Menu::renderMainMenu() {
 }
 
 void Menu::renderPausedMenu() {
-    // if (!pausedMenuDrawn) {
-
-    //     if (!menuTexture.loadFromFile("Assets/Menu/TmpPausedMenu.png")) {
-    //         std::cerr << "Failed to load paused menu image." << std::endl;
-    //     }
-
-    //     menuSprite.setTexture(menuTexture);
-    //     sf::Vector2u windowSize = window.getSize();
-    //     sf::Vector2u menuSize = menuTexture.getSize();
-
-    //     float xPos = (windowSize.x - menuSize.x) / 2.0f;
-    //     float yPos = (windowSize.y - menuSize.y) / 2.0f;
-
-    //     menuSprite.setPosition(xPos, yPos);
-    //     window.draw(menuSprite);
-
-    //     pausedMenuDrawn = true;
-
-    //     // for (auto& button : mainMenuButtons) {
-    //     //     // Adjust button positions relative to the menu position if needed
-    //     //     sf::Sprite& buttonSprite = button.sprite;
-    //     //     buttonSprite.setPosition(xPos + button.offset.x, yPos + button.offset.y);
-    //     //     window.draw(buttonSprite);
-    //     // }
-
-    //     window.display();
-    // }
+    // currentView.setCenter(viewX, viewY);
+    // window.setView(currentView);
+    sf::RectangleShape backgroundShape;
+    backgroundShape.setFillColor(sf::Color(0, 0, 0, 155));
+    backgroundShape.setSize(sf::Vector2f(window.getSize()));
+    window.draw(backgroundShape);
 }
 std::string Menu::handleInputMainMenu(bool isClicked) {
 
