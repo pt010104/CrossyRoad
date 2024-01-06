@@ -181,7 +181,9 @@ void App::gameLoop() {
                     std::cerr << "Exception: " << e.what() << std::endl;
                 }
                 if (game.getFinish()){
-                    //sleep?
+                    _sleep(3000);
+                    game.setFinish(false);
+                    game.resetGame();
                 }
                 break;
 

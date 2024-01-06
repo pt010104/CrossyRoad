@@ -329,13 +329,13 @@ void CGAME::startGame(sf::RenderWindow& window) {
         if (playerPosition.y < finishLine - level*multiplier){
             if (level <= 5) {
                 std::cout << "level " << level++ << " completed\n";
-                resetGame();
+                setFinish(true);
             }
             else if (level == 6) {
                 stopGame = true;
                 cn.Died();
                 std::cout << "gg\n";
-                level++;
+                level = 1;
                 setFinish(true);
             }
         }
