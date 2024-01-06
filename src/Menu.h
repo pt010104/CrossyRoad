@@ -41,6 +41,7 @@ private:
     bool endlessOn;
 
     sf::Sprite menuSprite;
+    sf::Sprite pausedSprite;
     std::vector<Button> mainMenuButtons;
     std::vector<Button> pausedMenuButtons;
     sf::Font m_font;
@@ -64,8 +65,8 @@ public:
     // Add functions for other menus (scoreMenu, settingsMenu, etc.)
 
     std::string handleInputMainMenu(bool isClicked);
+    std::string handleInputPausedMenu(bool isClicked);
     void displaySettings(std::vector<Button>& buttons,const sf::Vector2f& mousePosition, bool isClicked);
-    void handleInputPausedMenu();
     // Add functions for handling input in other menus
 
     void resetMainMenu();

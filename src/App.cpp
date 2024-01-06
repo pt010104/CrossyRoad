@@ -121,7 +121,21 @@ void App::handleMouseClick(const sf::Event& event) {
             }
         }
         else if (currentGameState == GameState::PAUSED) {
-
+            std::string buttonName = menu.handleInputPausedMenu(true);
+            if (buttonName == "resume"){
+                currentGameState = GameState::PLAYING;
+            }
+            else if (buttonName == "retry"){
+                if (game.checkwindow()) {
+                    realTimeClock.restart();
+                    game.resetGame();
+                }
+                currentGameState = GameState::PLAYING;
+            }
+            else if (buttonName == "returnMenu"){
+                menu.resetMainMenu();
+                currentGameState = GameState::MENU;
+            }
         }
     }
 }
@@ -232,7 +246,7 @@ void App::gameLoop() {
         if(game.getFinish() == false)
             switch (currentGameState) {
                 case GameState::MENU:{
-                    std::string tmp = menu.handleInputMainMenu(false);
+                    // std::string tmp = menu.handleInputMainMenu(false);
                     break;
                 }
                 case GameState::PLAYING:{
@@ -259,7 +273,7 @@ void App::gameLoop() {
                         }
 
                     }
-                    menu.handleInputPausedMenu();
+                    // std::string tmp = menu.handleInputPausedMenu(false);
                     break;
                 }
 

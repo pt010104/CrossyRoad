@@ -38,6 +38,17 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
         std::cerr << "Failed to load mode highScoreTexture image." << std::endl;
     }
 
+    //paused menu buttons
+    if (!resumeTexture.loadFromFile("Assets/Menu/resumeButton.png")) {
+        std::cerr << "Failed to load resume button image." << std::endl;
+    }
+    if (!retryTexture.loadFromFile("Assets/Menu/retryButton.png")) {
+        std::cerr << "Failed to load retry button image." << std::endl;
+    }
+    if (!returnMenuTexture.loadFromFile("Assets/Menu/menuButton.png")) {
+        std::cerr << "Failed to load menu button image." << std::endl;
+    }
+
     mainMenuCameraView = window.getDefaultView();
     Button playButton;
     playButton.sprite.setTexture(playTextture);
@@ -114,7 +125,32 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
     highScore.name = "highScoreButton";
     highScore.onClick = []() {
         std::cout << "highScore button clicked!\n";
-    };      
+    };
+
+    //paused menu buttons
+    Button resume;
+    resume.sprite.setTexture(resumeTexture);
+    resume.sprite.setPosition(327, 490);
+    resume.name = "resume";
+    resume.onClick = []() {
+        std::cout << "resume button clicked!\n";
+    }; 
+
+    Button retry;
+    retry.sprite.setTexture(retryTexture);
+    retry.sprite.setPosition(369, 366);
+    retry.name = "retry";
+    retry.onClick = []() {
+        std::cout << "retry button clicked!\n";
+    };
+
+    Button returnMenu;
+    returnMenu.sprite.setTexture(returnMenuTexture);
+    returnMenu.sprite.setPosition(550, 366);
+    returnMenu.name = "returnMenu";
+    returnMenu.onClick = []() {
+        std::cout << "return menu button clicked!\n";
+    }; 
 
     mainMenuButtons.push_back(playButton);
     mainMenuButtons.push_back(highScore);
@@ -126,7 +162,9 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
     mainMenuButtons.push_back(sound);
     mainMenuButtons.push_back(obstacles);
 
-    
+    pausedMenuButtons.push_back(resume);
+    pausedMenuButtons.push_back(retry);
+    pausedMenuButtons.push_back(returnMenu);    
 }
 
 void Menu::setFont(const std::string& fontPath) {
@@ -221,9 +259,36 @@ void Menu::renderPausedMenu() {
     // window.setView(currentView);
     sf::RectangleShape backgroundShape(sf::Vector2f(1000.0f, 800.0f));
     backgroundShape.setFillColor(sf::Color(0, 0, 0, 155));
-    backgroundShape.setPosition(0, viewY - 400);
+    backgroundShape.setPosition(viewX - 500, viewY - 400);
     window.draw(backgroundShape);
+
+    if (!pausedTexture.loadFromFile("Assets/Menu/pausedMenu.png")) {
+        std::cerr << "Failed to load paused menu image." << std::endl;
+    }
+    pausedSprite.setTexture(pausedTexture);
+    sf::Vector2u windowSize = window.getSize();
+    sf::Vector2u pausedSize = pausedTexture.getSize();
+
+    float xPos = (windowSize.x - pausedSize.x) / 2.0f;
+    float yPos = (windowSize.y - pausedSize.y) / 2.0f;
+
+    pausedSprite.setPosition(xPos, yPos + viewY - 400);
+    window.draw(pausedSprite);
+
+    for (auto& button : pausedMenuButtons) {
+        if (button.name == "resume")
+            button.sprite.setPosition(327, 490 + viewY - 400);
+        else if (button.name == "retry")
+            button.sprite.setPosition(369, 366 + viewY - 400);
+        else if (button.name == "returnMenu")
+            button.sprite.setPosition(550, 366 + viewY - 400);
+    }
+    for (auto& button : pausedMenuButtons) {
+        if(button.isDraw)
+            window.draw(button.sprite);
+    }
 }
+
 std::string Menu::handleInputMainMenu(bool isClicked) {
 
     sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
@@ -365,7 +430,20 @@ void Menu::highScoreDisplay(std::vector<Button>& buttons,const sf::Vector2f& mou
         isHighScore = false;
     
 }
-void Menu::handleInputPausedMenu() {
+
+std::string Menu::handleInputPausedMenu(bool isClicked) {
+    sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
+    int clickedButtonIndex = -1;
+    clickedButtonIndex = checkButtonClick(pausedMenuButtons,mousePos);
+        if (clickedButtonIndex != -1) {
+            pausedMenuButtons[clickedButtonIndex].onHover(); 
+        }
+        if (clickedButtonIndex == -1) {
+            for (auto& button : pausedMenuButtons) {
+                button.onUnhover(); 
+            }
+        }
+    return clickedButtonIndex != -1 ? pausedMenuButtons[clickedButtonIndex].name : "";
 }
 
 int Menu::checkButtonClick(const std::vector<Button>& buttons, const sf::Vector2f& mousePosition) {
