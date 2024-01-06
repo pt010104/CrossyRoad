@@ -156,83 +156,122 @@ CGAME::~CGAME() {
 
 void CGAME::drawGame(float& realTime) 
 {
-    if (window && !isFinished) {
+    if (window && !isFinished) 
+    {
 
-            for (auto tile:maps)
+        for (auto tile:maps)
+        {
+            tile.draw(*window);
+        }
+        for (auto obstacle:currentObs)
+        {
+            if (obstacle.get_Position().x >= 0 && obstacle.get_Position().x<=1000)
+                obstacle.draw(*window);
+        }
+        if (cn.getState())
+            cn.draw(*window);
+        for (int i = 0;i<currentObjects.size();i++)
+        {
+            if (drag.state != "fire" && abs(currentObjects[i]->direction) == 1)
+                currentObjects[i]->draw(*window);
+            else if (currentObjects[i]->get_Position().y != drag.mY-25 && currentObjects[i]->get_Position().y != drag.mY+25 && abs(currentObjects[i]->direction) == 1)
+                currentObjects[i]->draw(*window);
+        }     
+        if (realTime >=timeAppear && drag.state == "disap")
+        {
+            auto it = std::upper_bound(TrafficLight_pos.begin(), TrafficLight_pos.end(), cn.get_Position().y);
+            if (it != TrafficLight_pos.begin())
             {
-                tile.draw(*window);
+                --it;
+                drag.mY = *it;
+                drag.state = "appear";
             }
-            for (auto obstacle:currentObs)
+            timeAppear += 25;
+            
+        }
+        if (drag.state != "disap")
+        {
+                drag.appear(realTime-(timeAppear-25));   
+                drag.draw(*window);
+        }   
+        if (realTime <= 3 && !endless)
+        {
+            sf::Font font;
+            if (!font.loadFromFile("Assets\\Font\\PressStart2P-Regular.ttf")) 
             {
-                if (obstacle.get_Position().x >= 0 && obstacle.get_Position().x<=1000)
-                    obstacle.draw(*window);
+                std::cerr << "Error to load font\n";
             }
-            if (cn.getState())
-                cn.draw(*window);
-            for (int i = 0;i<currentObjects.size();i++)
+            else
             {
-                if (drag.state != "fire" && abs(currentObjects[i]->direction) == 1)
-                    currentObjects[i]->draw(*window);
-                else if (currentObjects[i]->get_Position().y != drag.mY-25 && currentObjects[i]->get_Position().y != drag.mY+25 && abs(currentObjects[i]->direction) == 1)
-                    currentObjects[i]->draw(*window);
-            }     
-            if (realTime >=timeAppear && drag.state == "disap")
-            {
-                auto it = std::upper_bound(TrafficLight_pos.begin(), TrafficLight_pos.end(), cn.get_Position().y);
-                if (it != TrafficLight_pos.begin())
-                {
-                    --it;
-                    drag.mY = *it;
-                    drag.state = "appear";
-                }
-                timeAppear += 25;
-             
-            }
-            if (drag.state != "disap")
-            {
-                    drag.appear(realTime-(timeAppear-25));   
-                    drag.draw(*window);
-            }   
-            if (realTime <= 3 && !endless)
-            {
-                sf::Font font;
-                if (!font.loadFromFile("Assets\\Font\\PressStart2P-Regular.ttf")) 
-                {
-                    std::cerr << "Error to load font\n";
-                }
-                else
-                {
-                    sf::Text textOutline;
-                    textOutline.setFont(font); 
-                    textOutline.setString("Level " + std::to_string(level)); 
-                    textOutline.setCharacterSize(100); 
-                    textOutline.setFillColor(sf::Color::Black);  
-                    textOutline.setStyle(sf::Text::Bold);
+                sf::Text textOutline;
+                textOutline.setFont(font); 
+                textOutline.setString("Level " + std::to_string(level)); 
+                textOutline.setCharacterSize(100); 
+                textOutline.setFillColor(sf::Color::Black);  
+                textOutline.setStyle(sf::Text::Bold);
 
-                    sf::Text text;
-                    text.setFont(font); 
-                    text.setString("Level " + std::to_string(level)); 
-                    text.setCharacterSize(100); 
-                    text.setFillColor(sf::Color::White);  
-                    text.setStyle(sf::Text::Bold);
+                sf::Text text;
+                text.setFont(font); 
+                text.setString("Level " + std::to_string(level)); 
+                text.setCharacterSize(100); 
+                text.setFillColor(sf::Color::White);  
+                text.setStyle(sf::Text::Bold);
 
-                    sf::Vector2f position(200, 400);
-                    text.setPosition(position);
+                sf::Vector2f position(200, 400);
+                text.setPosition(position);
 
-                    float outlineThickness = 2.0f;
+                float outlineThickness = 2.0f;
 
-                    for (int x = -outlineThickness; x <= outlineThickness; x++) {
-                        for (int y = -outlineThickness; y <= outlineThickness; y++) {
-                            if (x != 0 || y != 0) {
-                                textOutline.setPosition(position.x + x, position.y + y);
-                                window->draw(textOutline);
-                            }
+                for (int x = -outlineThickness; x <= outlineThickness; x++) {
+                    for (int y = -outlineThickness; y <= outlineThickness; y++) {
+                        if (x != 0 || y != 0) {
+                            textOutline.setPosition(position.x + x, position.y + y);
+                            window->draw(textOutline);
                         }
                     }
+                }
 
-                    window->draw(text); 
+                window->draw(text); 
+            }
+        }
+        if (endless)
+        {
+            sf::Font font;
+            if (!font.loadFromFile("Assets\\Font\\PressStart2P-Regular.ttf")) 
+            {
+                std::cerr << "Error to load font\n";
+            }
+            sf::Text textOutline;
+            textOutline.setFont(font); 
+            textOutline.setString("Score:" + std::to_string(score)); 
+            textOutline.setCharacterSize(30); 
+            textOutline.setFillColor(sf::Color::Black);  
+            textOutline.setStyle(sf::Text::Bold);
+
+            sf::Text text;
+            text.setFont(font); 
+            text.setString("Score:" + std::to_string(score)); 
+            text.setCharacterSize(30); 
+            text.setFillColor(sf::Color::White);  
+            text.setStyle(sf::Text::Bold);
+
+            sf::Vector2f position(400, viewY-350);
+            text.setPosition(position);
+
+            float outlineThickness = 2.0f;
+
+            for (int x = -outlineThickness; x <= outlineThickness; x++) {
+                for (int y = -outlineThickness; y <= outlineThickness; y++) {
+                    if (x != 0 || y != 0) {
+                        textOutline.setPosition(position.x + x, position.y + y);
+                        window->draw(textOutline);
+                    }
                 }
             }
+
+            window->draw(text); 
+        }
+
 
     }
 }
@@ -291,6 +330,7 @@ void CGAME::resetGame() {
     timeAppear = 10;
     realTimeClock.restart();
     cn.reset();
+    score = 0;
     // Re-generate game objects
     if(typePlay == "newGame")
     {
@@ -449,6 +489,9 @@ void CGAME::startGame(sf::RenderWindow& window) {
         }
     }
     window.setView(view);
+    //score
+    if (endless && playerPosition.y <= lanePos[lanePos.size()-2-score]+40)
+        score++;
 }
 
 void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
