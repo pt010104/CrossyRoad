@@ -90,7 +90,7 @@ void App::handleMouseClick(const sf::Event& event) {
         sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
         if (currentGameState == GameState::MENU) {
             std::string buttonName = menu.handleInputMainMenu(true);
-            game.setLevel(5);
+            game.setLevel(1);
             if(buttonName == "play"){
                 if (game.checkwindow()) {
                     realTimeClock.restart();
@@ -175,6 +175,7 @@ void App::render() {
         case GameState::PLAYING:
             game.drawGame(realTime);
             break;
+
         case GameState::WIN:{
              globalSound.stop();
             sf::SoundBuffer buffer;
