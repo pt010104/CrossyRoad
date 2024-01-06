@@ -32,6 +32,8 @@ private:
     sf::Texture soundTexture;
     sf::Texture obstaclesTexture;
     sf::Texture settingPannelTexture;
+    sf::Texture highScoreTexture;
+
     
     bool soundOn;
     bool obstaclesOn;

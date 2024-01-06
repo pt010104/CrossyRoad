@@ -33,6 +33,9 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
     if (!settingPannelTexture.loadFromFile("Assets/Menu/Settings.png")) {
         std::cerr << "Failed to load settings image." << std::endl;
     }
+    if (!highScoreTexture.loadFromFile("Assets/Menu/highScore.png")) {
+        std::cerr << "Failed to load mode highScoreTexture image." << std::endl;
+    }
 
     mainMenuCameraView = window.getDefaultView();
     Button playButton;
@@ -104,7 +107,16 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
     };  
     obstacles.isDraw = false;
 
+    Button highScore;
+    highScore.sprite.setTexture(highScoreTexture);
+    highScore.sprite.setPosition(400,478);
+    highScore.name = "highScore";
+    highScore.onClick = []() {
+        std::cout << "highScore button clicked!\n";
+    };      
+
     mainMenuButtons.push_back(playButton);
+    mainMenuButtons.push_back(highScore);
     mainMenuButtons.push_back(loadSave);
     mainMenuButtons.push_back(modeEndless);
     mainMenuButtons.push_back(modeClassic);
