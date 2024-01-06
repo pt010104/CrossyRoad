@@ -39,7 +39,7 @@ bool SpriteLoader::LoadAnimations(const std::string& jsonPath, std::unordered_ma
         "people_map3", "mons_map3", 
         "people_map4", "mons_map4", 
         "people_map5", "mons_map5", 
-        "fire", "appear", "wall"
+        "fire", "appear", "people_map6"
     };
     for (const auto& dir : directions) {
         Animation anim;

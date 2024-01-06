@@ -5,7 +5,8 @@ enum class GameState {
     MENU,
     PLAYING,
     PAUSED,
-    EXITING
+    EXITING,
+    WIN
 };
 
 #endif

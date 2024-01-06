@@ -41,7 +41,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
     int levelIndexLane = 52 - 3 - static_cast<int>(std::floor(level * 1.5));
     float multiplierSpeed = 1;
     if(!endless)
-        multiplierSpeed = 1 + static_cast<float>(level)/14;
+        multiplierSpeed = 1 + static_cast<float>(level)/15;
     std::vector<std::string> nameTile = {"people_map"+std::to_string(level),"mons_map"+std::to_string(level)};
     // random obj
     for (int j = -100; j < numLanes; j++) {
@@ -89,7 +89,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
         {
             if (lanePos.size()-1 < levelIndexLane && !endless)
             {
-                maps.emplace_back(window.getSize().x,j*laneHeight,"wall"); //set wall at next level position
+                maps.emplace_back(window.getSize().x,j*laneHeight,"people_map"+std::to_string(level+1)); //set wall at next level position
             }
             else
                 maps.emplace_back(window.getSize().x,j*laneHeight,nameTile[1]); //0 is people, 1 is mons      
@@ -100,7 +100,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
             lanePos.push_back (posMidLane);
             if (lanePos.size()-1 < levelIndexLane&& !endless)
             {
-                maps.emplace_back(window.getSize().x,j*laneHeight,"wall"); //set wall at next level position
+                maps.emplace_back(window.getSize().x,j*laneHeight,"people_map"+std::to_string(level+1)); //set wall at next level position
             }
             else
             {
@@ -255,7 +255,7 @@ void CGAME::drawGame(float& realTime)
             text.setFillColor(sf::Color::White);  
             text.setStyle(sf::Text::Bold);
 
-            sf::Vector2f position(400, viewY-350);
+            sf::Vector2f position(400, view.getCenter().y-350);
             text.setPosition(position);
 
             float outlineThickness = 2.0f;
@@ -334,6 +334,7 @@ void CGAME::resetGame() {
     // Re-generate game objects
     if(typePlay == "newGame")
     {
+        
         currentObs.clear();
         GenObj(*window);
         for (auto obstacle : obstacles){
@@ -487,14 +488,13 @@ void CGAME::startGame(sf::RenderWindow& window) {
             }
             else if (level == 6) {
                 isPress = true;
-                stopGame = true;
                 std::cout << "gg\n";
                 setFinish(true);
-                // resetGame();
                 isPress = false;
             }
     }
-    if (!specialAnim && !isFinished) window.setView(view);
+    if (!specialAnim && !isFinished) 
+        window.setView(view);
     //score
     if (endless && playerPosition.y <= lanePos[lanePos.size()-2-score]+40)
         score++;
@@ -522,7 +522,7 @@ void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
         {
             if (lanePos.size()-1 < levelIndexLane && !endless)
             {
-                maps.emplace_back(window.getSize().x,i*laneHeight,"wall"); //set wall at next level position
+                maps.emplace_back(window.getSize().x,i*laneHeight,"people_map"+std::to_string(level+1)); //set wall at next level position
             }
             else
                 maps.emplace_back(window.getSize().x,i*laneHeight,nameTile[1]); //0 is people, 1 is mons      
@@ -533,7 +533,7 @@ void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
             lanePos.push_back (posMidLane);
             if (lanePos.size()-1 < levelIndexLane && !endless)
             {
-                maps.emplace_back(window.getSize().x,i*laneHeight,"wall"); //set wall at next level position
+                maps.emplace_back(window.getSize().x,i*laneHeight,"people_map"+std::to_string(level+1)); //set wall at next level position
             }
             else
             {

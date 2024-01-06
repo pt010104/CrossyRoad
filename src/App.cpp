@@ -90,7 +90,7 @@ void App::handleMouseClick(const sf::Event& event) {
         sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
         if (currentGameState == GameState::MENU) {
             std::string buttonName = menu.handleInputMainMenu(true);
-            game.setLevel(1);
+            game.setLevel(5);
             if(buttonName == "play"){
                 if (game.checkwindow()) {
                     realTimeClock.restart();
@@ -175,6 +175,30 @@ void App::render() {
         case GameState::PLAYING:
             game.drawGame(realTime);
             break;
+        case GameState::WIN:{
+             globalSound.stop();
+            sf::SoundBuffer buffer;
+            sf::Sound soundWin;
+            if (!buffer.loadFromFile("Assets/Sounds/gameWin.wav")) {
+                std::cerr << "Error loading mainSound" << std::endl;
+            }
+            else
+            {
+                soundWin.setBuffer(buffer);
+                soundWin.setLoop(true);
+                soundWin.play();
+            }
+            sf::Clock clockWin;
+            while (clockWin.getElapsedTime() < sf::seconds(6)) {
+                window.clear();
+                menu.winGame();
+                window.display();
+            }
+            currentGameState = GameState::MENU;
+            globalSound.play();
+            break;
+        }
+            
 
         case GameState::PAUSED:
             game.drawGame(realTime);
@@ -205,7 +229,14 @@ void App::gameLoop() {
                     std::string tmp = menu.handleInputMainMenu(false);
                     break;
                 }
-                case GameState::PLAYING:
+                case GameState::PLAYING:{
+                    if (game.getLevel()==6)
+                    {
+                        menu.resetMainMenu();
+                        currentGameState = GameState::WIN;
+                    }
+                    break;
+                }
 
                 case GameState::PAUSED:
                     

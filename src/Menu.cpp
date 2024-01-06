@@ -357,3 +357,14 @@ void Menu::pressClassic(){
         }
     }
 }
+
+void Menu::winGame(){
+    sf::Texture texture;
+    if (!texture.loadFromFile("Assets\\Menu\\winGame.png")) {
+    }
+
+    sf::Sprite spriteWin;
+    spriteWin.setTexture(texture);
+
+    window.draw(spriteWin); 
+}
