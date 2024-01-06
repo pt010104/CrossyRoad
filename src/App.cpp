@@ -147,6 +147,7 @@ void App::render() {
             break;
 
         case GameState::PAUSED:
+            game.drawGame(realTime);
             menu.renderPausedMenu();
             break;
 

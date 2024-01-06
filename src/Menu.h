@@ -22,6 +22,7 @@ class Menu {
 private:
     sf::RenderWindow& window;
     sf::View mainMenuCameraView;
+    sf::View currentView;
     sf::Texture menuTexture;
     sf::Texture playTextture;
     sf::Texture saveTextture;
@@ -52,6 +53,7 @@ public:
 
     void renderMainMenu();
     void renderPausedMenu();
+    void setView(sf::View view) { window.setView(view); }
     // Add functions for other menus (scoreMenu, settingsMenu, etc.)
 
     std::string handleInputMainMenu(bool isClicked);
