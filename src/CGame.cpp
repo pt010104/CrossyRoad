@@ -300,6 +300,8 @@ void CGAME::resetGame() {
     view = newGameMainView;
     isPress = false;
     threshold = 200;
+    viewX = 500;
+    viewY = 400;
     // other variables specific to game state
     // Clear vectors and reset their sizes
     direction.clear();
