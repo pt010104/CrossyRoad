@@ -447,7 +447,18 @@ std::string Menu::handleInputPausedMenu(bool isClicked) {
 }
 
 int Menu::checkButtonClick(const std::vector<Button>& buttons, const sf::Vector2f& mousePosition) {
+    if (buttons.size() == 3){
+        for (size_t i = 0; i < buttons.size(); ++i){
+            sf::FloatRect spriteBounds = buttons[i].sprite.getGlobalBounds();
+            spriteBounds.top -= (viewY - 400);
+            if (spriteBounds.contains(mousePosition) && buttons[i].isDraw) {
+                return static_cast<int>(i);
+            }
+        }
+    }
+    else
     for (size_t i = 0; i < buttons.size(); ++i) {
+        std::cout << buttons[i].name << " bounds: " << buttons[i].sprite.getGlobalBounds().left << " " << buttons[i].sprite.getGlobalBounds().top << "\n"; 
         if (buttons[i].sprite.getGlobalBounds().contains(mousePosition) && buttons[i].isDraw) {
             return static_cast<int>(i);
         }
