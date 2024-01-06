@@ -7,6 +7,7 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
 {
     obstaclesOn = true;
     soundOn = true;
+    endlessOn = true;
     isSettingPannel = false;
     if (!playTextture.loadFromFile("Assets/Menu/PlayButton.png")) {
         std::cerr << "Failed to load play button image." << std::endl;
@@ -212,6 +213,8 @@ std::string Menu::handleInputMainMenu(bool isClicked) {
 
 }
 void Menu::displaySettings(std::vector<Button>& buttons,const sf::Vector2f& mousePosition,bool isClicked) {
+    int indexEndless;
+    int indexClassic;
     int indexPannel;
     int indexSound;
     int indexObs;
@@ -237,7 +240,23 @@ void Menu::displaySettings(std::vector<Button>& buttons,const sf::Vector2f& mous
             indexObs = i;
             buttons[i].isDraw = true;
         }
-        else 
+        else if (buttons[i].name == "modeEndless")
+        {
+            if (buttons[i].isDraw){
+                endlessOn = true;
+            }
+            indexEndless = i;
+            buttons[i].isDraw = false;
+        }
+        else if (buttons[i].name == "modeClassic")
+        {
+            if (buttons[i].isDraw){
+                endlessOn = false;
+            }
+            indexClassic = i;
+            buttons[i].isDraw = false;
+        }
+        else
             buttons[i].isDraw = false;
     }
     //check hover
@@ -293,8 +312,13 @@ void Menu::displaySettings(std::vector<Button>& buttons,const sf::Vector2f& mous
             if (i!=indexPannel && i!=indexObs && i!=indexSound)
                 buttons[i].isDraw = true;
         }
+        if (endlessOn){
+            buttons[indexClassic].isDraw = false;
+        }
+        else {
+            buttons[indexEndless].isDraw = false;
+        }
     }
-
 }
 
 void Menu::handleInputPausedMenu() {

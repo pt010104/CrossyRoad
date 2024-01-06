@@ -68,10 +68,10 @@ void App::handleMouseClick(const sf::Event& event) {
                 }
                 currentGameState = GameState::PLAYING;        
             }
-            if (buttonName == "settingsButton"){
+            else if (buttonName == "settingsButton"){
                 menu.isSettingPannel = true;
             }
-            if (buttonName == "modeEndless"){
+            else if (buttonName == "modeEndless"){
                 menu.pressEndless();
                 game.setEndless(false);
             }
@@ -79,7 +79,7 @@ void App::handleMouseClick(const sf::Event& event) {
                 menu.pressClassic();
                 game.setEndless(true);
             }
-            if (buttonName == "loadSave"){
+            else if (buttonName == "loadSave"){
                 if (game.checkwindow()) {
                     realTimeClock.restart();
                     game.resetGame();
@@ -181,7 +181,9 @@ void App::gameLoop() {
                     std::cerr << "Exception: " << e.what() << std::endl;
                 }
                 if (game.getFinish()){
-                    //sleep?
+                    _sleep(3000);
+                    game.setFinish(false);
+                    game.resetGame();
                 }
                 break;
 
