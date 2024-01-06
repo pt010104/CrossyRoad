@@ -336,7 +336,8 @@ void CGAME::resetGame() {
     {
         
         currentObs.clear();
-        GenObj(*window);
+        if(level!=6)
+            GenObj(*window);
         for (auto obstacle : obstacles){
             sf::Vector2f obsPos = obstacle.get_Position();
             if (obsPos.y >= -100 && obsPos.y <= 800)
@@ -478,7 +479,7 @@ void CGAME::startGame(sf::RenderWindow& window) {
     if (!endless && isFinished)
     {     
         std::cout << "advance level\n";
-            if (level <= 5) {
+            if (level < 5) {
                 std::cout << "level " << level++ << " completed\n";   
                 resetGame();
                 window.setView(view);
@@ -486,11 +487,14 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 isPress = false;
                 setFinish(false);
             }
-            else if (level == 6) {
+            else if (level == 5) {
+                level++;
                 isPress = true;
                 std::cout << "gg\n";
-                setFinish(true);
+                resetGame();
+                _sleep(500);
                 isPress = false;
+                setFinish(false);
             }
     }
     if (!specialAnim && !isFinished) 

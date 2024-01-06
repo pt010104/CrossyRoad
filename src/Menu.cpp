@@ -413,6 +413,7 @@ void Menu::pressClassic(){
 void Menu::winGame(){
     sf::Texture texture;
     if (!texture.loadFromFile("Assets\\Menu\\winGame.png")) {
+        std::cerr<<"Error to load winGame"<<std::endl;
     }
 
     sf::Sprite spriteWin;
