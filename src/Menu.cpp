@@ -1,5 +1,4 @@
 #include "Menu.h"
-#include "Global.h"
 
 bool mainMenuDrawn = false;
 bool pausedMenuDrawn = false;

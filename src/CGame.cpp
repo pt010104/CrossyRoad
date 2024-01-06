@@ -307,7 +307,9 @@ void CGAME::startGame(sf::RenderWindow& window) {
     //move camera && refresh currentObstacles
     sf::Vector2f playerPosition = cn.get_Position();
     if (playerPosition.y < view.getCenter().y - threshold) {
-        view.setCenter(view.getCenter().x, playerPosition.y-200);
+        viewX = view.getCenter().x;
+        viewY = playerPosition.y - 200;
+        view.setCenter(viewX, viewY);
         currentObs.clear();
         for (auto obstacle : obstacles){
             sf::Vector2f obsPos = obstacle.get_Position();
