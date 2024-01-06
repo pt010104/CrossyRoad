@@ -29,15 +29,35 @@ void App::run() {
         globalSound.play();
     }
     while (window.isOpen() && !exitGameFlag) {
-        if (!game.getFinish())
+        if (!game.getSpecial())
         {
             processEvents();
-            if (currentGameState == GameState::PLAYING)
-            {
-                game.startGame(window);
-                update();  
+            if (currentGameState == GameState::PLAYING){
+                game.startGame(window);  
+                update();
             }
             render();
+            start = std::chrono::steady_clock::now();
+        }
+        else if (!game.getFinish() && game.getSpecial()){
+            int steps = 0;
+            bool inAnim = false;
+            auto current_time = std::chrono::steady_clock::now();
+            if ( (current_time - start) < work_duration) {
+                inAnim = true;
+                game.updatePosPeople('W'); // Update character position
+                if (currentGameState == GameState::PLAYING){
+                    game.startGame(window);
+                    update();
+                }
+                render();
+                std::this_thread::sleep_for(10ms);
+            }
+            if (!inAnim) {
+                std::cout << "End animation\n";
+                game.setSpecial(false);
+                game.setFinish(true);
+            }
         }
     }
 }
