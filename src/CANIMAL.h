@@ -13,7 +13,7 @@ protected:
 
     float mX, mY;
     float speed;
-    int direction;
+    
     float radius;
     int windowWidth;
     sf::Texture texture;
@@ -28,6 +28,7 @@ protected:
     int indexSecond=-100;
     std::string name;
 public:
+    int direction;
     CANIMAL();
     CANIMAL(int width, float startX, float startY,std::string name);
     virtual void Move()  = 0;

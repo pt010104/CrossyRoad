@@ -105,17 +105,22 @@ void CGAME::drawGame(float& realTime)
 {
     if (window) {
             for (auto tile:maps)
+            {
                 tile.draw(*window);
+            }
             for (auto obstacle:currentObs)
-                obstacle.draw(*window);
+            {
+                if (obstacle.get_Position().x >= 0 && obstacle.get_Position().x<=1000)
+                    obstacle.draw(*window);
+            }
             if (cn.getState())
                 cn.draw(*window);
-            for (auto& obj : currentObjects) 
+            for (int i = 0;i<currentObjects.size();i++)
             {
-                if (drag.state != "fire")
-                    obj->draw(*window);
-                else if (obj->get_Position().y != drag.mY-25 && obj->get_Position().y != drag.mY+25)
-                    obj->draw(*window);
+                if (drag.state != "fire" && abs(currentObjects[i]->direction) == 1)
+                    currentObjects[i]->draw(*window);
+                else if (currentObjects[i]->get_Position().y != drag.mY-25 && currentObjects[i]->get_Position().y != drag.mY+25 && abs(currentObjects[i]->direction) == 1)
+                    currentObjects[i]->draw(*window);
             }     
             if (realTime >=timeAppear && drag.state == "disap")
             {
@@ -327,7 +332,7 @@ void CGAME::startGame(sf::RenderWindow& window) {
     if (!endless){
         finishLine = 800 - numLanes*laneHeight;
         if (playerPosition.y < finishLine - level*multiplier){
-            if (level <= 5) {
+            if (level < 5) {
                 std::cout << "level " << level++ << " completed\n";
                 resetGame();
             }
@@ -515,9 +520,13 @@ void CGAME::updateAnimation(float dt) {
 
         cn.UpdateFrame(deltaTime);
     }
-    for (auto& obj : objects) {
-        obj->UpdateFrame(deltaTime);
-        moveCooldown_animal = 0.1f;
+    for (int i =0;i<objects.size();i++) {
+        if(abs(objects[i]->direction) == 1)
+        {
+            objects[i]->UpdateFrame(deltaTime);
+            moveCooldown_animal = 0.1f;
+        }
+        
     }
     drag.UpdateFrame(deltaTime);
 }
@@ -526,21 +535,25 @@ void CGAME::updateAnimation(float dt) {
 }
 
 void CGAME::updatePosAnimal() {
-        for (auto& obj : objects) {
+    for (int i =0;i<objects.size();i++) {
+        if(abs(objects[i]->direction) == 1)
+        {
             if(cn.getState())
             {
-                if (drag.state != "fire" || (obj->get_Position().y != drag.mY-25 && obj->get_Position().y != drag.mY+25))
-                    if (CollisionManager::checkCollisionAnimal(cn, *obj))
-                    {
-                        stopGame=true;
-                        cn.Died();
-                    }
+                // if (drag.state != "fire" || (objects[i]->get_Position().y != drag.mY-25 && objects[i]->get_Position().y != drag.mY+25))
+                //     if (CollisionManager::checkCollisionAnimal(cn, *objects[i]))
+                //     {
+                //         stopGame=true;
+                //         cn.Died();
+                //     }
             }
             if (drag.state != "fire")
-                obj->Move();
-            else if (obj->get_Position().y != drag.mY-25 && obj->get_Position().y != drag.mY+25)
-                obj->Move();
+                objects[i]->Move();
+            else if (objects[i]->get_Position().y != drag.mY-25 && objects[i]->get_Position().y != drag.mY+25)
+                objects[i]->Move();
         }
+        
+    }
 }
 
 bool CGAME::checkwindow(){
