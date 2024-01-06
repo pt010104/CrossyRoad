@@ -173,9 +173,9 @@ void Menu::renderMainMenu() {
 void Menu::renderPausedMenu() {
     // currentView.setCenter(viewX, viewY);
     // window.setView(currentView);
-    sf::RectangleShape backgroundShape;
+    sf::RectangleShape backgroundShape(sf::Vector2f(1000.0f, 800.0f));
     backgroundShape.setFillColor(sf::Color(0, 0, 0, 155));
-    backgroundShape.setSize(sf::Vector2f(window.getSize()));
+    backgroundShape.setPosition(0, viewY - 400);
     window.draw(backgroundShape);
 }
 std::string Menu::handleInputMainMenu(bool isClicked) {
