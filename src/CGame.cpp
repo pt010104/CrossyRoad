@@ -103,7 +103,7 @@ CGAME::~CGAME() {
 
 void CGAME::drawGame(float& realTime) 
 {
-    if (window) {
+    if (window && !isFinished) {
             for (auto tile:maps)
             {
                 tile.draw(*window);
@@ -167,8 +167,6 @@ void CGAME::resetGame() {
     view = newGameMainView;
     isPress = false;
     threshold = 200;
-    stopGame = false;
-    setFinish(false);
     // other variables specific to game state
     // Clear vectors and reset their sizes
     direction.clear();
@@ -184,16 +182,16 @@ void CGAME::resetGame() {
     currentObs.clear();
     objects.clear();
     currentObjects.clear();
-    TrafficLight_pos.clear();    
+    TrafficLight_pos.clear();       
     numLanes = window->getSize().y / laneHeight;
     int totalLanes = numLanes +40;
-    secondObjCreated.assign(totalLanes * 2, false);
-    direction.assign(totalLanes, 1);
-    speed_lane.assign(totalLanes, 0.0f);
-    time_obj2.assign(totalLanes, 0.0f);
-    ObjInLane.assign(totalLanes, 1);
-    isSecond.assign(totalLanes, false);
-    isDraw.assign(totalLanes, true);
+    secondObjCreated.assign(totalLanes*2, false);
+    direction.assign(totalLanes*2, 1);
+    speed_lane.assign(totalLanes*2, 0.0f);
+    time_obj2.assign(totalLanes*2, 0.0f);
+    ObjInLane.assign(totalLanes*2, 1);
+    isSecond.assign(totalLanes*2, false);
+    isDraw.assign(totalLanes*2, true);
     
     timeAppear = 10;
     realTimeClock.restart();
@@ -232,6 +230,7 @@ void CGAME::resetGame() {
         }   
     }
     std::cout<<"Reset done"<<std::endl;
+    stopGame = false;
 }
 void CGAME::exitGame(std::thread& thread) {
     stopGame = true;
@@ -241,7 +240,7 @@ void CGAME::exitGame(std::thread& thread) {
 }
 
 void CGAME::startGame(sf::RenderWindow& window) {   
-    if (!stopGame) {
+    if (!stopGame && !isFinished) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && isPress==false) {
             isPress = true;
             saveGame("save.txt");
@@ -307,7 +306,7 @@ void CGAME::startGame(sf::RenderWindow& window) {
     }
     //move camera && refresh currentObstacles
     sf::Vector2f playerPosition = cn.get_Position();
-    if (playerPosition.y < view.getCenter().y - threshold) {
+    if (playerPosition.y < view.getCenter().y - threshold && !isFinished) {
         view.setCenter(view.getCenter().x, playerPosition.y-200);
         currentObs.clear();
         for (auto obstacle : obstacles){
@@ -329,19 +328,28 @@ void CGAME::startGame(sf::RenderWindow& window) {
         }
     }
     //level
-    if (!endless){
+    if (!endless && !isFinished){
+        
         finishLine = 800 - numLanes*laneHeight;
         if (playerPosition.y < finishLine - level*multiplier){
-            if (level < 5) {
+            if (level <= 5) {
+                isPress = true;
                 std::cout << "level " << level++ << " completed\n";
                 setFinish(true);
+                resetGame();
+                isPress = false;
+                setFinish(false);
             }
             else if (level == 6) {
+                isPress = true;
                 stopGame = true;
                 cn.Died();
                 std::cout << "gg\n";
-                level = 1;
                 setFinish(true);
+                resetGame();
+                level = 1;
+                isPress = false;
+                setFinish(false);
             }
         }
     }
@@ -491,7 +499,7 @@ void CGAME::resumeGame(std::thread& thread) {
     }
 
 void CGAME::updatePosPeople(char direction) {
-        if(cn.getState())
+        if(cn.getState() && !isFinished)
         {
             switch (direction)
             {
@@ -513,47 +521,55 @@ void CGAME::updatePosPeople(char direction) {
         }
     }
 void CGAME::updateAnimation(float dt) {
-    deltaTime = dt;
-    moveCooldown_animal -= deltaTime;
-    if(cn.getState())
+    if (!isFinished)
     {
-
-        cn.UpdateFrame(deltaTime);
-    }
-    for (int i =0;i<objects.size();i++) {
-        if(abs(objects[i]->direction) == 1)
+        deltaTime = dt;
+        moveCooldown_animal -= deltaTime;
+        if(cn.getState())
         {
-            objects[i]->UpdateFrame(deltaTime);
-            moveCooldown_animal = 0.1f;
+
+            cn.UpdateFrame(deltaTime);
         }
-        
+        for (int i =0;i<objects.size();i++) {
+            if(abs(objects[i]->direction) == 1 && !isFinished)
+            {
+                objects[i]->UpdateFrame(deltaTime);
+                moveCooldown_animal = 0.1f;
+            }
+            
+        }
+        drag.UpdateFrame(deltaTime);
     }
-    drag.UpdateFrame(deltaTime);
+
 }
     void CGAME::updatePosVehicle() {
             // Move CTRUCK and CCAR
 }
 
 void CGAME::updatePosAnimal() {
-    for (int i =0;i<objects.size();i++) {
-        if(abs(objects[i]->direction) == 1)
-        {
-            if(cn.getState())
+    if(!isFinished)
+    {
+        for (int i =0;i<objects.size();i++) {
+            if(abs(objects[i]->direction) == 1)
             {
-                // if (drag.state != "fire" || (objects[i]->get_Position().y != drag.mY-25 && objects[i]->get_Position().y != drag.mY+25))
-                //     if (CollisionManager::checkCollisionAnimal(cn, *objects[i]))
-                //     {
-                //         stopGame=true;
-                //         cn.Died();
-                //     }
+                if(cn.getState())
+                {
+                    // if (drag.state != "fire" || (objects[i]->get_Position().y != drag.mY-25 && objects[i]->get_Position().y != drag.mY+25))
+                    //     if (CollisionManager::checkCollisionAnimal(cn, *objects[i]))
+                    //     {
+                    //         stopGame=true;
+                    //         cn.Died();
+                    //     }
+                }
+                if (drag.state != "fire")
+                    objects[i]->Move();
+                else if (objects[i]->get_Position().y != drag.mY-25 && objects[i]->get_Position().y != drag.mY+25)
+                    objects[i]->Move();
             }
-            if (drag.state != "fire")
-                objects[i]->Move();
-            else if (objects[i]->get_Position().y != drag.mY-25 && objects[i]->get_Position().y != drag.mY+25)
-                objects[i]->Move();
-        }
         
+        }
     }
+    
 }
 
 bool CGAME::checkwindow(){

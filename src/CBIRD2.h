@@ -10,6 +10,7 @@ public:
     CBIRD2();
     CBIRD2(int width, float startX, float startY, float birdSpeed, int direct);
     void Move() override;    
+     ~CBIRD2() = default; 
 };
 
 #endif

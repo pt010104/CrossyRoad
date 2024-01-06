@@ -29,30 +29,36 @@ void App::run() {
         globalSound.play();
     }
     while (window.isOpen() && !exitGameFlag) {
-        processEvents();
-        render();
+        if (!game.getFinish())
+        {
+            processEvents();
+            game.startGame(window);
+            update();  
+            render();
+        }
     }
 }
 
 void App::processEvents() {
     sf::Event event;
     while (window.pollEvent(event)) {
-        switch (event.type) {
-            case sf::Event::Closed:
-                exitGame();
-                break;
+        if(!game.getFinish())
+            switch (event.type) {
+                case sf::Event::Closed:
+                    exitGame();
+                    break;
 
-            case sf::Event::MouseButtonPressed:
-                handleMouseClick(event);
-                break;
+                case sf::Event::MouseButtonPressed:
+                    handleMouseClick(event);
+                    break;
 
-            case sf::Event::KeyPressed:
-                handleKeyPress(event);
-                break;
+                case sf::Event::KeyPressed:
+                    handleKeyPress(event);
+                    break;
 
-            default:
-                break;
-        }
+                default:
+                    break;
+            }
     }
 }
 
@@ -168,35 +174,24 @@ void App::gameLoop() {
         if (exitGameFlag) {
             break; 
         }
-        switch (currentGameState) {
-            case GameState::MENU:{
-                std::string tmp = menu.handleInputMainMenu(false);
-                break;
+        if(game.getFinish() == false)
+            switch (currentGameState) {
+                case GameState::MENU:{
+                    std::string tmp = menu.handleInputMainMenu(false);
+                    break;
+                }
+                case GameState::PLAYING:
+
+                case GameState::PAUSED:
+                    
+                    menu.handleInputPausedMenu();
+                    break;
+
+                case GameState::EXITING:
+                    break;
+                default:
+                    break;
             }
-            case GameState::PLAYING:
-                try {
-                    game.startGame(window);
-                    update();
-                } catch (const std::exception& e) {
-                    std::cerr << "Exception: " << e.what() << std::endl;
-                }
-                if (game.getFinish()){
-                    _sleep(3000);
-                    game.setFinish(false);
-                    game.resetGame();
-                }
-                break;
-
-            case GameState::PAUSED:
-                
-                menu.handleInputPausedMenu();
-                break;
-
-            case GameState::EXITING:
-                break;
-            default:
-                break;
-        }
         lock.unlock();
         std::this_thread::sleep_for(std::chrono::milliseconds(1)); 
         lock.lock();

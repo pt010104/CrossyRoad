@@ -46,11 +46,12 @@ void Map::draw(sf::RenderWindow& window) {
                     if (frames.size() > frameIndex)
                     {
                         Frame& newFrame = animations[typeTile].frames[frameIndex];
-                            rectSourceSprite = sf::IntRect(newFrame.x, newFrame.y, newFrame.width, newFrame.height);
+                        rectSourceSprite = sf::IntRect(newFrame.x, newFrame.y, newFrame.width, newFrame.height);
+                        sprite.setTextureRect(rectSourceSprite);
+                        sprite.setPosition(x * 133,mY);
+                        window.draw(sprite);
                     }
                 }
-                sprite.setTextureRect(rectSourceSprite);
-                sprite.setPosition(x * 133,mY);
-                window.draw(sprite);
+                
     }
 }
