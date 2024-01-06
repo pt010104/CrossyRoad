@@ -44,8 +44,8 @@ protected:
     std::vector<float> speed_lane;
     std::vector<float> time_obj2;
     std::vector<float> TrafficLight_pos;
+    std::vector<float> lanePos;
     const int laneHeight = 132;
-    const int multiplier = laneHeight*1;
     std::vector <int> ObjInLane;
     std::vector <int> direction;
     std::vector<bool> secondObjCreated;
@@ -84,6 +84,7 @@ public:
     int getLevel();
     void setFinish(bool finish) {isFinished = finish;}
     bool getFinish() { return isFinished; }
+    int getNumBirds();
     sf::View getView() { return view; }
 };
 

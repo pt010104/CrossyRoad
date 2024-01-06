@@ -19,7 +19,8 @@ private:
     sf::IntRect rectSourceSprite;
     int spriteWidth;
     int spriteHeight;
-
+    int speed;
+    
     std::unordered_map<std::string, Frame> frames;
     std::unordered_map<std::string, Animation> animations;
     std::string currentAnimation; 

@@ -1,77 +1,406 @@
 {
     "frames": {
-        "people_1": {
+        "people_map1_1": {
             "x": 0,
             "y": 0,
             "width": 8,
             "height": 8
         },
-        "people_2": {
+        "people_map1_2": {
             "x": 8,
             "y": 0,
             "width": 8,
             "height": 8
         },
-        "people_3": {
+        "people_map1_3": {
             "x": 16,
             "y": 0,
             "width": 8,
             "height": 8
         },
-        "people_4": {
+        "people_map1_4": {
             "x": 24,
             "y": 0,
             "width": 16,
             "height": 15
         },
-        "people_5": {
+        "people_map1_5": {
             "x": 32,
             "y": 0,
             "width": 8,
             "height": 8
         },
-        "people_6": {
+        "people_map1_6": {
             "x": 40,
             "y": 0,
             "width": 8,
             "height": 8
         },
-        "mons_1": {
+        "mons_map1_1": {
             "x": 0,
             "y": 8,
             "width": 8,
             "height": 8
         },
-        "mons_2": {
+        "mons_map1_2": {
             "x": 8,
             "y": 8,
             "width": 8,
             "height": 8
         },
-        "mons_3": {
+        "mons_map1_3": {
             "x": 16,
             "y": 8,
             "width": 8,
             "height": 8
         },
-        "mons_4": {
+        "mons_map1_4": {
             "x": 24,
             "y": 8,
             "width": 8,
             "height": 8
         },
-        "mons_5": {
+        "mons_map1_5": {
             "x": 32,
             "y": 8,
             "width": 8,
             "height": 8
         },
-        "mons_6": {
+        "mons_map1_6": {
             "x": 40,
             "y": 8,
             "width": 8,
             "height": 8
-        }
+        },
+        
+        "people_map2_1": {
+            "x": 0,
+            "y": 24,
+            "width": 8,
+            "height": 8
+        },
+        "people_map2_2": {
+            "x": 8,
+            "y": 24,
+            "width": 8,
+            "height": 8
+        },
+        "people_map2_3": {
+            "x": 16,
+            "y": 24,
+            "width": 8,
+            "height": 8
+        },
+        "people_map2_4": {
+            "x": 24,
+            "y": 24,
+            "width": 16,
+            "height": 15
+        },
+        "people_map2_5": {
+            "x": 32,
+            "y": 24,
+            "width": 8,
+            "height": 8
+        },
+        "people_map2_6": {
+            "x": 40,
+            "y": 24,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map2_1": {
+            "x": 0,
+            "y": 32,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map2_2": {
+            "x": 8,
+            "y": 32,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map2_3": {
+            "x": 16,
+            "y": 32,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map2_4": {
+            "x": 24,
+            "y": 32,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map2_5": {
+            "x": 32,
+            "y": 32,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map2_6": {
+            "x": 40,
+            "y": 32,
+            "width": 8,
+            "height": 8
+        },
+
+        "people_map3_1": {
+            "x": 0,
+            "y": 40,
+            "width": 8,
+            "height": 8
+        },
+        "people_map3_2": {
+            "x": 8,
+            "y": 40,
+            "width": 8,
+            "height": 8
+        },
+        "people_map3_3": {
+            "x": 16,
+            "y": 40,
+            "width": 8,
+            "height": 8
+        },
+        "people_map3_4": {
+            "x": 24,
+            "y": 40,
+            "width": 16,
+            "height": 15
+        },
+        "people_map3_5": {
+            "x": 32,
+            "y": 40,
+            "width": 8,
+            "height": 8
+        },
+        "people_map3_6": {
+            "x": 40,
+            "y": 40,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map3_1": {
+            "x": 0,
+            "y": 48,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map3_2": {
+            "x": 8,
+            "y": 48,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map3_3": {
+            "x": 16,
+            "y": 48,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map3_4": {
+            "x": 40,
+            "y": 48,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map3_5": {
+            "x": 32,
+            "y": 48,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map3_6": {
+            "x": 40,
+            "y": 48,
+            "width": 8,
+            "height": 8
+        },
+
+        "people_map4_1": {
+            "x": 0,
+            "y": 56,
+            "width": 8,
+            "height": 8
+        },
+        "people_map4_2": {
+            "x": 8,
+            "y": 56,
+            "width": 8,
+            "height": 8
+        },
+        "people_map4_3": {
+            "x": 16,
+            "y": 56,
+            "width": 8,
+            "height": 8
+        },
+        "people_map4_4": {
+            "x": 24,
+            "y": 56,
+            "width": 16,
+            "height": 15
+        },
+        "people_map4_5": {
+            "x": 32,
+            "y": 56,
+            "width": 8,
+            "height": 8
+        },
+        "people_map4_6": {
+            "x": 40,
+            "y": 56,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map4_1": {
+            "x": 0,
+            "y": 64,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map4_2": {
+            "x": 8,
+            "y": 64,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map4_3": {
+            "x": 16,
+            "y": 64,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map4_4": {
+            "x": 40,
+            "y": 64,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map4_5": {
+            "x": 32,
+            "y": 64,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map4_6": {
+            "x": 40,
+            "y": 64,
+            "width": 8,
+            "height": 8
+        },
+
+        
+        "people_map5_1": {
+            "x": 0,
+            "y": 72,
+            "width": 8,
+            "height": 8
+        },
+        "people_map5_2": {
+            "x": 8,
+            "y": 72,
+            "width": 8,
+            "height": 8
+        },
+        "people_map5_3": {
+            "x": 16,
+            "y": 72,
+            "width": 8,
+            "height": 8
+        },
+        "people_map5_4": {
+            "x": 24,
+            "y": 72,
+            "width": 16,
+            "height": 15
+        },
+        "people_map5_5": {
+            "x": 32,
+            "y": 72,
+            "width": 8,
+            "height": 8
+        },
+        "people_map5_6": {
+            "x": 40,
+            "y": 72,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map5_1": {
+            "x": 0,
+            "y": 80,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map5_2": {
+            "x": 8,
+            "y": 80,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map5_3": {
+            "x": 16,
+            "y": 80,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map5_4": {
+            "x": 40,
+            "y": 80,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map5_5": {
+            "x": 32,
+            "y": 80,
+            "width": 8,
+            "height": 8
+        },
+        "mons_map5_6": {
+            "x": 40,
+            "y": 80,
+            "width": 8,
+            "height": 8
+        },
+        "wall_1": {
+            "x": 0,
+            "y": 16,
+            "width": 8,
+            "height": 8
+        },
+        "wall_2": {
+            "x": 8,
+            "y": 16,
+            "width": 8,
+            "height": 8
+        },
+        "wall_3": {
+            "x": 16,
+            "y": 16,
+            "width": 8,
+            "height": 8
+        },
+        "wall_4": {
+            "x": 24,
+            "y": 16,
+            "width": 16,
+            "height": 15
+        },
+        "wall_5": {
+            "x": 32,
+            "y": 16,
+            "width": 8,
+            "height": 8
+        },
+        "wall_6": {
+            "x": 40,
+            "y": 16,
+            "width": 8,
+            "height": 8
+        }  
     },
     "meta": {
       "image": "Dungeon.png",

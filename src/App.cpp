@@ -67,6 +67,7 @@ void App::handleMouseClick(const sf::Event& event) {
         sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
         if (currentGameState == GameState::MENU) {
             std::string buttonName = menu.handleInputMainMenu(true);
+            game.setLevel(1);
             if(buttonName == "play"){
                 if (game.checkwindow()) {
                     realTimeClock.restart();

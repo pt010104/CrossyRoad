@@ -1,76 +1,129 @@
 #include "CGAME.h"
 CGAME::CGAME() : window(nullptr) {
 }
+int CGAME::getNumBirds() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    std::vector<double> prob;
+    switch (level) {
+        case 1:
+            prob = {0.7, 0.3}; // 70% ra 1, 30% ra 2
+            break;
+        case 2:
+            prob = {0.5, 0.5}; 
+            break;
+        case 3:
+            prob = {0.3, 0.7}; 
+            break;
+        case 4:
+            prob = {0.2, 0.8}; 
+        case 5:
+            prob = {0.0, 1}; 
+            break;
+    }
+
+    std::discrete_distribution<> numBirdsDis(prob.begin(), prob.end());
+
+    return numBirdsDis(gen) + 1; 
+}
 void CGAME::GenObj(sf::RenderWindow& window)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis1(0,1); //obj1 appears at x=0 or 955
     std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj1 across it
-    std::uniform_real_distribution<> speedDis(7.5f, 8.5f); 
+    std::uniform_real_distribution<> speedDis(8.5f, 9.5f); 
     std::uniform_int_distribution<> numBirdsDis(1, 2); 
     std::uniform_int_distribution<> randObj(0, 2); 
+
     int indexObj=0;
+    int levelIndexLane = 52 - 3 - static_cast<int>(std::floor(level * 1.5));
+    float multiplierSpeed = 1;
+    if(!endless)
+        multiplierSpeed = 1 + static_cast<float>(level)/14;
+    std::vector<std::string> nameTile = {"people_map"+std::to_string(level),"mons_map"+std::to_string(level)};
     // random obj
-    for (int j = -40; j < numLanes; j++) {
+    for (int j = -100; j < numLanes; j++) {
         if (abs(j)%2==0) {
-            ObjInLane[indexObj] = numBirdsDis(gen);        
-            speed_lane[indexObj] = speedDis(gen);
+            if(endless)
+                ObjInLane[indexObj] = numBirdsDis(gen);        
+            else ObjInLane[indexObj] = getNumBirds();
+            speed_lane[indexObj] = speedDis(gen)*multiplierSpeed;
             std::string type_obj = object_rand[randObj(gen)]; 
             float randomX = (dis1(gen) == 0 ? 0 : 995);
             direction[indexObj] = randomX == 0 ? 1 : -1;
             time_obj2[indexObj] = dis_obj2(gen) + direction[direction.size()-1]*200; 
             float randomY = j * laneHeight-50; 
             //create traffic pos
-            TrafficLight_pos.push_back(j*laneHeight-25);      
-
-            if (type_obj == "birds")
+            if ((lanePos.size()-1 >= levelIndexLane && !endless) || endless)
             {
-                objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
-                if (ObjInLane[indexObj]==2)
-                    objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY+50, speedDis(gen),direction[indexObj]));
+                TrafficLight_pos.push_back(j*laneHeight-25);    
+                //lane pos
+                if (type_obj == "birds")
+                {
+                    objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                    if (ObjInLane[indexObj]==2)
+                        objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
 
-            }
-            else
-            if (type_obj == "dinosaurs")
-            {
-                objects.emplace_back(std::make_shared<CDINOSAUR>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));       
-                 if (ObjInLane[indexObj]==2)
-                    objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY+50, speedDis(gen),direction[indexObj]));
+                }
+                else
+                if (type_obj == "dinosaurs")
+                {
+                    objects.emplace_back(std::make_shared<CDINOSAUR>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));       
+                    if (ObjInLane[indexObj]==2)
+                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
 
-            }
-            else
-            if (type_obj == "birds2")
-            {
-                objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
-                if (ObjInLane[indexObj]==2)
-                    objects.emplace_back(std::make_shared<CDINOSAUR>(window.getSize().x, randomX, randomY+50, speedDis(gen),direction[indexObj]));
-            }
-            indexObj++;        
+                }
+                else
+                if (type_obj == "birds2")
+                {
+                    objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
+                    if (ObjInLane[indexObj]==2)
+                        objects.emplace_back(std::make_shared<CDINOSAUR>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                }
+                indexObj++;        
+            }  
         }
         if(abs(j)%2==0) //mons tile 
-            maps.emplace_back(window.getSize().x,j*laneHeight,"mons");      
+        {
+            if (lanePos.size()-1 < levelIndexLane && !endless)
+            {
+                maps.emplace_back(window.getSize().x,j*laneHeight,"wall"); //set wall at next level position
+            }
+            else
+                maps.emplace_back(window.getSize().x,j*laneHeight,nameTile[1]); //0 is people, 1 is mons      
+        }
         if (abs(j)%2 == 1) //map tile 
         {
-            maps.emplace_back(window.getSize().x,j*laneHeight,"people");      
-            if (globalObstacles)
-            {        
-                int numFrames = 7;
-                std::uniform_int_distribution<int> dist(1, numFrames);
-                std::uniform_int_distribution<int> dist2(4, 5);
-                int numObsInLane = dist2(gen);
-                std::vector <int> orderFrame;
-                for (int i =0; i<numObsInLane; ++i) {
-                    int indexFrame = dist(gen);
-                    orderFrame.push_back(indexFrame);
-                }
-                std::vector<int> coordX(8); 
-                std::iota(coordX.begin(), coordX.end(), 1); 
-                std::shuffle(coordX.begin(), coordX.end(), gen); 
-                for (int i = 0; i<orderFrame.size();i++)
-                {
-                    std::string tileName = "right_" + std::to_string(orderFrame[i]); 
-                    obstacles.emplace_back(window.getSize().x,coordX[i]*133,j*laneHeight+25,tileName);
+            int posMidLane = j*laneHeight;
+            lanePos.push_back (posMidLane);
+            if (lanePos.size()-1 < levelIndexLane&& !endless)
+            {
+                maps.emplace_back(window.getSize().x,j*laneHeight,"wall"); //set wall at next level position
+            }
+            else
+            {
+                maps.emplace_back(window.getSize().x,j*laneHeight,nameTile[0]);      
+                if (globalObstacles)
+                {        
+                    int numFrames = 7;
+                    std::uniform_int_distribution<int> dist(1, numFrames);
+                    std::uniform_int_distribution<int> dist2(4, 5);
+                    int numObsInLane = dist2(gen);
+                    std::vector <int> orderFrame;
+                    for (int i =0; i<numObsInLane; ++i) {
+                        int indexFrame = dist(gen);
+                        orderFrame.push_back(indexFrame);
+                    }
+                    std::vector<int> coordX(8); 
+                    std::iota(coordX.begin(), coordX.end(), 1); 
+                    std::shuffle(coordX.begin(), coordX.end(), gen); 
+                    for (int i = 0; i<orderFrame.size();i++)
+                    {
+                        std::string tileName = "right_" + std::to_string(orderFrame[i]); 
+                        obstacles.emplace_back(window.getSize().x,coordX[i]*133,j*laneHeight+25,tileName);
+                    }
                 }
             }
         }            
@@ -86,7 +139,7 @@ CGAME::CGAME(sf::RenderWindow& window) : window(&window)
         stopGame = false;
         level = 1;
         numLanes = window.getSize().y / laneHeight;
-        int totalLanes = numLanes+40;
+        int totalLanes = numLanes+100;
         secondObjCreated.assign(totalLanes*2,false);
         speed_lane.assign(totalLanes*2, 0.0f);
         time_obj2.assign(totalLanes*2, 0.0f);
@@ -104,6 +157,7 @@ CGAME::~CGAME() {
 void CGAME::drawGame(float& realTime) 
 {
     if (window && !isFinished) {
+
             for (auto tile:maps)
             {
                 tile.draw(*window);
@@ -139,6 +193,46 @@ void CGAME::drawGame(float& realTime)
                     drag.appear(realTime-(timeAppear-25));   
                     drag.draw(*window);
             }   
+            if (realTime <= 3 && !endless)
+            {
+                sf::Font font;
+                if (!font.loadFromFile("Assets\\Font\\PressStart2P-Regular.ttf")) 
+                {
+                    std::cerr << "Error to load font\n";
+                }
+                else
+                {
+                    sf::Text textOutline;
+                    textOutline.setFont(font); 
+                    textOutline.setString("Level " + std::to_string(level)); 
+                    textOutline.setCharacterSize(100); 
+                    textOutline.setFillColor(sf::Color::Black);  
+                    textOutline.setStyle(sf::Text::Bold);
+
+                    sf::Text text;
+                    text.setFont(font); 
+                    text.setString("Level " + std::to_string(level)); 
+                    text.setCharacterSize(100); 
+                    text.setFillColor(sf::Color::White);  
+                    text.setStyle(sf::Text::Bold);
+
+                    sf::Vector2f position(200, 400);
+                    text.setPosition(position);
+
+                    float outlineThickness = 2.0f;
+
+                    for (int x = -outlineThickness; x <= outlineThickness; x++) {
+                        for (int y = -outlineThickness; y <= outlineThickness; y++) {
+                            if (x != 0 || y != 0) {
+                                textOutline.setPosition(position.x + x, position.y + y);
+                                window->draw(textOutline);
+                            }
+                        }
+                    }
+
+                    window->draw(text); 
+                }
+            }
 
     }
 }
@@ -177,14 +271,15 @@ void CGAME::resetGame() {
     isSecond.clear();
     isDraw.clear();
     maps.clear();
-    std::cout<<"clear map done"<<std::endl;
     obstacles.clear();
     currentObs.clear();
     objects.clear();
     currentObjects.clear();
-    TrafficLight_pos.clear();       
+    TrafficLight_pos.clear();    
+    lanePos.clear();
+
     numLanes = window->getSize().y / laneHeight;
-    int totalLanes = numLanes +40;
+    int totalLanes = numLanes + 100;
     secondObjCreated.assign(totalLanes*2, false);
     direction.assign(totalLanes*2, 1);
     speed_lane.assign(totalLanes*2, 0.0f);
@@ -330,28 +425,26 @@ void CGAME::startGame(sf::RenderWindow& window) {
         }
     }
     //level
-    if (!endless && !isFinished){
-        
-        finishLine = 800 - numLanes*laneHeight;
-        if (playerPosition.y < finishLine - level*multiplier){
+    if (!endless && !isFinished)
+    {     
+        finishLine = 3;
+        if (playerPosition.y <= lanePos[lanePos.size()-1-finishLine-static_cast<int>(std::floor(level * 1.5))]){
             if (level <= 5) {
                 isPress = true;
                 std::cout << "level " << level++ << " completed\n";
                 setFinish(true);
                 resetGame();
+                _sleep(200);
                 isPress = false;
                 setFinish(false);
             }
             else if (level == 6) {
                 isPress = true;
                 stopGame = true;
-                cn.Died();
                 std::cout << "gg\n";
                 setFinish(true);
-                resetGame();
-                level = 1;
+                // resetGame();
                 isPress = false;
-                setFinish(false);
             }
         }
     }

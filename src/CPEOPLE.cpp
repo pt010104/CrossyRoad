@@ -25,6 +25,7 @@ CPEOPLE::CPEOPLE() : mState(true), windowWidth(1000), windowHeight(800), current
     spriteHeight = sprite.getGlobalBounds().height;
     sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
     radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
+    speed =3;
 
 }
 
@@ -50,29 +51,30 @@ CPEOPLE::CPEOPLE(int startX, int startY) : CPEOPLE() {
     spriteHeight = sprite.getGlobalBounds().height;
     sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
     radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
+    speed = 3;
 }
 
 void CPEOPLE::Up() {
     // if(!nearObs)
-        mY = mY - 6;
+        mY = mY - speed;
     UpdateAnimation("up");
 }
 
 void CPEOPLE::Left() {
     // if(!nearObs)
-        mX = std::max(0 + spriteWidth, mX - 6);
+        mX = std::max(0 + spriteWidth, mX - speed);
     UpdateAnimation("left");
 }
 
 void CPEOPLE::Right() {
     // if(!nearObs)
-        mX = std::min(windowWidth - spriteWidth, mX + 6);
+        mX = std::min(windowWidth - spriteWidth, mX + speed);
     UpdateAnimation("right");
 }
 
 void CPEOPLE::Down() {
     // if(!nearObs)
-        mY = std::min(windowHeight - spriteHeight, mY + 6);
+        mY = std::min(windowHeight - spriteHeight, mY + speed);
     UpdateAnimation("down");
 }
 void CPEOPLE::Died(){
@@ -142,6 +144,7 @@ void CPEOPLE::reset(){
     spriteHeight = sprite.getGlobalBounds().height;
     sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
     radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
+    speed = 7;
 }
 
 void CPEOPLE::set_Position(int X, int Y){
