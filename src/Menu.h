@@ -67,4 +67,7 @@ public:
 
     void pressEndless();
     void pressClassic();
+
+    void winGame();
+    
 };

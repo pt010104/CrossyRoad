@@ -176,6 +176,31 @@ void App::render() {
             game.drawGame(realTime);
             break;
 
+        case GameState::WIN:{
+             globalSound.stop();
+            sf::SoundBuffer buffer;
+            sf::Sound soundWin;
+            if (!buffer.loadFromFile("Assets/Sounds/gameWin.wav")) {
+                std::cerr << "Error loading mainSound" << std::endl;
+            }
+            else
+            {
+                soundWin.setBuffer(buffer);
+                soundWin.setLoop(true);
+                soundWin.play();
+            }
+            sf::Clock clockWin;
+            while (clockWin.getElapsedTime() < sf::seconds(6)) {
+                window.clear();
+                menu.winGame();
+                window.display();
+            }
+            currentGameState = GameState::MENU;
+            globalSound.play();
+            break;
+        }
+            
+
         case GameState::PAUSED:
             game.drawGame(realTime);
             menu.renderPausedMenu();
@@ -205,7 +230,14 @@ void App::gameLoop() {
                     std::string tmp = menu.handleInputMainMenu(false);
                     break;
                 }
-                case GameState::PLAYING:
+                case GameState::PLAYING:{
+                    if (game.getLevel()==6)
+                    {
+                        menu.resetMainMenu();
+                        currentGameState = GameState::WIN;
+                    }
+                    break;
+                }
 
                 case GameState::PAUSED:
                     

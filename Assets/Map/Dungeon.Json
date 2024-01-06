@@ -365,37 +365,37 @@
             "width": 8,
             "height": 8
         },
-        "wall_1": {
+        "people_map6_1": {
             "x": 0,
             "y": 16,
             "width": 8,
             "height": 8
         },
-        "wall_2": {
+        "people_map6_2": {
             "x": 8,
             "y": 16,
             "width": 8,
             "height": 8
         },
-        "wall_3": {
+        "people_map6_3": {
             "x": 16,
             "y": 16,
             "width": 8,
             "height": 8
         },
-        "wall_4": {
+        "people_map6_4": {
             "x": 24,
             "y": 16,
             "width": 16,
             "height": 15
         },
-        "wall_5": {
+        "people_map6_5": {
             "x": 32,
             "y": 16,
             "width": 8,
             "height": 8
         },
-        "wall_6": {
+        "people_map6_6": {
             "x": 40,
             "y": 16,
             "width": 8,
