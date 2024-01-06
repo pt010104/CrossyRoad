@@ -10,5 +10,5 @@ extern sf::Clock realTimeClock;
 extern std::string typePlay;
 extern float viewX;
 extern float viewY;
-
+extern  int Score;
 #endif 

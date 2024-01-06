@@ -243,14 +243,14 @@ void CGAME::drawGame(float& realTime)
             }
             sf::Text textOutline;
             textOutline.setFont(font); 
-            textOutline.setString("Score:" + std::to_string(score)); 
+            textOutline.setString("Score:" + std::to_string(Score)); 
             textOutline.setCharacterSize(30); 
             textOutline.setFillColor(sf::Color::Black);  
             textOutline.setStyle(sf::Text::Bold);
 
             sf::Text text;
             text.setFont(font); 
-            text.setString("Score:" + std::to_string(score)); 
+            text.setString("Score:" + std::to_string(Score)); 
             text.setCharacterSize(30); 
             text.setFillColor(sf::Color::White);  
             text.setStyle(sf::Text::Bold);
@@ -330,7 +330,7 @@ void CGAME::resetGame() {
     timeAppear = 10;
     realTimeClock.restart();
     cn.reset();
-    score = 0;
+    Score = 0;
     // Re-generate game objects
     if(typePlay == "newGame")
     {
@@ -495,9 +495,9 @@ void CGAME::startGame(sf::RenderWindow& window) {
     }
     if (!specialAnim && !isFinished) 
         window.setView(view);
-    //score
-    if (endless && playerPosition.y <= lanePos[lanePos.size()-2-score]+40)
-        score++;
+    //Score
+    if (endless && playerPosition.y <= lanePos[lanePos.size()-2-Score]+40)
+        Score++;
 }
 
 void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {

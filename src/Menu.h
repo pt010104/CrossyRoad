@@ -3,6 +3,8 @@
 #include <vector>
 #include <functional>
 #include "Global.h"
+#include <algorithm>
+#include <fstream>
 // Define the structure for a button
 class Button {
 public:
@@ -33,7 +35,7 @@ private:
     sf::Texture obstaclesTexture;
     sf::Texture settingPannelTexture;
     sf::Texture highScoreTexture;
-
+    
     
     bool soundOn;
     bool obstaclesOn;
@@ -49,6 +51,8 @@ private:
 
 public:
     bool isSettingPannel;
+    bool isHighScore;
+
     Menu(const sf::Font& font, sf::RenderWindow& window);
 
     void setFont(const std::string& fontPath);
@@ -69,5 +73,6 @@ public:
     void pressClassic();
 
     void winGame();
-    
+    void highScoreDisplay(std::vector<Button>& buttons,const sf::Vector2f& mousePosition,bool isClicked);
+
 };

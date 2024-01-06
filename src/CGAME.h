@@ -36,7 +36,6 @@ protected:
     bool endless = true;
     bool isFinished = false;
     bool specialAnim = false;
-    int score;
     CPEOPLE cn;
     Dragon drag;
     std::vector<std::string> object_rand = {"birds","dinosaurs","birds2","cars","trucks"};

@@ -101,6 +101,9 @@ void App::handleMouseClick(const sf::Event& event) {
             else if (buttonName == "settingsButton"){
                 menu.isSettingPannel = true;
             }
+            else if (buttonName == "highScoreButton"){
+                menu.isHighScore = true;
+            }
             else if (buttonName == "modeEndless"){
                 menu.pressEndless();
                 game.setEndless(false);
@@ -240,9 +243,23 @@ void App::gameLoop() {
                 }
 
                 case GameState::PAUSED:
-                    
+                {
+                    if(game.getEndless())
+                    {
+                        std::fstream fileScore("Score.txt");
+                        if(!fileScore)
+                        {
+                            std::cerr<<"Could not open score file";
+                        }
+                        else{
+                            if(Score!=0)
+                                fileScore <<Score<<std::endl;
+                        }
+
+                    }
                     menu.handleInputPausedMenu();
                     break;
+                }
 
                 case GameState::EXITING:
                     break;

@@ -9,6 +9,7 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
     soundOn = true;
     endlessOn = true;
     isSettingPannel = false;
+    isHighScore = false;
     if (!playTextture.loadFromFile("Assets/Menu/PlayButton.png")) {
         std::cerr << "Failed to load play button image." << std::endl;
     }
@@ -110,7 +111,7 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
     Button highScore;
     highScore.sprite.setTexture(highScoreTexture);
     highScore.sprite.setPosition(400,478);
-    highScore.name = "highScore";
+    highScore.name = "highScoreButton";
     highScore.onClick = []() {
         std::cout << "highScore button clicked!\n";
     };      
@@ -124,6 +125,8 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
     mainMenuButtons.push_back(settingPannel);
     mainMenuButtons.push_back(sound);
     mainMenuButtons.push_back(obstacles);
+
+    
 }
 
 void Menu::setFont(const std::string& fontPath) {
@@ -135,39 +138,82 @@ void Menu::setFont(const std::string& fontPath) {
 void Menu::renderMainMenu() {
     // if (!mainMenuDrawn) {
         window.setView(mainMenuCameraView);
+        if (!isHighScore)
+        {
+            if (!menuTexture.loadFromFile("Assets/Menu/MenuGame.png")) {
+                std::cerr << "Failed to load main menu image." << std::endl;
+            }
 
-        if (!menuTexture.loadFromFile("Assets/Menu/MenuGame.png")) {
-            std::cerr << "Failed to load main menu image." << std::endl;
+            menuSprite.setTexture(menuTexture);
+            sf::Vector2u windowSize = window.getSize();
+            sf::Vector2u menuSize = menuTexture.getSize();
+
+            float xPos = (windowSize.x - menuSize.x) / 2.0f;
+            float yPos = (windowSize.y - menuSize.y) / 2.0f;
+
+            menuSprite.setPosition(xPos, yPos);
+            window.draw(menuSprite);
+            mainMenuDrawn = true;
+            for (auto& button : mainMenuButtons) {
+                if(button.isDraw)
+                    window.draw(button.sprite);
+            }
+            if (isSettingPannel && soundOn == false)
+            {
+                sf::RectangleShape rectangle(sf::Vector2f(164.0f, 164.0f)); 
+                rectangle.setFillColor(sf::Color(0, 0, 0, 150)); // 50/255
+                rectangle.setPosition(294+30, 327+78); 
+                window.draw(rectangle);
+            }
+            if (isSettingPannel && obstaclesOn == false)
+            {
+                sf::RectangleShape rectangle(sf::Vector2f(168.0f, 164.0f)); 
+                rectangle.setFillColor(sf::Color(0, 0, 0, 150)); // 50/255
+                rectangle.setPosition(294+215, 327+78); 
+                window.draw(rectangle);
+            }
         }
+        else 
+        {
+            sf::Sprite spriteHighScoreBoard;
+            sf::Texture texture;
+            if (!texture.loadFromFile("Assets\\Menu\\ScoreBoard.png")) {
+            }
+            spriteHighScoreBoard.setTexture(texture); 
+            window.draw(spriteHighScoreBoard);
+            
+            sf::Font font;
+            if (!font.loadFromFile("Assets\\Font\\PressStart2P-Regular.ttf")) {
+            }
 
-        menuSprite.setTexture(menuTexture);
-        sf::Vector2u windowSize = window.getSize();
-        sf::Vector2u menuSize = menuTexture.getSize();
+            std::fstream fileScore("Score.txt");
+            std::vector<int> scores;
+            int score;
+            if (!fileScore) {
+                std::cerr << "Could not open score file" << std::endl;
+            }
+            int length = 0;
+            while (fileScore >> score) {
+                length++;
+                scores.push_back(score);
+            }
+            fileScore.close();
+            std::sort(scores.begin(), scores.end(), std::greater<int>());
+            std::vector<sf::Text> scoreTexts;
+            length = std::min(5,length);
 
-        float xPos = (windowSize.x - menuSize.x) / 2.0f;
-        float yPos = (windowSize.y - menuSize.y) / 2.0f;
-
-        menuSprite.setPosition(xPos, yPos);
-        window.draw(menuSprite);
-        mainMenuDrawn = true;
-    for (auto& button : mainMenuButtons) {
-        if(button.isDraw)
-            window.draw(button.sprite);
-    }
-    if (isSettingPannel && soundOn == false)
-    {
-        sf::RectangleShape rectangle(sf::Vector2f(164.0f, 164.0f)); 
-        rectangle.setFillColor(sf::Color(0, 0, 0, 150)); // 50/255
-        rectangle.setPosition(294+30, 327+78); 
-        window.draw(rectangle);
-    }
-    if (isSettingPannel && obstaclesOn == false)
-    {
-        sf::RectangleShape rectangle(sf::Vector2f(168.0f, 164.0f)); 
-        rectangle.setFillColor(sf::Color(0, 0, 0, 150)); // 50/255
-        rectangle.setPosition(294+215, 327+78); 
-        window.draw(rectangle);
-    }
+            for (int i = 0; i < length; ++i) {
+                sf::Text text;
+                text.setFont(font);
+                text.setString(std::to_string(scores[i]));
+                text.setCharacterSize(25); 
+                text.setFillColor(sf::Color::White);
+                text.setOutlineColor(sf::Color::Black);
+                text.setOutlineThickness(1);
+                text.setPosition(480, 355 + 44 * i); 
+                window.draw(text);
+            }
+        }
 }
 
 void Menu::renderPausedMenu() {
@@ -182,7 +228,7 @@ std::string Menu::handleInputMainMenu(bool isClicked) {
 
     sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
     int clickedButtonIndex = -1;
-    if (!isSettingPannel)
+    if (!isSettingPannel && !isHighScore)
     {
         clickedButtonIndex = checkButtonClick(mainMenuButtons,mousePos);
         if (clickedButtonIndex != -1) {
@@ -198,8 +244,10 @@ std::string Menu::handleInputMainMenu(bool isClicked) {
         else if(mainMenuButtons[clickedButtonIndex].name == "play")
             typePlay = "newGame";
     }
-    else 
+    else if(isSettingPannel)
         displaySettings(mainMenuButtons,mousePos,isClicked);
+    else if(isHighScore)
+        highScoreDisplay(mainMenuButtons,mousePos,isClicked);
     return clickedButtonIndex != -1 ? mainMenuButtons[clickedButtonIndex].name : "";
 
 }
@@ -312,8 +360,12 @@ void Menu::displaySettings(std::vector<Button>& buttons,const sf::Vector2f& mous
     }
 }
 
+void Menu::highScoreDisplay(std::vector<Button>& buttons,const sf::Vector2f& mousePosition,bool isClicked){
+    if (isClicked)
+        isHighScore = false;
+    
+}
 void Menu::handleInputPausedMenu() {
-
 }
 
 int Menu::checkButtonClick(const std::vector<Button>& buttons, const sf::Vector2f& mousePosition) {
