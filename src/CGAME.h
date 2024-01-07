@@ -38,6 +38,7 @@ protected:
     bool endless = true;
     bool isFinished = false;
     bool specialAnim = false;
+    bool deathAnim = false;
     bool countDown = false;
     CPEOPLE cn;
     Dragon drag;
@@ -90,6 +91,8 @@ public:
     bool getFinish() { return isFinished; }
     void setSpecial(bool special) {specialAnim = special;}
     bool getSpecial() { return specialAnim; }
+    void setDie(bool die) { deathAnim = die; }
+    bool getDie() { return deathAnim; }
     int getNumBirds();
     sf::View getView() { return view; }
     void finishAnimation();

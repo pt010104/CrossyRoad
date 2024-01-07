@@ -549,6 +549,8 @@ void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
     float centerX, centerY, sizeX, sizeY;
     file >> centerX >> centerY;
     file >> sizeX >> sizeY;
+    viewX = centerX;
+    viewY = centerY;
    
 //  lane 
     file >> endless >> level;
@@ -785,6 +787,7 @@ void CGAME::updatePosAnimal() {
                         {
                             stopGame=true;
                             cn.Died();
+                            deathAnim = true;
                         }
                 }
                 if (drag.state != "fire")

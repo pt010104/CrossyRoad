@@ -35,6 +35,7 @@ private:
 
     std::chrono::steady_clock::time_point start;
     std::chrono::seconds work_duration = 3s;
+    std::chrono::seconds die_duration = 2s;
 
     void processEvents();
     void handleMouseClick(const sf::Event& event);
