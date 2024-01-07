@@ -35,6 +35,7 @@ private:
     sf::Texture obstaclesTexture;
     sf::Texture settingPannelTexture;
     sf::Texture highScoreTexture;
+    sf::Texture creditsTexture;
     
     sf::Texture pausedTexture;
     sf::Texture resumeTexture;
@@ -55,6 +56,7 @@ private:
 public:
     bool isSettingPannel;
     bool isHighScore;
+    bool isCredits;
     bool soundOn;
     bool obstaclesOn;
     
@@ -79,5 +81,5 @@ public:
 
     void winGame();
     void highScoreDisplay(std::vector<Button>& buttons,const sf::Vector2f& mousePosition,bool isClicked);
-
+    void creditsDisplay(std::vector<Button>& buttons,const sf::Vector2f& mousePosition,bool isClicked);
 };

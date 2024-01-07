@@ -10,6 +10,7 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
     endlessOn = true;
     isSettingPannel = false;
     isHighScore = false;
+    isCredits = false;
     if (!playTextture.loadFromFile("Assets/Menu/PlayButton.png")) {
         std::cerr << "Failed to load play button image." << std::endl;
     }
@@ -35,7 +36,10 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
         std::cerr << "Failed to load settings image." << std::endl;
     }
     if (!highScoreTexture.loadFromFile("Assets/Menu/highScore.png")) {
-        std::cerr << "Failed to load mode highScoreTexture image." << std::endl;
+        std::cerr << "Failed to load highScoreTexture image." << std::endl;
+    }
+    if (!creditsTexture.loadFromFile("Assets/Menu/creditsButton.png")) {
+        std::cerr << "Failed to load credits button image." << std::endl;
     }
 
     //paused menu buttons
@@ -127,6 +131,14 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
         std::cout << "highScore button clicked!\n";
     };
 
+    Button credits;
+    credits.sprite.setTexture(creditsTexture);
+    credits.sprite.setPosition(128,749);
+    credits.name = "creditsButton";
+    credits.onClick = []() {
+        std::cout << "credits button clicked!\n";
+    };
+
     //paused menu buttons
     Button resume;
     resume.sprite.setTexture(resumeTexture);
@@ -161,6 +173,7 @@ Menu::Menu(const sf::Font& font, sf::RenderWindow& window) : window(window), m_f
     mainMenuButtons.push_back(settingPannel);
     mainMenuButtons.push_back(sound);
     mainMenuButtons.push_back(obstacles);
+    mainMenuButtons.push_back(credits);
 
     pausedMenuButtons.push_back(resume);
     pausedMenuButtons.push_back(retry);
@@ -176,7 +189,7 @@ void Menu::setFont(const std::string& fontPath) {
 void Menu::renderMainMenu() {
     // if (!mainMenuDrawn) {
         window.setView(mainMenuCameraView);
-        if (!isHighScore)
+        if (!isHighScore && !isCredits)
         {
             if (!menuTexture.loadFromFile("Assets/Menu/MenuGame.png")) {
                 std::cerr << "Failed to load main menu image." << std::endl;
@@ -211,7 +224,7 @@ void Menu::renderMainMenu() {
                 window.draw(rectangle);
             }
         }
-        else 
+        else if (isHighScore)
         {
             sf::Sprite spriteHighScoreBoard;
             sf::Texture texture;
@@ -251,6 +264,16 @@ void Menu::renderMainMenu() {
                 text.setPosition(480, 355 + 44 * i); 
                 window.draw(text);
             }
+        }
+        else if (isCredits){
+            sf::Sprite spriteCreditsBoard;
+            sf::Texture texture;
+            if (!texture.loadFromFile("Assets\\Menu\\creditsBoard.png")) {
+            }
+            // spriteCreditsBoard.setPosition(100, 0);
+            spriteCreditsBoard.setTexture(texture); 
+            window.draw(spriteCreditsBoard);
+            
         }
 }
 
@@ -293,7 +316,7 @@ std::string Menu::handleInputMainMenu(bool isClicked) {
 
     sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
     int clickedButtonIndex = -1;
-    if (!isSettingPannel && !isHighScore)
+    if (!isSettingPannel && !isHighScore && !isCredits)
     {
         clickedButtonIndex = checkButtonClick(mainMenuButtons,mousePos);
         if (clickedButtonIndex != -1) {
@@ -313,6 +336,8 @@ std::string Menu::handleInputMainMenu(bool isClicked) {
         displaySettings(mainMenuButtons,mousePos,isClicked);
     else if(isHighScore)
         highScoreDisplay(mainMenuButtons,mousePos,isClicked);
+    else if(isCredits)
+        creditsDisplay(mainMenuButtons,mousePos,isClicked);
     return clickedButtonIndex != -1 ? mainMenuButtons[clickedButtonIndex].name : "";
 
 }
@@ -429,6 +454,11 @@ void Menu::highScoreDisplay(std::vector<Button>& buttons,const sf::Vector2f& mou
     if (isClicked)
         isHighScore = false;
     
+}
+
+void Menu::creditsDisplay(std::vector<Button>& buttons,const sf::Vector2f& mousePosition,bool isClicked){
+    if (isClicked)
+        isCredits = false;
 }
 
 std::string Menu::handleInputPausedMenu(bool isClicked) {
