@@ -280,13 +280,23 @@ void Menu::renderMainMenu() {
 void Menu::renderPausedMenu() {
     // currentView.setCenter(viewX, viewY);
     // window.setView(currentView);
+    int resumeIndex;
+    for (size_t i = 0; i < pausedMenuButtons.size(); ++i)
+        if (pausedMenuButtons[i].name == "resume")
+            resumeIndex = i;
     sf::RectangleShape backgroundShape(sf::Vector2f(1000.0f, 800.0f));
     backgroundShape.setFillColor(sf::Color(0, 0, 0, 155));
     backgroundShape.setPosition(viewX - 500, viewY - 400);
     window.draw(backgroundShape);
-
-    if (!pausedTexture.loadFromFile("Assets/Menu/pausedMenu.png")) {
-        std::cerr << "Failed to load paused menu image." << std::endl;
+    if (dead){
+        if (!pausedTexture.loadFromFile("Assets/Menu/deathMenu.png")) {
+            std::cerr << "Failed to load death menu image." << std::endl;
+        }
+    }
+    else {
+        if (!pausedTexture.loadFromFile("Assets/Menu/pausedMenu.png")) {
+            std::cerr << "Failed to load paused menu image." << std::endl;
+        }
     }
     pausedSprite.setTexture(pausedTexture);
     sf::Vector2u windowSize = window.getSize();
@@ -306,10 +316,15 @@ void Menu::renderPausedMenu() {
         else if (button.name == "returnMenu")
             button.sprite.setPosition(550, 366 + viewY - 400);
     }
+
+    if (dead) 
+        pausedMenuButtons[resumeIndex].isDraw = false;
+
     for (auto& button : pausedMenuButtons) {
         if(button.isDraw)
             window.draw(button.sprite);
     }
+    pausedMenuButtons[resumeIndex].isDraw = true;
 }
 
 std::string Menu::handleInputMainMenu(bool isClicked) {
@@ -477,10 +492,12 @@ std::string Menu::handleInputPausedMenu(bool isClicked) {
 }
 
 int Menu::checkButtonClick(const std::vector<Button>& buttons, const sf::Vector2f& mousePosition) {
-    if (buttons.size() == 3){
+    if (buttons.size() <= 3){
         for (size_t i = 0; i < buttons.size(); ++i){
             sf::FloatRect spriteBounds = buttons[i].sprite.getGlobalBounds();
             spriteBounds.top -= (viewY - 400);
+            if (spriteBounds.contains(mousePosition) && dead && buttons[i].name == "resume")
+                return -1;
             if (spriteBounds.contains(mousePosition) && buttons[i].isDraw) {
                 return static_cast<int>(i);
             }

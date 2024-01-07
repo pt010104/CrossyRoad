@@ -180,7 +180,7 @@ void App::handleKeyPress(const sf::Event& event) {
         
     }
     else if (event.key.code == sf::Keyboard::Enter) {
-        if (currentGameState == GameState::PAUSED) {
+        if (currentGameState == GameState::PAUSED && !dead) {
             currentGameState = GameState::PLAYING;
         }
         else if (currentGameState == GameState::MENU) {
