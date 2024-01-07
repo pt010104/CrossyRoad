@@ -90,5 +90,5 @@ void CANIMAL::setIndexSecond(int index){
     indexSecond = index;
 }
 std::string CANIMAL::serialize(){//
-    return name + " " +"\n" + std::to_string(mX) + " " + std::to_string(mY) +" "+ std::to_string(speed) + " " + std::to_string(direction);
+    return name + " " +"\n" + std::to_string(mX) + " " + std::to_string(mY) +" "+ std::to_string(speed) + " " + std::to_string(direction) + " " + std::to_string(timeAppear);
 }

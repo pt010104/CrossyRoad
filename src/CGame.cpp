@@ -43,7 +43,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
     int levelIndexLane = 52 - 3 - static_cast<int>(std::floor(level * 1.5));
     float multiplierSpeed = 1;
     if(!endless)
-        multiplierSpeed = 1 + static_cast<float>(level)/15;
+        multiplierSpeed = 1 + static_cast<float>(level)/9.5;
     std::vector<std::string> nameTile = {"people_map"+std::to_string(level),"mons_map"+std::to_string(level)};
     // random obj
     for (int j = -100; j < numLanes; j++) {
@@ -83,7 +83,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
                     else
                     if (type_obj == "birds5")
                     {
-                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        objects.emplace_back(std::make_shared<CBIRD5>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
                         if (numAnimalInLane!=firstAnimal)
                             objects[objects.size()-1]->timeAppear += previousTime;      
                         if (ObjInLane[indexObj]==2)
@@ -93,7 +93,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
                     else
                     if (type_obj == "birds2")
                     {
-                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
                         if (numAnimalInLane!=firstAnimal)
                             objects[objects.size()-1]->timeAppear += previousTime;                
                         if (ObjInLane[indexObj]==2)
@@ -101,7 +101,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
                     }
                     if (type_obj == "birds3")
                     {
-                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        objects.emplace_back(std::make_shared<CBIRD3>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
                         if (numAnimalInLane!=firstAnimal)
                             objects[objects.size()-1]->timeAppear += previousTime;               
                         if (ObjInLane[indexObj]==2)
@@ -109,7 +109,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
                     }
                     if (type_obj == "birds4")
                     {
-                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        objects.emplace_back(std::make_shared<CBIRD4>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
                         if (numAnimalInLane!=firstAnimal)
                             objects[objects.size()-1]->timeAppear += previousTime;              
                         if (ObjInLane[indexObj]==2)
@@ -117,7 +117,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
                     }
                     if (type_obj == "cars")
                     {
-                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        objects.emplace_back(std::make_shared<CCAR>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
                         if (numAnimalInLane!=firstAnimal)
                             objects[objects.size()-1]->timeAppear += previousTime;               
                         if (ObjInLane[indexObj]==2)
@@ -125,7 +125,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
                     }
                     if (type_obj == "cars2")
                     {
-                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
                         if (numAnimalInLane!=firstAnimal)
                             objects[objects.size()-1]->timeAppear += previousTime;               
                         if (ObjInLane[indexObj]==2)
@@ -133,7 +133,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
                     }
                     if (type_obj == "cars3")
                     {
-                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        objects.emplace_back(std::make_shared<CCAR3>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
                         if (numAnimalInLane!=firstAnimal)
                             objects[objects.size()-1]->timeAppear += previousTime;              
                         if (ObjInLane[indexObj]==2)
@@ -141,14 +141,14 @@ void CGAME::GenObj(sf::RenderWindow& window)
                     }
                     if (type_obj == "cars4")
                     {
-                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        objects.emplace_back(std::make_shared<CCAR4>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
                         if (numAnimalInLane!=firstAnimal)
                             objects[objects.size()-1]->timeAppear += previousTime;         
                         if (ObjInLane[indexObj]==2)
                             objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
                     }     
                     numAnimalInLane--;
-                    previousTime++;
+                    previousTime+=2;
                 } 
                 indexObj++;  
             }  
@@ -660,7 +660,8 @@ void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
         file >> objectType;
         float x,y,speed;
         int direction;
-        file >> x >> y >> speed >> direction;
+        float time_appear;
+        file >> x >> y >> speed >> direction >> time_appear;
         if (objectType == "birds") {
             objects.push_back(std::make_shared<CBIRD>(window.getSize().x, 0, y,speed,direction));
         }
@@ -704,6 +705,7 @@ void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
         {
             objects.push_back(std::make_shared<CCAR4>(window.getSize().x, 0, y,speed,direction));
         }
+        objects[i]->timeAppear = time_appear;
         // else
         // if (objectType == "cars5")
         // {
