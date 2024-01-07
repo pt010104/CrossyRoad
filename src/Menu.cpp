@@ -270,7 +270,7 @@ void Menu::renderMainMenu() {
             sf::Texture texture;
             if (!texture.loadFromFile("Assets\\Menu\\creditsBoard.png")) {
             }
-            // spriteCreditsBoard.setPosition(100, 0);
+            spriteCreditsBoard.setPosition(100, 0);
             spriteCreditsBoard.setTexture(texture); 
             window.draw(spriteCreditsBoard);
             
