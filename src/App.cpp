@@ -104,6 +104,9 @@ void App::handleMouseClick(const sf::Event& event) {
             else if (buttonName == "highScoreButton"){
                 menu.isHighScore = true;
             }
+            else if (buttonName == "creditsButton"){
+                menu.isCredits = true;
+            }
             else if (buttonName == "modeEndless"){
                 menu.pressEndless();
                 game.setEndless(false);
