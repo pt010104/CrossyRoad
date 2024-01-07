@@ -54,8 +54,12 @@ CPEOPLE::CPEOPLE(int startX, int startY) : CPEOPLE() {
     speed = 3;
 }
 
-int CPEOPLE::Sprint() {
-    if()
+void CPEOPLE::Sprint(bool check) {
+    if(check) speed = 9;
+}
+
+void CPEOPLE::rSprint(bool check) {
+    if(check) speed = 3;
 }
 
 void CPEOPLE::Up() {

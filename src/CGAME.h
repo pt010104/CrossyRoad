@@ -35,6 +35,7 @@ protected:
     int threshold;
     float timeAppear;
     bool isPress;
+    bool isSprint;
     int level;
     int finishLine;
     bool endless = true;
@@ -80,7 +81,7 @@ public:
     void saveGame(const std::string& filename);
     void pauseGame(std::thread& thread);
     void resumeGame(std::thread& thread);
-    void updatePosPeople(char direction);
+    void updatePosPeople(char direction, bool sprint);
     void updateAnimation(float deltatime);
     void updatePosVehicle();
     void updatePosAnimal();

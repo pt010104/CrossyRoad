@@ -429,6 +429,11 @@ void CGAME::exitGame(std::thread& thread) {
 
 void CGAME::startGame(sf::RenderWindow& window) {   
     if (!stopGame && !specialAnim && !isFinished && !countDown) {
+        //Checking Sprinting
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && false == isSprint) {
+            isSprint = true;
+        }
+        //Checking Movement
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && isPress==false) {
             isPress = true;
             saveGame("save.txt");
@@ -444,7 +449,7 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 }
             }
             if (canMove) {
-                this->updatePosPeople('W');
+                this->updatePosPeople('W', isSprint);
             }
 
         }
@@ -459,7 +464,7 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 }
             }
             if (canMove) {
-                this->updatePosPeople('A');
+                this->updatePosPeople('A', isSprint);
             }
         }
         else
@@ -473,7 +478,7 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 }
             }
             if (canMove) {
-                this->updatePosPeople('S');
+                this->updatePosPeople('S', isSprint);
             }
         }
         else
@@ -487,10 +492,11 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 }
             }
             if (canMove) {
-                this->updatePosPeople('D');
+                this->updatePosPeople('D', isSprint);
             }
         }
         isPress = false;
+        isSprint = false;
     }
     //move camera && refresh currentObstacles
     sf::Vector2f playerPosition = cn.get_Position();
@@ -664,6 +670,16 @@ void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
         {
             objects.push_back(std::make_shared<CCAR3>(window.getSize().x, 0, y,speed,direction));
         }
+        else
+        if (objectType == "cars4")
+        {
+            objects.push_back(std::make_shared<CCAR4>(window.getSize().x, 0, y,speed,direction));
+        }
+        // else
+        // if (objectType == "cars5")
+        // {
+        //     objects.push_back(std::make_shared<CCAR5>(window.getSize().x, 0, y,speed,direction));
+        // }
     }
     std::cout<<"load obj done";
     int obsSize;
@@ -746,28 +762,30 @@ void CGAME::resumeGame(std::thread& thread) {
             // Resume the thread
     }
 
-void CGAME::updatePosPeople(char direction) {
-        if(cn.getState() && !isFinished)
+void CGAME::updatePosPeople(char direction, bool sprint) {
+    if(cn.getState() && !isFinished)
+    {
+        if (sprint) cn.Sprint(sprint); //changing speed depending on sprinting
+        switch (direction)
         {
-            switch (direction)
-            {
-                case 'W':
-                    cn.Up();
-                    break;
-                case 'A':
-                    cn.Left();
-                    break;
-                case 'S':
-                    cn.Down();
-                    break;
-                case 'D':
-                    cn.Right();
-                    break;
-                default:
-                    break;
-            }
+            case 'W':
+                cn.Up();
+                break;
+            case 'A':
+                cn.Left();
+                break;
+            case 'S':
+                cn.Down();
+                break;
+            case 'D':
+                cn.Right();
+                break;
+            default:
+                break;
         }
+        if(sprint) cn.rSprint(sprint); //reset after sprinting
     }
+}
 void CGAME::updateAnimation(float dt) {
     if (!isFinished)
     {

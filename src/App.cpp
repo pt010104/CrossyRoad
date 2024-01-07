@@ -62,7 +62,7 @@ void App::run() {
             auto current_time = std::chrono::steady_clock::now();
             if ( (current_time - start) < work_duration) {
                 inAnim = true;
-                game.updatePosPeople('W'); // Update character position
+                game.updatePosPeople('W', true); // Update character position
                 if (currentGameState == GameState::PLAYING){
                     game.startGame(window);
                     update();
