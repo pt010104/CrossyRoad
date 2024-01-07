@@ -32,11 +32,11 @@ void App::run() {
         if (!game.getSpecial())
         {
             processEvents();
+            render();
             if (currentGameState == GameState::PLAYING){
                 game.startGame(window);  
                 update();
             }
-            render();
             start = std::chrono::steady_clock::now();
         }
         else if (!game.getFinish() && game.getSpecial()){
@@ -118,6 +118,7 @@ void App::handleMouseClick(const sf::Event& event) {
             else if (buttonName == "loadSave"){
                 if (game.checkwindow()) {
                     realTimeClock.restart();
+                    game.setEndless(true);
                     game.resetGame();
                 }
                 currentGameState = GameState::PLAYING;   
