@@ -68,7 +68,7 @@ void App::run() {
                     update();
                 }
                 render();
-                std::this_thread::sleep_for(10ms);
+                // std::this_thread::sleep_for(10ms);
             }
             if (!inAnim) {
                 std::cout << "End animation\n";
