@@ -3,7 +3,7 @@
 CBIRD5::CBIRD5()
 {}
 CBIRD5::CBIRD5(int width, float startX, float startY, float birdSpeed, int direct)
-    : CANIMAL(width, startX, startY,"dinosaurs")
+    : CANIMAL(width, startX, startY,"birds5")
 {
         speed = birdSpeed;
         direction = direct;

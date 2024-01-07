@@ -92,13 +92,13 @@ void CGAME::GenObj(sf::RenderWindow& window)
                 {
                     objects.emplace_back(std::make_shared<CBIRD4>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
                     if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                        objects.emplace_back(std::make_shared<CCAR>(window.getSize().x, randomX, randomY+80, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
                 }
                 if (type_obj == "cars")
                 {
                     objects.emplace_back(std::make_shared<CCAR>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
                     if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                        objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY+80, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
                 }
                 if (type_obj == "cars2")
                 {
@@ -189,16 +189,15 @@ void CGAME::drawGame(float& realTime)
         }
         for (auto obstacle:currentObs)
         {
-            if (obstacle.get_Position().x >= 0 && obstacle.get_Position().x<=1000)
-                obstacle.draw(*window);
+            obstacle.draw(*window);
         }
         if (cn.getState())
             cn.draw(*window);
         for (int i = 0;i<currentObjects.size();i++)
         {
-            if (drag.state != "fire" && abs(currentObjects[i]->direction) == 1)
+            if (drag.state != "fire")
                 currentObjects[i]->draw(*window);
-            else if (currentObjects[i]->get_Position().y != drag.mY-25 && currentObjects[i]->get_Position().y != drag.mY+25 && abs(currentObjects[i]->direction) == 1)
+            else if (currentObjects[i]->get_Position().y != drag.mY-25 && currentObjects[i]->get_Position().y != drag.mY+25)
                 currentObjects[i]->draw(*window);
         }     
         if (realTime >=timeAppear && drag.state == "disap")
@@ -265,38 +264,47 @@ void CGAME::drawGame(float& realTime)
             {
                 std::cerr << "Error to load font\n";
             }
-            sf::Text textOutline;
-            textOutline.setFont(font); 
-            textOutline.setString("Score:" + std::to_string(Score)); 
-            textOutline.setCharacterSize(30); 
-            textOutline.setFillColor(sf::Color::Black);  
-            textOutline.setStyle(sf::Text::Bold);
-
+            
             sf::Text text;
             text.setFont(font); 
             text.setString("Score:" + std::to_string(Score)); 
             text.setCharacterSize(30); 
             text.setFillColor(sf::Color::White);  
             text.setStyle(sf::Text::Bold);
+            text.setFillColor(sf::Color::White);
+            text.setOutlineColor(sf::Color::Black);
+            text.setOutlineThickness(1);
 
             sf::Vector2f position(400, view.getCenter().y-350);
             text.setPosition(position);
 
-            float outlineThickness = 2.0f;
-
-            for (int x = -outlineThickness; x <= outlineThickness; x++) {
-                for (int y = -outlineThickness; y <= outlineThickness; y++) {
-                    if (x != 0 || y != 0) {
-                        textOutline.setPosition(position.x + x, position.y + y);
-                        window->draw(textOutline);
-                    }
-                }
-            }
-
             window->draw(text); 
         }
+        countDown = false;
+        if (typePlay == "loadGame" && realTime < 3) //countdown loadgame
+        {
+            countDown = true;
+            sf::Font font;
+            if (!font.loadFromFile("Assets\\Font\\PressStart2P-Regular.ttf")) 
+            {
+                std::cerr << "Error to load font\n";
+            }
 
+            sf::RectangleShape rectangle(sf::Vector2f(1000,800)); 
+            rectangle.setFillColor(sf::Color(0, 0, 0, 150)); // 50/255
+            rectangle.setPosition(0, view.getCenter().y-400); 
+            window->draw(rectangle);
 
+            sf::Text text;
+            text.setFont(font);
+            text.setString(std::to_string(static_cast<int>(realTime+1)));
+            text.setCharacterSize(50); 
+            text.setFillColor(sf::Color::White);
+            text.setOutlineColor(sf::Color::Black);
+            text.setOutlineThickness(1);
+            text.setPosition(400, view.getCenter().y); 
+            window->draw(text);
+        }
     }
 }
 CPEOPLE CGAME::getPeople() {
@@ -359,6 +367,8 @@ void CGAME::resetGame() {
     dead = false;
     Score = 0;
     // Re-generate game objects
+    if (typePlay == "loadGame" && !endless)
+        typePlay = "newGame";
     if(typePlay == "newGame")
     {
         
@@ -379,6 +389,7 @@ void CGAME::resetGame() {
     }
     else if (typePlay == "loadGame")
     {
+        countDown = true;
         currentObs.clear();
         loadGame("save.txt",*window);
         for (auto obstacle : obstacles){
@@ -391,8 +402,7 @@ void CGAME::resetGame() {
             sf::Vector2f objPos = object->get_Position();
             if (objPos.y >= (cn.get_Position().y - 700) && objPos.y <= (cn.get_Position().y + 700))
                 currentObjects.push_back(object);
-        }
-        typePlay = "newGame";   
+        }  
     }
     std::cout<<"Reset done"<<std::endl;
     stopGame = false;
@@ -405,7 +415,7 @@ void CGAME::exitGame(std::thread& thread) {
 }
 
 void CGAME::startGame(sf::RenderWindow& window) {   
-    if (!stopGame && !specialAnim && !isFinished) {
+    if (!stopGame && !specialAnim && !isFinished && !countDown) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && isPress==false) {
             isPress = true;
             saveGame("save.txt");
@@ -540,6 +550,8 @@ void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
     float centerX, centerY, sizeX, sizeY;
     file >> centerX >> centerY;
     file >> sizeX >> sizeY;
+    viewX = centerX;
+    viewY = centerY;
    
 //  lane 
     file >> endless >> level;
@@ -605,14 +617,34 @@ void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
             objects.push_back(std::make_shared<CBIRD>(window.getSize().x, 0, y,speed,direction));
         }
         else
-        if (objectType == "dinosaurs")
+        if (objectType == "birds2")
+        {
+            objects.push_back(std::make_shared<CBIRD2>(window.getSize().x, 0, y,speed,direction));
+        }
+        else
+        if (objectType == "birds3")
+        {
+            objects.push_back(std::make_shared<CBIRD3>(window.getSize().x, 0, y,speed,direction));
+        }
+        else
+        if (objectType == "birds4")
+        {
+            objects.push_back(std::make_shared<CBIRD4>(window.getSize().x, 0, y,speed,direction));
+        }
+        else
+        if (objectType == "birds5")
         {
             objects.push_back(std::make_shared<CBIRD5>(window.getSize().x, 0, y,speed,direction));
         }
         else
-        if (objectType == "birds2")
+        if (objectType == "cars")
         {
-            objects.push_back(std::make_shared<CBIRD2>(window.getSize().x, 0, y,speed,direction));
+            objects.push_back(std::make_shared<CCAR>(window.getSize().x, 0, y,speed,direction));
+        }
+        else
+        if (objectType == "cars2")
+        {
+            objects.push_back(std::make_shared<CCAR2>(window.getSize().x, 0, y,speed,direction));
         }
     }
     std::cout<<"load obj done";
@@ -744,7 +776,7 @@ void CGAME::updateAnimation(float dt) {
 }
 
 void CGAME::updatePosAnimal() {
-    if(!isFinished)
+    if(!isFinished && !countDown)
     {
         for (int i =0;i<objects.size();i++) {
             if(abs(objects[i]->direction) == 1)
