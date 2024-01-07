@@ -7,7 +7,8 @@
 #include "SpriteLoader.h"
 #include "TextureManager.h"
 #include <iostream>
-
+#include "Global.h"
+#include <random>
 class CANIMAL {
 protected:
 
@@ -27,11 +28,15 @@ protected:
     float animationSpeed;
     int indexSecond=-100;
     std::string name;
+
+    float time;
+    sf::Vector2f scale;
+
 public:
     int direction;
     CANIMAL();
     CANIMAL(int width, float startX, float startY,std::string name);
-    virtual void Move()  = 0;
+    virtual void Move();
     void UpdateFrame(float deltaTime);
     void UpdateAnimation(const std::string& direction);
     virtual void draw(sf::RenderWindow& window);

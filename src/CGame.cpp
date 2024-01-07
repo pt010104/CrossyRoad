@@ -33,7 +33,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis1(0,1); //obj1 appears at x=0 or 955
     std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj1 across it
-    std::uniform_real_distribution<> speedDis(6.5f, 9.5f); 
+    std::uniform_real_distribution<> speedDis(7.5f, 10.5f); 
     std::uniform_int_distribution<> numBirdsDis(1, 2); 
     std::uniform_int_distribution<> randObj(0, 6); 
 
@@ -92,17 +92,17 @@ void CGAME::GenObj(sf::RenderWindow& window)
                 {
                     objects.emplace_back(std::make_shared<CBIRD4>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
                     if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CCAR>(window.getSize().x, randomX, randomY+80, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                        objects.emplace_back(std::make_shared<CCAR>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
                 }
                 if (type_obj == "cars")
                 {
                     objects.emplace_back(std::make_shared<CCAR>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
                     if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY+80, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                        objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
                 }
                 if (type_obj == "cars2")
                 {
-                    objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY+30, speed_lane[indexObj],direction[indexObj]));                
+                    objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
                     if (ObjInLane[indexObj]==2)
                         objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
                 }
@@ -200,7 +200,7 @@ void CGAME::drawGame(float& realTime)
             else if (currentObjects[i]->get_Position().y != drag.mY-25 && currentObjects[i]->get_Position().y != drag.mY+25)
                 currentObjects[i]->draw(*window);
         }     
-        if (realTime >=timeAppear && drag.state == "disap")
+        if (realTimeClock.getElapsedTime().asSeconds() >= timeAppear && drag.state == "disap")
         {
             auto it = std::upper_bound(TrafficLight_pos.begin(), TrafficLight_pos.end(), cn.get_Position().y);
             if (it != TrafficLight_pos.begin())
@@ -364,6 +364,7 @@ void CGAME::resetGame() {
     timeAppear = 10;
     realTimeClock.restart();
     cn.reset();
+    drag.reset();
     dead = false;
     Score = 0;
     // Re-generate game objects

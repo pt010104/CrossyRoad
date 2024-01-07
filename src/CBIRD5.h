@@ -9,7 +9,6 @@ private:
 public:
     CBIRD5();
     CBIRD5(int width, float startX, float startY, float birdSpeed, int direct);
-    void Move()  override;
      ~CBIRD5() = default; 
 };
 

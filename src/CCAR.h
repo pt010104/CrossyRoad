@@ -9,7 +9,6 @@ private:
 public:
     CCAR();
     CCAR(int width, float startX, float startY, float birdSpeed, int direct);
-    void Move() override;    
      ~CCAR() = default; 
 };
 

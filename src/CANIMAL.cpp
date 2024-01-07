@@ -7,6 +7,7 @@ CANIMAL::CANIMAL(int width, float startX, float startY, std::string name)
     : windowWidth(width), mX(startX), mY(startY), currentFrameIndex(0), frameTime(0.0f),animationSpeed(0.13f), name(name)
 {
     indexSecond=-100;
+    time = 0;
 }
 void CANIMAL::UpdateFrame(float deltaTime) {
     //std::cout<<"Update frame test";
@@ -31,6 +32,36 @@ void CANIMAL::UpdateAnimation(const std::string& direction) {
         this->rectSourceSprite = sf::IntRect(newFrame.x, newFrame.y, newFrame.width, newFrame.height);
         this->sprite.setTextureRect(rectSourceSprite);
     }
+}
+void CANIMAL::Move()   {
+    if (direction==-1)
+        sprite.setScale(-scale.x, scale.y);
+
+    if (mX >= windowWidth+6) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<> dis(3.5, 6.0);
+        float randomTime = dis(gen);
+        if (realTimeClock.getElapsedTime().asSeconds() >= time)
+        {
+            mX = 2;
+            time = realTimeClock.getElapsedTime().asSeconds() + randomTime;
+        }
+    }
+    else if (mX+sprite.getGlobalBounds().width < 0) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<> dis(1.2, 2.5);
+        float randomTime = dis(gen);
+        if (realTimeClock.getElapsedTime().asSeconds() >= time)
+        {
+            mX = 1005;
+            time = realTimeClock.getElapsedTime().asSeconds() + randomTime;
+        }
+    }
+
+    mX += speed * direction;
+    UpdateAnimation("right");
 }
 void CANIMAL::draw(sf::RenderWindow& window) {
     sprite.setPosition(mX,mY);

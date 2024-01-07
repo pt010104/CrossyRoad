@@ -31,7 +31,6 @@ public:
     int direction;
     CVEHICLE();
     CVEHICLE(int width, float startX, float startY,std::string name);
-    virtual void Move()  = 0;
     void UpdateFrame(float deltaTime);
     void UpdateAnimation(const std::string& direction);
     virtual void draw(sf::RenderWindow& window);

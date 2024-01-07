@@ -18,7 +18,7 @@ CCAR2::CCAR2(int width, float startX, float startY, float birdSpeed, int direct)
             std::cerr<<"Failed to load Json Car";
         }
         sprite.setTexture(TextureManager::GetTexture("Assets/Vehicle/Car2.png"));
-        sprite.setScale(1.0f,1.0);
+        sprite.setScale(1.0f,1.5);
         rectSourceSprite = sf::IntRect(
             frames["right_1"].x,
             frames["right_1"].y,
@@ -28,18 +28,8 @@ CCAR2::CCAR2(int width, float startX, float startY, float birdSpeed, int direct)
         sprite.setTextureRect(rectSourceSprite);
         sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
         radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
+        scale = sprite.getScale();
 
 
             
-}
-void CCAR2::Move()   {
-    if (direction==-1)
-        sprite.setScale(-1.0f,1.0);
-    if (mX >= windowWidth) {
-        mX = 2;
-    } else if (mX+sprite.getGlobalBounds().width <= 0) {
-        mX =955;
-    }
-    mX += speed * direction;
-    UpdateAnimation("right");
 }

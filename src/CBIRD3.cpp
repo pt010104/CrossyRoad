@@ -28,18 +28,8 @@ CBIRD3::CBIRD3(int width, float startX, float startY, float birdSpeed, int direc
         sprite.setTextureRect(rectSourceSprite);
         sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
         radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
+        scale = sprite.getScale();
 
 
             
-}
-void CBIRD3::Move()   {
-    if (direction==-1)
-        sprite.setScale(-5.0f, 5.0f);
-    if (mX >= windowWidth) {
-        mX = 2;
-    } else if (mX+sprite.getGlobalBounds().width <= 0) {
-        mX =955;
-    }
-    mX += speed * direction;
-    UpdateAnimation("right");
 }
