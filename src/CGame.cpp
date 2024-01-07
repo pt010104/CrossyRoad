@@ -6,6 +6,7 @@ int CGAME::getNumBirds() {
     std::mt19937 gen(rd());
 
     std::vector<double> prob;
+    //Set probability for number of birds
     switch (level) {
         case 1:
             prob = {0.7, 0.3}; // 70% ra 1, 30% ra 2
@@ -72,7 +73,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
                 {
                     objects.emplace_back(std::make_shared<CBIRD5>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));       
                     if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                        objects.emplace_back(std::make_shared<CCAR3>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
 
                 }
                 else
@@ -86,7 +87,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
                 {
                     objects.emplace_back(std::make_shared<CBIRD3>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
                     if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CBIRD3>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                        objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
                 }
                 if (type_obj == "birds4")
                 {
@@ -98,11 +99,23 @@ void CGAME::GenObj(sf::RenderWindow& window)
                 {
                     objects.emplace_back(std::make_shared<CCAR>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
                     if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                        objects.emplace_back(std::make_shared<CBIRD3>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
                 }
                 if (type_obj == "cars2")
                 {
                     objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
+                    if (ObjInLane[indexObj]==2)
+                        objects.emplace_back(std::make_shared<CCAR4>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                }
+                if (type_obj == "cars3")
+                {
+                    objects.emplace_back(std::make_shared<CCAR3>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
+                    if (ObjInLane[indexObj]==2)
+                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                }
+                if (type_obj == "cars4")
+                {
+                    objects.emplace_back(std::make_shared<CCAR4>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
                     if (ObjInLane[indexObj]==2)
                         objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
                 }
@@ -417,6 +430,11 @@ void CGAME::exitGame(std::thread& thread) {
 
 void CGAME::startGame(sf::RenderWindow& window) {   
     if (!stopGame && !specialAnim && !isFinished && !countDown) {
+        //Checking Sprinting
+        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && false == isSprint) {
+        //     isSprint = true;
+        // }
+        //Checking Movement
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && isPress==false) {
             isPress = true;
             saveGame("save.txt");
@@ -647,6 +665,21 @@ void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
         {
             objects.push_back(std::make_shared<CCAR2>(window.getSize().x, 0, y,speed,direction));
         }
+        else
+        if (objectType == "cars3")
+        {
+            objects.push_back(std::make_shared<CCAR3>(window.getSize().x, 0, y,speed,direction));
+        }
+        else
+        if (objectType == "cars4")
+        {
+            objects.push_back(std::make_shared<CCAR4>(window.getSize().x, 0, y,speed,direction));
+        }
+        // else
+        // if (objectType == "cars5")
+        // {
+        //     objects.push_back(std::make_shared<CCAR5>(window.getSize().x, 0, y,speed,direction));
+        // }
     }
     std::cout<<"load obj done";
     int obsSize;
@@ -730,27 +763,27 @@ void CGAME::resumeGame(std::thread& thread) {
     }
 
 void CGAME::updatePosPeople(char direction) {
-        if(cn.getState() && !isFinished)
+    if(cn.getState() && !isFinished)
+    {
+        switch (direction)
         {
-            switch (direction)
-            {
-                case 'W':
-                    cn.Up();
-                    break;
-                case 'A':
-                    cn.Left();
-                    break;
-                case 'S':
-                    cn.Down();
-                    break;
-                case 'D':
-                    cn.Right();
-                    break;
-                default:
-                    break;
-            }
+            case 'W':
+                cn.Up();
+                break;
+            case 'A':
+                cn.Left();
+                break;
+            case 'S':
+                cn.Down();
+                break;
+            case 'D':
+                cn.Right();
+                break;
+            default:
+                break;
         }
     }
+}
 void CGAME::updateAnimation(float dt) {
     if (!isFinished)
     {

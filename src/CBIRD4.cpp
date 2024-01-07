@@ -29,7 +29,4 @@ CBIRD4::CBIRD4(int width, float startX, float startY, float birdSpeed, int direc
         sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
         radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
         scale = sprite.getScale();
-
-
-            
 }

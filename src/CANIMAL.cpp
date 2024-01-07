@@ -51,7 +51,7 @@ void CANIMAL::Move()   {
     else if (mX+sprite.getGlobalBounds().width < 0) {
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_real_distribution<> dis(1.2, 2.5);
+        std::uniform_real_distribution<> dis(1.0, 2.5);
         float randomTime = dis(gen);
         if (realTimeClock.getElapsedTime().asSeconds() >= time)
         {

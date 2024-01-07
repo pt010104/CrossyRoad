@@ -40,7 +40,6 @@ public:
     void setIndexSecond(int index);
     float getRadius() const;
     std::string serialize();
-    virtual ~CVEHICLE() = default; 
 };
 
 #endif // CVEHICLE_H
