@@ -464,11 +464,6 @@ void CGAME::exitGame(std::thread& thread) {
 
 void CGAME::startGame(sf::RenderWindow& window) {   
     if (!stopGame && !specialAnim && !isFinished && !countDown) {
-        //Checking Sprinting
-        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && false == isSprint) {
-        //     isSprint = true;
-        // }
-        //Checking Movement
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && isPress==false) {
             isPress = true;
             saveGame("save.txt");
