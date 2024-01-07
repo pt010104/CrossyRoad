@@ -25,6 +25,7 @@ CCAR::CCAR(int width, float startX, float startY, float birdSpeed, int direct)
             frames["right_1"].width,
             frames["right_1"].height
         );
+        sprite.setTextureRect(rectSourceSprite);
         sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
         radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
 
@@ -33,7 +34,7 @@ CCAR::CCAR(int width, float startX, float startY, float birdSpeed, int direct)
 }
 void CCAR::Move()   {
     if (direction==-1)
-        sprite.setScale(-4.5f, 4.5f);
+        sprite.setScale(-5.5f, 5.5f);
     if (mX >= windowWidth) {
         mX = 2;
     } else if (mX+sprite.getGlobalBounds().width <= 0) {

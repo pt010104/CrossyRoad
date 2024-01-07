@@ -27,6 +27,7 @@ CBIRD::CBIRD(int width, float startX, float startY, float birdSpeed, int direct)
             frames["right_1"].width,
             frames["right_1"].height
         );
+        sprite.setTextureRect(rectSourceSprite);
         sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
         radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
 

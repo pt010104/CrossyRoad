@@ -51,7 +51,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
             else ObjInLane[indexObj] = getNumBirds();
             speed_lane[indexObj] = speedDis(gen)*multiplierSpeed;
             std::string type_obj = object_rand[randObj(gen)]; 
-            float randomX = (dis1(gen) == 0 ? 0 : 995);
+            float randomX = (dis1(gen) == 0 ? 0 : 1005);
             direction[indexObj] = randomX == 0 ? 1 : -1;
             time_obj2[indexObj] = dis_obj2(gen) + direction[direction.size()-1]*200; 
             float randomY = j * laneHeight-50; 
@@ -102,7 +102,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
                 }
                 if (type_obj == "cars2")
                 {
-                    objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
+                    objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY+30, speed_lane[indexObj],direction[indexObj]));                
                     if (ObjInLane[indexObj]==2)
                         objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
                 }
@@ -297,7 +297,7 @@ void CGAME::drawGame(float& realTime)
 
             sf::Text text;
             text.setFont(font);
-            text.setString(std::to_string(static_cast<int>(realTime+1)));
+            text.setString(std::to_string(static_cast<int>(3-realTime+1)));
             text.setCharacterSize(50); 
             text.setFillColor(sf::Color::White);
             text.setOutlineColor(sf::Color::Black);

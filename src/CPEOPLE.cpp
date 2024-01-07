@@ -144,7 +144,7 @@ void CPEOPLE::reset(){
     spriteHeight = sprite.getGlobalBounds().height;
     sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
     radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
-    speed = 10;
+    speed = 4;
 }
 
 void CPEOPLE::set_Position(int X, int Y){
