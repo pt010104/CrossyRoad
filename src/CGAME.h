@@ -1,6 +1,7 @@
 #ifndef CGAME_H
 #define CGAME_H
 #include <fstream>
+#include "CCAR4.h"
 #include "CCAR3.h"
 #include "CCAR2.h"
 #include "CCAR.h"

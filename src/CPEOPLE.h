@@ -36,6 +36,7 @@ public:
     void Left();
     void Right();
     void Down();
+    int Sprint();
     void draw(sf::RenderWindow& window); 
     void UpdateFrame(float deltaTime);
     void UpdateAnimation(const std::string& direction);

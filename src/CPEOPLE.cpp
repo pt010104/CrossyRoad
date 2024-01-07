@@ -54,6 +54,10 @@ CPEOPLE::CPEOPLE(int startX, int startY) : CPEOPLE() {
     speed = 3;
 }
 
+int CPEOPLE::Sprint() {
+    if()
+}
+
 void CPEOPLE::Up() {
     // if(!nearObs)
         mY = mY - speed;
@@ -144,11 +148,7 @@ void CPEOPLE::reset(){
     spriteHeight = sprite.getGlobalBounds().height;
     sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
     radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
-<<<<<<< HEAD
-    speed = 4;
-=======
     speed = 3;
->>>>>>> 2e89e263795050f727e6eb7f8fea64dd3365aefe
 }
 
 void CPEOPLE::set_Position(int X, int Y){
