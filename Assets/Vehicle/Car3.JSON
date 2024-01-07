@@ -1,0 +1,25 @@
+{
+    "frames": {
+        "right_1": {
+            "x": 7,
+            "y": 3,
+            "width": 13,
+            "height": 24
+        },
+        "right_2": {
+            "x": 31,
+            "y": 3,
+            "width": 17,
+            "height": 25
+        }
+    },
+    "meta": {
+      "image": "Car3.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 59,
+        "h": 39
+      },
+      "scale": "1"
+    }
+  }

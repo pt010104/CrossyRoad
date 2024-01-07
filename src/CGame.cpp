@@ -6,6 +6,7 @@ int CGAME::getNumBirds() {
     std::mt19937 gen(rd());
 
     std::vector<double> prob;
+    //Set probability for number of birds
     switch (level) {
         case 1:
             prob = {0.7, 0.3}; // 70% ra 1, 30% ra 2
@@ -105,6 +106,12 @@ void CGAME::GenObj(sf::RenderWindow& window)
                     objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY+30, speed_lane[indexObj],direction[indexObj]));                
                     if (ObjInLane[indexObj]==2)
                         objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                }
+                if (type_obj == "cars3")
+                {
+                    objects.emplace_back(std::make_shared<CCAR3>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
+                    if (ObjInLane[indexObj]==2)
+                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
                 }
                 indexObj++;        
             }  
@@ -645,6 +652,11 @@ void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
         if (objectType == "cars2")
         {
             objects.push_back(std::make_shared<CCAR2>(window.getSize().x, 0, y,speed,direction));
+        }
+        else
+        if (objectType == "cars3")
+        {
+            objects.push_back(std::make_shared<CCAR3>(window.getSize().x, 0, y,speed,direction));
         }
     }
     std::cout<<"load obj done";
