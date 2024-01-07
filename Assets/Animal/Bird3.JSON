@@ -1,0 +1,61 @@
+{
+    "frames": {
+        "right_1": {
+            "x": 0,
+            "y": 2,
+            "width": 15,
+            "height": 17
+        },
+        "right_2": {
+            "x": 16,
+            "y": 2,
+            "width": 15,
+            "height": 17
+        },
+        "right_3": {
+            "x": 32,
+            "y": 4,
+            "width": 15,
+            "height": 17
+        },
+        "right_4": {
+            "x": 48,
+            "y": 3,
+            "width": 15,
+            "height": 17
+        },
+        "right_5": {
+            "x": 64,
+            "y": 2,
+            "width": 15,
+            "height": 17
+        },
+        "right_6": {
+            "x": 80,
+            "y": 0,
+            "width": 15,
+            "height": 17
+        },
+        "right_7": {
+            "x": 96,
+            "y": 1,
+            "width": 15,
+            "height": 17
+        },
+        "right_8": {
+            "x": 112,
+            "y": 0,
+            "width": 15,
+            "height": 17
+        }
+    },
+    "meta": {
+      "image": "Bird3.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 127,
+        "h": 19
+      },
+      "scale": "1"
+    }
+  }

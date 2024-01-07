@@ -24,21 +24,6 @@ bool CollisionManager::checkCollisionAnimal(CPEOPLE& people, CANIMAL& animal) {
     float radius2 = animal.getRadius();
     return distance < (radius1 + radius2);
 }
-bool CollisionManager::checkCollision(CPEOPLE& people, Obstacles& obs) {
-    sf::FloatRect peopleBounds = people.get_GlobalBounds();
-    sf::FloatRect obstaclesBounds = obs.get_GlobalBounds();
-
-    sf::Vector2f posPeople = people.get_Position();
-    sf::Vector2f posObs = obs.get_Position();
-
-    if(peopleBounds.width == 0 &&peopleBounds.height == 0)
-        return false;
-    if (std::abs((posPeople.y+peopleBounds.height) - (posObs.y+obstaclesBounds.height)) > obstaclesBounds.height) 
-        return false; 
-        
-    return peopleBounds.intersects(obstaclesBounds);
-}
-
 bool CollisionManager::checkCollisionInDirection(CPEOPLE& people, Obstacles& obs, char direction){
     sf::FloatRect peopleBounds = people.get_GlobalBounds();
     sf::FloatRect obstaclesBounds = obs.get_GlobalBounds();

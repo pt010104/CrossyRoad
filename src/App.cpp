@@ -246,7 +246,7 @@ void App::gameLoop() {
         if(game.getFinish() == false)
             switch (currentGameState) {
                 case GameState::MENU:{
-                    // std::string tmp = menu.handleInputMainMenu(false);
+                    std::string tmp = menu.handleInputMainMenu(false);
                     break;
                 }
                 case GameState::PLAYING:{
@@ -273,7 +273,7 @@ void App::gameLoop() {
                         }
 
                     }
-                    // std::string tmp = menu.handleInputPausedMenu(false);
+                    std::string tmp = menu.handleInputPausedMenu(false);
                     break;
                 }
 
