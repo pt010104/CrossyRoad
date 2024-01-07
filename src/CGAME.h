@@ -38,6 +38,7 @@ protected:
     bool endless = true;
     bool isFinished = false;
     bool specialAnim = false;
+    bool deathAnim = false;
     CPEOPLE cn;
     Dragon drag;
     std::vector<std::string> object_rand = {"birds","birds2","birds3","birds4","birds5","cars","cars2"};
@@ -89,6 +90,8 @@ public:
     bool getFinish() { return isFinished; }
     void setSpecial(bool special) {specialAnim = special;}
     bool getSpecial() { return specialAnim; }
+    void setDie(bool die) { deathAnim = die; }
+    bool getDie() { return deathAnim; }
     int getNumBirds();
     sf::View getView() { return view; }
     void finishAnimation();

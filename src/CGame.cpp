@@ -755,6 +755,7 @@ void CGAME::updatePosAnimal() {
                         {
                             stopGame=true;
                             cn.Died();
+                            deathAnim = true;
                         }
                 }
                 if (drag.state != "fire")

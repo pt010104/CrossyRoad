@@ -29,6 +29,23 @@ void App::run() {
         globalSound.play();
     }
     while (window.isOpen() && !exitGameFlag) {
+        if (!game.getPeople().getState() && game.getDie()){
+            bool finish = false;
+            auto current_time = std::chrono::steady_clock::now();
+            if ( (current_time - start) < die_duration) {
+                finish = true;
+                if (currentGameState == GameState::PLAYING){
+                    game.startGame(window);
+                    update();
+                }
+                render();
+            }
+            if (!finish){
+                game.setDie(false);
+                currentGameState = GameState::PAUSED;
+            }
+        }
+        else 
         if (!game.getSpecial())
         {
             processEvents();
