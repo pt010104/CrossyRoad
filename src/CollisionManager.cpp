@@ -64,7 +64,7 @@ bool CollisionManager::checkCollisionInDirection(CPEOPLE& people, Obstacles& obs
                     return false;
             if (((posPeople.y + peopleBounds.height) - (posObs.y)) >= 0 && ((posPeople.y) - ((posObs.y) + obstaclesBounds.height) <= 0)){
                 float distance = (posPeople.x + peopleBounds.width) - (posObs.x);
-                if ((distance) <= 10 && (distance >= -5)) {
+                if ((distance) <= 10 && (distance >= -6)) {
                     return true;
                 }
             }
