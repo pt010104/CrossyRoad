@@ -43,7 +43,14 @@ bool CollisionManager::checkCollisionInDirection(CPEOPLE& people, Obstacles& obs
         case 'A':
             if (std::abs((posPeople.x) - (posObs.x + obstaclesBounds.width)) > threshold)
                 return false;
-            return peopleBounds.intersects(obstaclesBounds);
+            if(peopleBounds.intersects(obstaclesBounds)){
+                if (std::abs(posPeople.y - (posObs.y + obstaclesBounds.height)) <= 3)
+                    return false;
+                if (std::abs(posPeople.y + peopleBounds.height - posObs.y) <= 3)
+                    return false;
+                return true;
+            }
+            return false;
         case 'S':
             if (std::abs((posPeople.y + peopleBounds.height) - (posObs.y)) > threshold)
                 return false;
@@ -51,9 +58,13 @@ bool CollisionManager::checkCollisionInDirection(CPEOPLE& people, Obstacles& obs
         case 'D':
             if (std::abs((posPeople.x + peopleBounds.width) - (posObs.x)) > threshold)
                 return false;
+            if (std::abs(posPeople.y - (posObs.y + obstaclesBounds.height)) <= 3)
+                    return false;
+            if (std::abs(posPeople.y + peopleBounds.height - posObs.y) <= 3)
+                    return false;
             if (((posPeople.y + peopleBounds.height) - (posObs.y)) >= 0 && ((posPeople.y) - ((posObs.y) + obstaclesBounds.height) <= 0)){
                 float distance = (posPeople.x + peopleBounds.width) - (posObs.x);
-                if ((distance) <= 10 && (distance >= -5)) {
+                if ((distance) <= 10 && (distance >= -6)) {
                     return true;
                 }
             }

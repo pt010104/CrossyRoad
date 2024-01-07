@@ -364,6 +364,7 @@ void CGAME::resetGame() {
     timeAppear = 10;
     realTimeClock.restart();
     cn.reset();
+    dead = false;
     Score = 0;
     // Re-generate game objects
     if (typePlay == "loadGame" && !endless)
@@ -788,6 +789,7 @@ void CGAME::updatePosAnimal() {
                             stopGame=true;
                             cn.Died();
                             deathAnim = true;
+                            dead = true;
                         }
                 }
                 if (drag.state != "fire")

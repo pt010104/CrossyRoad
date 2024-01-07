@@ -68,7 +68,7 @@ void App::run() {
                     update();
                 }
                 render();
-                std::this_thread::sleep_for(10ms);
+                // std::this_thread::sleep_for(10ms);
             }
             if (!inAnim) {
                 std::cout << "End animation\n";
@@ -181,7 +181,7 @@ void App::handleKeyPress(const sf::Event& event) {
         
     }
     else if (event.key.code == sf::Keyboard::Enter) {
-        if (currentGameState == GameState::PAUSED) {
+        if (currentGameState == GameState::PAUSED && !dead) {
             currentGameState = GameState::PLAYING;
         }
         else if (currentGameState == GameState::MENU) {

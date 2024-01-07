@@ -11,4 +11,5 @@ extern std::string typePlay;
 extern float viewX;
 extern float viewY;
 extern  int Score;
+extern bool dead;
 #endif 
