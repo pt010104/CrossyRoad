@@ -33,6 +33,7 @@ protected:
     sf::Vector2f scale;
 
 public:
+    float timeAppear;
     int direction;
     CANIMAL();
     CANIMAL(int width, float startX, float startY,std::string name);

@@ -44,7 +44,7 @@ protected:
     bool countDown = false;
     CPEOPLE cn;
     Dragon drag;
-    std::vector<std::string> object_rand = {"birds","birds2","birds3","birds4","birds5","cars","cars2","cars3"};
+    std::vector<std::string> object_rand = {"birds","birds2","birds3","birds4","birds5","cars","cars2","cars3","cars4"};
     int numLanes;
     std::vector<bool> isSecond;
     std::vector<bool> isDraw;

@@ -34,9 +34,10 @@ void CGAME::GenObj(sf::RenderWindow& window)
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis1(0,1); //obj1 appears at x=0 or 955
     std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj1 across it
-    std::uniform_real_distribution<> speedDis(7.5f, 10.5f); 
+    std::uniform_real_distribution<> speedDis(4.0f, 6.5f); 
     std::uniform_int_distribution<> numBirdsDis(1, 2); 
-    std::uniform_int_distribution<> randObj(0, 6); 
+    std::uniform_int_distribution<> randObj(0, 8); 
+    std::uniform_int_distribution<> numAnimal(1,2); 
 
     int indexObj=0;
     int levelIndexLane = 52 - 3 - static_cast<int>(std::floor(level * 1.5));
@@ -46,80 +47,110 @@ void CGAME::GenObj(sf::RenderWindow& window)
     std::vector<std::string> nameTile = {"people_map"+std::to_string(level),"mons_map"+std::to_string(level)};
     // random obj
     for (int j = -100; j < numLanes; j++) {
-        if (abs(j)%2==0) {
+        if (abs(j)%2==0) { //mons case
             if(endless)
-                ObjInLane[indexObj] = numBirdsDis(gen);        
+                ObjInLane[indexObj] = numBirdsDis(gen);  
+
             else ObjInLane[indexObj] = getNumBirds();
             speed_lane[indexObj] = speedDis(gen)*multiplierSpeed;
-            std::string type_obj = object_rand[randObj(gen)]; 
+            int numAnimalInLane = numAnimal(gen) + 1;
             float randomX = (dis1(gen) == 0 ? 0 : 1005);
             direction[indexObj] = randomX == 0 ? 1 : -1;
             time_obj2[indexObj] = dis_obj2(gen) + direction[direction.size()-1]*200; 
             float randomY = j * laneHeight-50; 
+
             //create traffic pos
+            int firstAnimal = numAnimalInLane;
+            float previousTime = 2;
             if ((lanePos.size()-1 >= levelIndexLane && !endless) || endless)
             {
                 TrafficLight_pos.push_back(j*laneHeight-25);    
                 //lane pos
-                if (type_obj == "birds")
+                while (numAnimalInLane > 0)
                 {
-                    objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
-                    if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CBIRD4>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                    std::string type_obj = object_rand[randObj(gen)]; 
+                    if (type_obj == "birds")
+                    {
+                       
+                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        if (numAnimalInLane!=firstAnimal)
+                            objects[objects.size()-1]->timeAppear += previousTime;
+                            
+                        if (ObjInLane[indexObj]==2 && numAnimalInLane==firstAnimal)
+                            objects.emplace_back(std::make_shared<CBIRD4>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
 
-                }
-                else
-                if (type_obj == "birds5")
-                {
-                    objects.emplace_back(std::make_shared<CBIRD5>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));       
-                    if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CCAR3>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                    }
+                    else
+                    if (type_obj == "birds5")
+                    {
+                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        if (numAnimalInLane!=firstAnimal)
+                            objects[objects.size()-1]->timeAppear += previousTime;      
+                        if (ObjInLane[indexObj]==2)
+                            objects.emplace_back(std::make_shared<CCAR3>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
 
-                }
-                else
-                if (type_obj == "birds2")
-                {
-                    objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
-                    if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CBIRD5>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
-                }
-                if (type_obj == "birds3")
-                {
-                    objects.emplace_back(std::make_shared<CBIRD3>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
-                    if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
-                }
-                if (type_obj == "birds4")
-                {
-                    objects.emplace_back(std::make_shared<CBIRD4>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
-                    if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CCAR>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
-                }
-                if (type_obj == "cars")
-                {
-                    objects.emplace_back(std::make_shared<CCAR>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
-                    if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CBIRD3>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
-                }
-                if (type_obj == "cars2")
-                {
-                    objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
-                    if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CCAR4>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
-                }
-                if (type_obj == "cars3")
-                {
-                    objects.emplace_back(std::make_shared<CCAR3>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
-                    if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
-                }
-                if (type_obj == "cars4")
-                {
-                    objects.emplace_back(std::make_shared<CCAR4>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
-                    if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
-                }
-                indexObj++;        
+                    }
+                    else
+                    if (type_obj == "birds2")
+                    {
+                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        if (numAnimalInLane!=firstAnimal)
+                            objects[objects.size()-1]->timeAppear += previousTime;                
+                        if (ObjInLane[indexObj]==2)
+                            objects.emplace_back(std::make_shared<CBIRD5>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                    }
+                    if (type_obj == "birds3")
+                    {
+                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        if (numAnimalInLane!=firstAnimal)
+                            objects[objects.size()-1]->timeAppear += previousTime;               
+                        if (ObjInLane[indexObj]==2)
+                            objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                    }
+                    if (type_obj == "birds4")
+                    {
+                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        if (numAnimalInLane!=firstAnimal)
+                            objects[objects.size()-1]->timeAppear += previousTime;              
+                        if (ObjInLane[indexObj]==2)
+                            objects.emplace_back(std::make_shared<CCAR>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                    }
+                    if (type_obj == "cars")
+                    {
+                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        if (numAnimalInLane!=firstAnimal)
+                            objects[objects.size()-1]->timeAppear += previousTime;               
+                        if (ObjInLane[indexObj]==2)
+                            objects.emplace_back(std::make_shared<CBIRD3>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                    }
+                    if (type_obj == "cars2")
+                    {
+                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        if (numAnimalInLane!=firstAnimal)
+                            objects[objects.size()-1]->timeAppear += previousTime;               
+                        if (ObjInLane[indexObj]==2)
+                            objects.emplace_back(std::make_shared<CCAR4>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                    }
+                    if (type_obj == "cars3")
+                    {
+                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        if (numAnimalInLane!=firstAnimal)
+                            objects[objects.size()-1]->timeAppear += previousTime;              
+                        if (ObjInLane[indexObj]==2)
+                            objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                    }
+                    if (type_obj == "cars4")
+                    {
+                        objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        if (numAnimalInLane!=firstAnimal)
+                            objects[objects.size()-1]->timeAppear += previousTime;         
+                        if (ObjInLane[indexObj]==2)
+                            objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                    }     
+                    numAnimalInLane--;
+                    previousTime++;
+                } 
+                indexObj++;  
             }  
         }
         if(abs(j)%2==0) //mons tile 
@@ -208,10 +239,13 @@ void CGAME::drawGame(float& realTime)
             cn.draw(*window);
         for (int i = 0;i<currentObjects.size();i++)
         {
-            if (drag.state != "fire")
-                currentObjects[i]->draw(*window);
-            else if (currentObjects[i]->get_Position().y != drag.mY-25 && currentObjects[i]->get_Position().y != drag.mY+25)
-                currentObjects[i]->draw(*window);
+            if (realTimeClock.getElapsedTime().asSeconds() >= currentObjects[i]->timeAppear)
+            {
+                if (drag.state != "fire")
+                    currentObjects[i]->draw(*window);
+                else if (currentObjects[i]->get_Position().y != drag.mY-25 && currentObjects[i]->get_Position().y != drag.mY+25)
+                    currentObjects[i]->draw(*window);
+            }
         }     
         if (realTimeClock.getElapsedTime().asSeconds() >= timeAppear && drag.state == "disap")
         {

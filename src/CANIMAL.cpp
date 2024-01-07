@@ -6,6 +6,7 @@ CANIMAL::CANIMAL() : windowWidth(1000), mX(0), mY(0) {}
 CANIMAL::CANIMAL(int width, float startX, float startY, std::string name)
     : windowWidth(width), mX(startX), mY(startY), currentFrameIndex(0), frameTime(0.0f),animationSpeed(0.13f), name(name)
 {
+    timeAppear = 0;
     indexSecond=-100;
     time = 0;
 }
@@ -40,27 +41,29 @@ void CANIMAL::Move()   {
     if (mX >= windowWidth+6) {
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_real_distribution<> dis(3.5, 6.0);
+        std::uniform_real_distribution<> dis(3.0, 6.0);
         float randomTime = dis(gen);
-        if (realTimeClock.getElapsedTime().asSeconds() >= time)
+        if (realTimeClock.getElapsedTime().asSeconds() >= time+ timeAppear)
         {
-            mX = 2;
-            time = realTimeClock.getElapsedTime().asSeconds() + randomTime;
+            mX = 0;
+            time = realTimeClock.getElapsedTime().asSeconds() + randomTime ;
         }
     }
     else if (mX+sprite.getGlobalBounds().width < 0) {
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_real_distribution<> dis(1.0, 2.5);
+        std::uniform_real_distribution<> dis(3.0, 6.0);
         float randomTime = dis(gen);
         if (realTimeClock.getElapsedTime().asSeconds() >= time)
         {
             mX = 1005;
-            time = realTimeClock.getElapsedTime().asSeconds() + randomTime;
+            time = realTimeClock.getElapsedTime().asSeconds() + randomTime + timeAppear;
         }
     }
-
-    mX += speed * direction;
+    if (realTimeClock.getElapsedTime().asSeconds() >= timeAppear)
+    {
+        mX += speed * direction;
+    }
     UpdateAnimation("right");
 }
 void CANIMAL::draw(sf::RenderWindow& window) {
