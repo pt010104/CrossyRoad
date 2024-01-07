@@ -62,13 +62,12 @@ void App::run() {
             auto current_time = std::chrono::steady_clock::now();
             if ( (current_time - start) < work_duration) {
                 inAnim = true;
-                game.updatePosPeople('W', false); // Update character position
+                game.updatePosPeople('W');
                 if (currentGameState == GameState::PLAYING){
                     game.startGame(window);
                     update();
                 }
                 render();
-                // std::this_thread::sleep_for(10ms);
             }
             if (!inAnim) {
                 std::cout << "End animation\n";
@@ -267,7 +266,7 @@ void App::gameLoop() {
         if(game.getFinish() == false)
             switch (currentGameState) {
                 case GameState::MENU:{
-                    std::string tmp = menu.handleInputMainMenu(false);
+                    // std::string tmp = menu.handleInputMainMenu(false);
                     break;
                 }
                 case GameState::PLAYING:{
@@ -294,7 +293,7 @@ void App::gameLoop() {
                         }
 
                     }
-                    std::string tmp = menu.handleInputPausedMenu(false);
+                    // std::string tmp = menu.handleInputPausedMenu(false);
                     break;
                 }
 

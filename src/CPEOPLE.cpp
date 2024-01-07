@@ -1,7 +1,7 @@
 #include "CPEOPLE.h"
 #include <iostream>
 CPEOPLE::CPEOPLE() : mState(true), windowWidth(1000), windowHeight(800), currentAnimation("down"), animationSpeed(0.2f), 
-    frameTime(0.f), currentFrameIndex(0), stamina(100), maxStamina(100)
+    frameTime(0.f), currentFrameIndex(0)
 {
     numFrames = 5;
     nearObs = false;
@@ -52,21 +52,6 @@ CPEOPLE::CPEOPLE(int startX, int startY) : CPEOPLE() {
     sprite.setPosition(static_cast<float>(mX), static_cast<float>(mY));
     radius = std::min(rectSourceSprite.width, rectSourceSprite.height) / 2.0f * sprite.getScale().x;
     speed = 3;
-}
-
-void CPEOPLE::Sprint(bool check) {
-    if(check && stamina >= 5) {
-        stamina -= 5;
-        speed = 9;
-    }
-}
-
-void CPEOPLE::rSprint(bool check) {
-    if(check) speed = 3;
-}
-
-void CPEOPLE::recharge() {
-    if(stamina < maxStamina) stamina += 1;
 }
 
 void CPEOPLE::Up() {
