@@ -4,6 +4,8 @@
 #include <unordered_map>
 #include <string>
 #include "SpriteLoader.h"
+#include "chrono"
+#include "thread"
 
 class CPEOPLE {
 private:
@@ -20,6 +22,7 @@ private:
     int spriteWidth;
     int spriteHeight;
     int speed;
+    int stamina, maxStamina;
     
     std::unordered_map<std::string, Frame> frames;
     std::unordered_map<std::string, Animation> animations;
@@ -36,6 +39,9 @@ public:
     void Left();
     void Right();
     void Down();
+    void Sprint(bool check);
+    void rSprint(bool check);
+    void recharge();
     void draw(sf::RenderWindow& window); 
     void UpdateFrame(float deltaTime);
     void UpdateAnimation(const std::string& direction);

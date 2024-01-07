@@ -431,9 +431,9 @@ void CGAME::exitGame(std::thread& thread) {
 void CGAME::startGame(sf::RenderWindow& window) {   
     if (!stopGame && !specialAnim && !isFinished && !countDown) {
         //Checking Sprinting
-        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && false == isSprint) {
-        //     isSprint = true;
-        // }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && false == isSprint) {
+            isSprint = true;
+        }
         //Checking Movement
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && isPress==false) {
             isPress = true;
@@ -450,7 +450,7 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 }
             }
             if (canMove) {
-                this->updatePosPeople('W');
+                this->updatePosPeople('W', isSprint);
             }
 
         }
@@ -465,7 +465,7 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 }
             }
             if (canMove) {
-                this->updatePosPeople('A');
+                this->updatePosPeople('A', isSprint);
             }
         }
         else
@@ -479,7 +479,7 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 }
             }
             if (canMove) {
-                this->updatePosPeople('S');
+                this->updatePosPeople('S', isSprint);
             }
         }
         else
@@ -493,9 +493,10 @@ void CGAME::startGame(sf::RenderWindow& window) {
                 }
             }
             if (canMove) {
-                this->updatePosPeople('D');
+                this->updatePosPeople('D', isSprint);
             }
         }
+        isSprint = false;
         isPress = false;
     }
     //move camera && refresh currentObstacles
@@ -762,9 +763,11 @@ void CGAME::resumeGame(std::thread& thread) {
             // Resume the thread
     }
 
-void CGAME::updatePosPeople(char direction) {
+void CGAME::updatePosPeople(char direction, bool check) {
     if(cn.getState() && !isFinished)
     {
+        if(check) cn.Sprint(check);
+        cn.recharge();
         switch (direction)
         {
             case 'W':
@@ -782,6 +785,7 @@ void CGAME::updatePosPeople(char direction) {
             default:
                 break;
         }
+        if(check) cn.rSprint(check);
     }
 }
 void CGAME::updateAnimation(float dt) {
