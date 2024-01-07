@@ -1,11 +1,13 @@
 #ifndef CGAME_H
 #define CGAME_H
 #include <fstream>
-#include "CTRUCK.h"
+#include "CCAR2.h"
 #include "CCAR.h"
-#include "CDINOSAUR.h"
+#include "CBIRD5.h"
 #include "CBIRD.h"
 #include "CBIRD2.h"
+#include "CBIRD3.h"
+#include "CBIRD4.h"
 #include "CPEOPLE.h"
 #include "Map.h"
 #include "Obstacles.h"
@@ -38,7 +40,7 @@ protected:
     bool specialAnim = false;
     CPEOPLE cn;
     Dragon drag;
-    std::vector<std::string> object_rand = {"birds","dinosaurs","birds2","cars","trucks"};
+    std::vector<std::string> object_rand = {"birds","birds2","birds3","birds4","birds5","cars","cars2"};
     int numLanes;
     std::vector<bool> isSecond;
     std::vector<bool> isDraw;

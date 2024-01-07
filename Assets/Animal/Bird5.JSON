@@ -1,0 +1,37 @@
+{
+    "frames": {
+        "right_1": {
+            "x": 0,
+            "y": 0,
+            "width": 16,
+            "height": 16
+        },
+        "right_2": {
+            "x": 16,
+            "y": 0,
+            "width": 16,
+            "height": 16
+        },
+        "right_3": {
+            "x": 34,
+            "y": 1,
+            "width": 13,
+            "height": 16
+        },
+        "right_4": {
+            "x": 48,
+            "y": 1,
+            "width": 16,
+            "height": 15
+        }
+    },
+    "meta": {
+      "image": "Dinausor.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 64,
+        "h": 16
+      },
+      "scale": "1"
+    }
+  }

@@ -33,7 +33,7 @@ CBIRD2::CBIRD2(int width, float startX, float startY, float birdSpeed, int direc
 }
 void CBIRD2::Move()   {
     if (direction==-1)
-        sprite.setScale(-4.5f, 4.5f);
+        sprite.setScale(-3.5f, 3.5f);
     if (mX >= windowWidth) {
         mX = 2;
     } else if (mX+sprite.getGlobalBounds().width <= 0) {

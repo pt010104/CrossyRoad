@@ -33,9 +33,9 @@ void CGAME::GenObj(sf::RenderWindow& window)
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis1(0,1); //obj1 appears at x=0 or 955
     std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj1 across it
-    std::uniform_real_distribution<> speedDis(8.5f, 9.5f); 
+    std::uniform_real_distribution<> speedDis(6.5f, 9.5f); 
     std::uniform_int_distribution<> numBirdsDis(1, 2); 
-    std::uniform_int_distribution<> randObj(0, 2); 
+    std::uniform_int_distribution<> randObj(0, 6); 
 
     int indexObj=0;
     int levelIndexLane = 52 - 3 - static_cast<int>(std::floor(level * 1.5));
@@ -64,13 +64,13 @@ void CGAME::GenObj(sf::RenderWindow& window)
                 {
                     objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
                     if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                        objects.emplace_back(std::make_shared<CBIRD4>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
 
                 }
                 else
-                if (type_obj == "dinosaurs")
+                if (type_obj == "birds5")
                 {
-                    objects.emplace_back(std::make_shared<CDINOSAUR>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));       
+                    objects.emplace_back(std::make_shared<CBIRD5>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));       
                     if (ObjInLane[indexObj]==2)
                         objects.emplace_back(std::make_shared<CBIRD>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
 
@@ -80,7 +80,31 @@ void CGAME::GenObj(sf::RenderWindow& window)
                 {
                     objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
                     if (ObjInLane[indexObj]==2)
-                        objects.emplace_back(std::make_shared<CDINOSAUR>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                        objects.emplace_back(std::make_shared<CBIRD5>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                }
+                if (type_obj == "birds3")
+                {
+                    objects.emplace_back(std::make_shared<CBIRD3>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
+                    if (ObjInLane[indexObj]==2)
+                        objects.emplace_back(std::make_shared<CBIRD3>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                }
+                if (type_obj == "birds4")
+                {
+                    objects.emplace_back(std::make_shared<CBIRD4>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
+                    if (ObjInLane[indexObj]==2)
+                        objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                }
+                if (type_obj == "cars")
+                {
+                    objects.emplace_back(std::make_shared<CCAR>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
+                    if (ObjInLane[indexObj]==2)
+                        objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                }
+                if (type_obj == "cars2")
+                {
+                    objects.emplace_back(std::make_shared<CCAR2>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));                
+                    if (ObjInLane[indexObj]==2)
+                        objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
                 }
                 indexObj++;        
             }  
@@ -105,7 +129,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
             else
             {
                 maps.emplace_back(window.getSize().x,j*laneHeight,nameTile[0]);      
-                if (globalObstacles)
+                if (globalObstacles && j!=numLanes-1)
                 {        
                     int numFrames = 7;
                     std::uniform_int_distribution<int> dist(1, numFrames);
@@ -582,7 +606,7 @@ void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
         else
         if (objectType == "dinosaurs")
         {
-            objects.push_back(std::make_shared<CDINOSAUR>(window.getSize().x, 0, y,speed,direction));
+            objects.push_back(std::make_shared<CBIRD5>(window.getSize().x, 0, y,speed,direction));
         }
         else
         if (objectType == "birds2")
@@ -726,12 +750,12 @@ void CGAME::updatePosAnimal() {
             {
                 if(cn.getState())
                 {
-                    // if (drag.state != "fire" || (objects[i]->get_Position().y != drag.mY-25 && objects[i]->get_Position().y != drag.mY+25))
-                    //     if (CollisionManager::checkCollisionAnimal(cn, *objects[i]))
-                    //     {
-                    //         stopGame=true;
-                    //         cn.Died();
-                    //     }
+                    if (drag.state != "fire" || (objects[i]->get_Position().y != drag.mY-25 && objects[i]->get_Position().y != drag.mY+25))
+                        if (CollisionManager::checkCollisionAnimal(cn, *objects[i]))
+                        {
+                            stopGame=true;
+                            cn.Died();
+                        }
                 }
                 if (drag.state != "fire")
                     objects[i]->Move();
