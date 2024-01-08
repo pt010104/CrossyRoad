@@ -1,6 +1,7 @@
 #ifndef CGAME_H
 #define CGAME_H
 #include <fstream>
+#include "CCAR7.h"
 #include "CCAR6.h"
 #include "CCAR5.h"
 #include "CCAR4.h"
@@ -46,7 +47,7 @@ protected:
     bool countDown = false;
     CPEOPLE cn;
     Dragon drag;
-    std::vector<std::string> object_rand = {"birds","birds2","birds3","birds4","birds5","cars","cars2","cars3","cars4","cars5","cars6"};
+    std::vector<std::string> object_rand = {"birds","birds2","birds3","birds4","birds5","cars","cars2","cars3","cars4","cars5","cars6","cars7"};
     int numLanes;
     std::vector<bool> isSecond;
     std::vector<bool> isDraw;
