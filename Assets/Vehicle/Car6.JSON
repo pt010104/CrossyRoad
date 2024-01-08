@@ -1,0 +1,38 @@
+{
+  "frames": {
+
+    "right_1": {
+      "x": 5,
+      "y": 10,
+      "width": 19,
+      "height": 17
+    },
+    "right_2": {
+      "x": 37,
+      "y": 10,
+      "width": 19,
+      "height": 16
+    },
+    "right_3": {
+      "x": 70,
+      "y": 10,
+      "width": 18,
+      "height": 17
+    },
+    "right_4": {
+      "x": 102,
+      "y": 10,
+      "width": 18,
+      "height": 17
+    }
+  },
+  "meta": {
+    "image": "Car6.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 128,
+      "h": 32
+    },
+    "scale": "1"
+  }
+}

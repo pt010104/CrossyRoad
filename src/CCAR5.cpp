@@ -9,7 +9,7 @@ CCAR5::CCAR5(int width, float startX, float startY, float birdSpeed, int direct)
         direction = direct;
         mX = startX;
         mY = startY;
-        numFrames = 5;
+        numFrames = 3;
         SpriteLoader loader;
         if (!loader.LoadTexture("Assets/Vehicle/Car5.png", texture)) {
             std::cerr<<"Failed to load texture";
@@ -18,7 +18,7 @@ CCAR5::CCAR5(int width, float startX, float startY, float birdSpeed, int direct)
             std::cerr<<"Failed to load Json Car";
         }
         sprite.setTexture(TextureManager::GetTexture("Assets/Vehicle/Car5.png"));
-        sprite.setScale(4.5f,4.5);
+        sprite.setScale(0.5f,0.5);
         rectSourceSprite = sf::IntRect(
             frames["right_1"].x,
             frames["right_1"].y,
