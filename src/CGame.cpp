@@ -36,7 +36,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
     std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj1 across it
     std::uniform_real_distribution<> speedDis(4.0f, 6.5f); 
     std::uniform_int_distribution<> numBirdsDis(1, 2); 
-    std::uniform_int_distribution<> randObj(0, 8); 
+    std::uniform_int_distribution<> randObj(0, 9); 
     std::uniform_int_distribution<> numAnimal(1,2); 
 
     int indexObj=0;
@@ -147,6 +147,14 @@ void CGAME::GenObj(sf::RenderWindow& window)
                         if (ObjInLane[indexObj]==2)
                             objects.emplace_back(std::make_shared<CBIRD2>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
                     }     
+                    if (type_obj == "cars5")
+                    {
+                        objects.emplace_back(std::make_shared<CCAR5>(window.getSize().x, randomX, randomY, speed_lane[indexObj],direction[indexObj]));
+                        if (numAnimalInLane!=firstAnimal)
+                            objects[objects.size()-1]->timeAppear += previousTime;         
+                        if (ObjInLane[indexObj]==2)
+                            objects.emplace_back(std::make_shared<CCAR4>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
+                    }    
                     numAnimalInLane--;
                     previousTime+=2;
                 } 
@@ -705,12 +713,12 @@ void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
         {
             objects.push_back(std::make_shared<CCAR4>(window.getSize().x, 0, y,speed,direction));
         }
+        else
+        if (objectType == "cars5")
+        {
+            objects.push_back(std::make_shared<CCAR4>(window.getSize().x, 0, y,speed,direction));
+        }
         objects[i]->timeAppear = time_appear;
-        // else
-        // if (objectType == "cars5")
-        // {
-        //     objects.push_back(std::make_shared<CCAR5>(window.getSize().x, 0, y,speed,direction));
-        // }
     }
     std::cout<<"load obj done";
     int obsSize;
