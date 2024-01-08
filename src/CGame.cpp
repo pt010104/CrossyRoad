@@ -155,9 +155,9 @@ void CGAME::GenObj(sf::RenderWindow& window)
                         if (ObjInLane[indexObj]==2)
                             objects.emplace_back(std::make_shared<CBIRD3>(window.getSize().x, randomX, randomY+50, speedDis(gen)*multiplierSpeed,-direction[indexObj]));
                         }     
-                        numAnimalInLane--;
-                        previousTime+=2;
-                    } 
+                    }
+                    numAnimalInLane--;
+                    previousTime+=2; 
                     indexObj++;  
             }  
         }
@@ -717,16 +717,6 @@ void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
         if (objectType == "cars5")
         {
             objects.push_back(std::make_shared<CCAR4>(window.getSize().x, 0, y,speed,direction));
-        }
-        else
-        if (objectType == "cars5")
-        {
-            objects.push_back(std::make_shared<CCAR4>(window.getSize().x, 0, y,speed,direction));
-        }
-        else
-        if (objectType == "cars5")
-        {
-            objects.push_back(std::make_shared<CCAR5>(window.getSize().x, 0, y,speed,direction));
         }
         objects[i]->timeAppear = time_appear;
     }
