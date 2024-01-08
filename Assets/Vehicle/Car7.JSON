@@ -20,33 +20,33 @@
       "height": 64
     },
     "right_4": {
-      "x": 102,
+      "x": 248,
       "y": 22,
-      "width": 18,
+      "width": 48,
       "height": 64
     },
     "right_5": {
-      "x": 102,
+      "x": 322,
       "y": 22,
-      "width": 18,
+      "width": 47,
       "height": 64
     },
     "right_6": {
-      "x": 102,
+      "x": 375,
       "y": 22,
-      "width": 18,
+      "width": 44,
       "height": 64
     },
     "right_7": {
-      "x": 102,
+      "x": 445,
       "y": 22,
-      "width": 18,
+      "width": 44,
       "height": 64
     },
     "right_8": {
-      "x": 102,
+      "x": 515,
       "y": 22,
-      "width": 18,
+      "width": 45,
       "height": 64
     }
   },

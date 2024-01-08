@@ -9,7 +9,7 @@ CCAR7::CCAR7(int width, float startX, float startY, float birdSpeed, int direct)
         direction = direct;
         mX = startX;
         mY = startY;
-        numFrames = 3;
+        numFrames = 8;
         SpriteLoader loader;
         if (!loader.LoadTexture("Assets/Vehicle/Car7.png", texture)) {
             std::cerr<<"Failed to load texture";
