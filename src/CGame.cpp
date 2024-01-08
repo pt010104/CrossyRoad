@@ -36,7 +36,7 @@ void CGAME::GenObj(sf::RenderWindow& window)
     std::uniform_real_distribution<> dis_obj2(400, 700); //obj2 will appear if obj1 across it
     std::uniform_real_distribution<> speedDis(4.0f, 6.5f); 
     std::uniform_int_distribution<> numBirdsDis(1, 2); 
-    std::uniform_int_distribution<> randObj(0, 8); 
+    std::uniform_int_distribution<> randObj(0, 9); 
     std::uniform_int_distribution<> numAnimal(1,2); 
 
     int indexObj=0;
@@ -710,6 +710,16 @@ void CGAME::loadGame(const std::string& filename,sf::RenderWindow& window) {
         }
         else
         if (objectType == "cars4")
+        {
+            objects.push_back(std::make_shared<CCAR4>(window.getSize().x, 0, y,speed,direction));
+        }
+        else
+        if (objectType == "cars5")
+        {
+            objects.push_back(std::make_shared<CCAR4>(window.getSize().x, 0, y,speed,direction));
+        }
+        else
+        if (objectType == "cars5")
         {
             objects.push_back(std::make_shared<CCAR4>(window.getSize().x, 0, y,speed,direction));
         }
